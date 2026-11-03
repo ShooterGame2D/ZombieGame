@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f24898ef97ba9488f5e4679af81656, type: 3}
+  m_Name: Character5
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.CharacterData
+  title: "Crian\xE7a"
+  description: Um brinquedo distrai o lado atual durante 6 s.
+  abilityTitle: Isca de brinquedo
+  abilityDescription: Um brinquedo distrai o lado atual durante 6 s.
+  mapTitle: "P\xE1tio da escola"
+  theme: 5
+  weapon: {fileID: 11400000, guid: 43003092a41ed9741b519583db291a80, type: 2}
+  ability: 5
+  price: 0
+  health: 80
+  cooldown: 22
+  accent: {r: 0.5411765, g: 0.80784315, b: 0.8627451, a: 1}

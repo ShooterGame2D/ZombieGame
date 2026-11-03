@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a945c77c685f54fbc0a7c33f260d46, type: 3}
+  m_Name: Medic
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.ZombieData
+  kind: 8
+  title: "M\xE9dico"
+  firstWave: 5
+  coins: 9
+  health: 5
+  speed: 0.029
+  damage: 8
+  attackInterval: 1.5
+  coinChance: 0.62
+  bodyArmor: 1
+  artUV:
+    serializedVersion: 2
+    x: 0.59639233
+    y: 0.021420518
+    width: 0.1832018
+    height: 0.475761
+  artAspect: 0.7701422
+  skin: {r: 0.5137255, g: 0.7019608, b: 0.59607846, a: 1}
+  shirt: {r: 0.34509805, g: 0.47843137, b: 0.45882353, a: 1}

@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68517e602fbb5294f8e5080af413fad2, type: 3}
+  m_Name: GameCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.GameCatalog
+  waves: {fileID: 11400000, guid: 11306dfd96c935f4a997df64490bd6b0, type: 2}
+  zombies:
+  - {fileID: 11400000, guid: 06d5768a80e1dcb48a4005bb7e33a6b4, type: 2}
+  - {fileID: 11400000, guid: 5f6029ceb0605984f9ebd0d27b10b4c2, type: 2}
+  - {fileID: 11400000, guid: d7fce9f7e6d17054b91d65116404b9ce, type: 2}
+  - {fileID: 11400000, guid: ec87790ebce48f34b8c4f2cf6dfdfc50, type: 2}
+  - {fileID: 11400000, guid: 440457bcb46f90e4e8590cdb7d81b530, type: 2}
+  - {fileID: 11400000, guid: 9f956f07f4f136b48aba2f5213c5cbec, type: 2}
+  - {fileID: 11400000, guid: 08bcd80d9f2ac03428728d6111d30e22, type: 2}
+  - {fileID: 11400000, guid: dfe32f8e31da8864da086f37884f39b0, type: 2}
+  - {fileID: 11400000, guid: 57e863744e2c5c4498a6a8cbc4b67feb, type: 2}
+  - {fileID: 11400000, guid: f414b23811a598b429e0faebed89027b, type: 2}
+  characters:
+  - {fileID: 11400000, guid: 93c1f803d4047e34483accad34288b9f, type: 2}
+  - {fileID: 11400000, guid: 76bbfe820a17a4e4db28a2330cb9e037, type: 2}
+  - {fileID: 11400000, guid: dd419eda9c5ec57429fb6d99a0c8056c, type: 2}
+  - {fileID: 11400000, guid: af47ce3da8b8ff5449063583cc0ef4bc, type: 2}
+  - {fileID: 11400000, guid: e0888e5b5e54e1146b6fae4dfcb4882f, type: 2}
+  - {fileID: 11400000, guid: cbb2c970494650243ae0c5ce237e8f1c, type: 2}
+  - {fileID: 11400000, guid: ef64fd5358ad94b4daa239ec79ed62a6, type: 2}
+  - {fileID: 11400000, guid: 444f03dc6c9ba9545950f5b422a41da1, type: 2}
+  towers:
+  - {fileID: 11400000, guid: 0aeba9f6649d4fe48816a8410ad0e9d6, type: 2}
+  - {fileID: 11400000, guid: 0e504410c0734ec44acf36dad80248e7, type: 2}
+  - {fileID: 11400000, guid: a0225e1a2d652574eb307ec833e9b711, type: 2}
+  - {fileID: 11400000, guid: 4b6ee2894e9e12145be6f11aa874c87d, type: 2}
+  shopWeapons:
+  - {fileID: 11400000, guid: a9f149467ce0b0646a418afab8a63418, type: 2}
+  - {fileID: 11400000, guid: e0392deb49b7ad64aa766c4e31244186, type: 2}
+  - {fileID: 11400000, guid: dadef1962823ef64092a4c8e9ece8c90, type: 2}
+  - {fileID: 11400000, guid: c3d6551b0ae2872468f6b0454cf92951, type: 2}
+  - {fileID: 11400000, guid: 23ea6ac0fdea88d4388c437538811332, type: 2}
