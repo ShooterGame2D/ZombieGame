@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f24898ef97ba9488f5e4679af81656, type: 3}
+  m_Name: Character0
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.CharacterData
+  title: Recruta
+  description: "Explos\xE3o na mira: 12 de dano em \xE1rea."
+  abilityTitle: Granada
+  abilityDescription: "Explos\xE3o na mira: 12 de dano em \xE1rea."
+  mapTitle: Posto militar
+  theme: 0
+  weapon: {fileID: 11400000, guid: 572c98afae41de247b363c046322635e, type: 2}
+  ability: 0
+  price: 0
+  health: 110
+  cooldown: 22
+  accent: {r: 0.6666667, g: 0.75686276, b: 0.5529412, a: 1}
