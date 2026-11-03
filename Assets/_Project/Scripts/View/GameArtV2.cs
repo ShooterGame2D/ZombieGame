@@ -34,12 +34,16 @@ namespace ZombieAttack
         }
         public static void ZombieArt(Zombie z,float time,bool bar=true)
         {
-            Load(); Vector2 p=z.Position; float s=z.Size, height=215*s, width=height*z.data.artAspect;
-            float bob=(Mathf.FloorToInt(z.phase*2)%2==0?0:4)*s;
+            Load(); Vector2 p=z.Position; float s=z.Size, height=215*s, width=z.ArtWidth;
             Ellipse(p.x-width*.4f,p.y-8*s,width*.8f,18*s,new Color(.02f,.03f,.02f,.43f));
             GUI.color=z.hitFlash>0?new Color(1,1-z.hitFlash*.28f,1-z.hitFlash*.38f):Color.white;
             if(z.data.kind==ZombieKind.Shade) GUI.color=new Color(.8f,.86f,1,.72f+.28f*Mathf.Sin(time*2)*Mathf.Sin(time*2));
-            GUI.DrawTextureWithTexCoords(new Rect(Snap(p.x-width/2),Snap(p.y-height+bob),Snap(width),Snap(height)),zombies,z.data.artUV); GUI.color=Color.white;
+            var walk=ZombieWalkAnimation.Get(z.data.kind);
+            if(walk!=null)
+                GUI.DrawTextureWithTexCoords(ZombieWalkAnimation.DrawRect(z,walk),walk.texture,ZombieWalkAnimation.UV(z.phase));
+            else
+                GUI.DrawTextureWithTexCoords(new Rect(p.x-width/2,p.y-height,width,height),zombies,z.data.artUV);
+            GUI.color=Color.white;
             if(bar && z.health<z.maxHealth)
             {
                 Round(p.x-40*s,p.y-233*s,80*s,7*s,3*s,Ink); Round(p.x-39*s,p.y-232*s,78*s*Mathf.Clamp01(z.health/z.maxHealth),5*s,2*s,z.data.kind==ZombieKind.Armored?Gold:Mint);

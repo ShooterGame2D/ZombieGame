@@ -109,6 +109,7 @@ namespace ZombieAttack.Editor
                 previous=energy;
             }
             Debug.Log("PROTOTYPE_V2_TESTS_PASSED: "+checks+" checks");
+            ZombieWalkValidation.Run(c);
         }
     }
 }

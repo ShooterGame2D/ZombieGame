@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad2021c3a68d4547a33c6c7b2c16dc4b, type: 3}
+  m_Name: ZombieWalkAtlas
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.ZombieWalkAtlas
+  entries:
+  - kind: 0
+    texture: {fileID: 2800000, guid: d6beaac052ac401fb38d3d1e2a52bb84, type: 3}
+    framesPerSecond: 8
+    contentBounds:
+      serializedVersion: 2
+      x: 40
+      y: 19
+      width: 315
+      height: 441
+    footBaselines:
+    - 460
+    - 459
+    - 459
+    - 453
+    - 460
+    - 460
+    - 460
+    - 460
+  - kind: 1
+    texture: {fileID: 2800000, guid: 5172ef38f96d49d584dcfc3b686f134e, type: 3}
+    framesPerSecond: 9
+    contentBounds:
+      serializedVersion: 2
+      x: 38
+      y: 19
+      width: 330
+      height: 458
+    footBaselines:
+    - 475
+    - 473
+    - 473
+    - 476
+    - 474
+    - 474
+    - 472
+    - 477
+  - kind: 2
+    texture: {fileID: 2800000, guid: bec07a7dae3547ed9092cb927622123a, type: 3}
+    framesPerSecond: 14
+    contentBounds:
+      serializedVersion: 2
+      x: 48
+      y: 17
+      width: 294
+      height: 451
+    footBaselines:
+    - 468
+    - 468
+    - 468
+    - 468
+    - 467
+    - 467
+    - 467
+    - 467
+  - kind: 3
+    texture: {fileID: 2800000, guid: 8ca9cb2d4b164db989d5268731ab5453, type: 3}
+    framesPerSecond: 7
+    contentBounds:
+      serializedVersion: 2
+      x: 15
+      y: 26
+      width: 364
+      height: 450
+    footBaselines:
+    - 476
+    - 471
+    - 472
+    - 471
+    - 472
+    - 471
+    - 470
+    - 472
+  - kind: 4
+    texture: {fileID: 2800000, guid: 6b54f22752d145af815f9a19c7c82313, type: 3}
+    framesPerSecond: 7
+    contentBounds:
+      serializedVersion: 2
+      x: 17
+      y: 13
+      width: 354
+      height: 453
+    footBaselines:
+    - 462
+    - 462
+    - 455
+    - 455
+    - 466
+    - 462
+    - 458
+    - 466
+  - kind: 5
+    texture: {fileID: 2800000, guid: 6b9c4b51632f4d4eb3ade5f488457107, type: 3}
+    framesPerSecond: 8
+    contentBounds:
+      serializedVersion: 2
+      x: 41
+      y: 25
+      width: 305
+      height: 427
+    footBaselines:
+    - 452
+    - 449
+    - 449
+    - 450
+    - 450
+    - 450
+    - 450
+    - 450
+  - kind: 6
+    texture: {fileID: 2800000, guid: 0835b26ae10843f9b492dc8a83106060, type: 3}
+    framesPerSecond: 8
+    contentBounds:
+      serializedVersion: 2
+      x: 46
+      y: 42
+      width: 292
+      height: 427
+    footBaselines:
+    - 467
+    - 467
+    - 464
+    - 467
+    - 466
+    - 466
+    - 466
+    - 469
+  - kind: 7
+    texture: {fileID: 2800000, guid: ead6c3a7fa324b61b505898082086f04, type: 3}
+    framesPerSecond: 9
+    contentBounds:
+      serializedVersion: 2
+      x: 41
+      y: 31
+      width: 324
+      height: 438
+    footBaselines:
+    - 468
+    - 468
+    - 468
+    - 465
+    - 469
+    - 469
+    - 468
+    - 468
+  - kind: 8
+    texture: {fileID: 2800000, guid: 5db1711512234f6c9637611ca51c262a, type: 3}
+    framesPerSecond: 9
+    contentBounds:
+      serializedVersion: 2
+      x: 42
+      y: 29
+      width: 307
+      height: 451
+    footBaselines:
+    - 479
+    - 479
+    - 479
+    - 479
+    - 480
+    - 480
+    - 480
+    - 480
+  - kind: 9
+    texture: {fileID: 2800000, guid: fa995fd5fd464f578e02bd6d95709a70, type: 3}
+    framesPerSecond: 11
+    contentBounds:
+      serializedVersion: 2
+      x: 47
+      y: 29
+      width: 310
+      height: 437
+    footBaselines:
+    - 465
+    - 463
+    - 462
+    - 465
+    - 466
+    - 463
+    - 464
+    - 464

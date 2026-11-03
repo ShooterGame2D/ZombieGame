@@ -44,7 +44,7 @@ Detalhes de personagens, loja, munição e defesas: [mecânicas](Docs/DefesaZumb
 
 ## Limites do protótipo
 
-Jogo 2D com perspectiva simulada e interface desenhada por código. Os zumbis usam sprites com movimento procedural, sem animação quadro a quadro. Armas e defesas são desenhadas por código; os efeitos sonoros são sintetizados. O balanceamento ainda precisa de testes com jogadores.
+Jogo 2D com perspectiva simulada e interface desenhada por código. Os dez tipos de zumbi usam oito quadros de caminhada, com cadência ligada à velocidade real e alinhamento dos pés. A animação continua na câmera escondida, desacelera no gelo e para durante pausa, raízes, isca e ataques estacionários. Armas e defesas são desenhadas por código; os efeitos sonoros são sintetizados. O balanceamento ainda precisa de testes com jogadores.
 
 O progresso local usa `Application.persistentDataPath` e, na web, PlayerPrefs. O progresso da pasta antiga não é transferido automaticamente, pois o nome do produto e a empresa do repositório foram mantidos.
 
@@ -53,3 +53,9 @@ O progresso local usa `Application.persistentDataPath` e, na web, PlayerPrefs. O
 O código adaptado compilou e passou nas 91 verificações em uma cópia isolada com Unity 6000.3.24f1 e os pacotes do protótipo. As referências dos assets foram verificadas, sem colisões de GUID com o projeto existente. A integração não alterou nenhum arquivo previamente versionado.
 
 A Unity 6000.3.25f1 e a combinação exata dos pacotes do repositório ainda precisam de validação no editor correspondente. A versão do repositório foi preservada; ele não foi aberto com o editor mais antigo.
+
+## Caminhada dos zumbis
+
+As dez folhas já estão ligadas ao combate. O catálogo `Assets/_Project/Resources/ZombieWalkAtlas.asset` referencia os PNGs e define a cadência e os apoios dos pés de cada tipo. As imagens continuam em `Assets/_Project/Art/AnimationDrafts/Walk-v1`, sem duplicação. Não é necessário configurar Animator ou Animation Clips para esta implementação.
+
+O menu **Defesa Zumbi > Validar mecânicas** executa também 127 verificações de animação, além das 91 verificações anteriores. Elas cobrem as dez texturas, os 80 apoios, os ciclos, pausa, troca de câmera, gelo, raízes, isca, barreiras e aceleração dos zumbis. A validação e as compilações locais usaram Unity 6000.3.24f1; a versão 6000.3.25f1 deste repositório foi preservada.

@@ -1,0 +1,2048 @@
+{
+  "version": 1,
+  "status": "animation-study",
+  "order": "row-major-top-left",
+  "loop": true,
+  "zombies": [
+    {
+      "id": "01-errante",
+      "name": "Errante",
+      "kind": "Crawler",
+      "file": "01-errante-walk.png",
+      "fps": 8,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "01-errante_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            44,
+            27,
+            351,
+            460
+          ]
+        },
+        {
+          "name": "01-errante_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            42,
+            29,
+            352,
+            459
+          ]
+        },
+        {
+          "name": "01-errante_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            42,
+            25,
+            355,
+            459
+          ]
+        },
+        {
+          "name": "01-errante_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            43,
+            19,
+            352,
+            453
+          ]
+        },
+        {
+          "name": "01-errante_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            40,
+            25,
+            352,
+            460
+          ]
+        },
+        {
+          "name": "01-errante_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            44,
+            29,
+            352,
+            460
+          ]
+        },
+        {
+          "name": "01-errante_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            42,
+            30,
+            355,
+            460
+          ]
+        },
+        {
+          "name": "01-errante_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            43,
+            32,
+            352,
+            460
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 56.51,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "9875b1c4194850441be074e9b25ce98f807bc58684c5fd856e133b3088a11951"
+      }
+    },
+    {
+      "id": "02-andador",
+      "name": "Andador",
+      "kind": "Walker",
+      "file": "02-andador-walk.png",
+      "fps": 9,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "02-andador_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            26,
+            368,
+            475
+          ]
+        },
+        {
+          "name": "02-andador_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            32,
+            364,
+            473
+          ]
+        },
+        {
+          "name": "02-andador_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            44,
+            26,
+            358,
+            473
+          ]
+        },
+        {
+          "name": "02-andador_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            38,
+            19,
+            354,
+            476
+          ]
+        },
+        {
+          "name": "02-andador_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            25,
+            362,
+            474
+          ]
+        },
+        {
+          "name": "02-andador_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            45,
+            29,
+            355,
+            474
+          ]
+        },
+        {
+          "name": "02-andador_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            45,
+            25,
+            358,
+            472
+          ]
+        },
+        {
+          "name": "02-andador_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            39,
+            25,
+            361,
+            477
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 51.31,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "f632cdc2aa4134cdc438a70432b61e14388f61b491f406053568266d431c067e"
+      }
+    },
+    {
+      "id": "03-corredor",
+      "name": "Corredor",
+      "kind": "Runner",
+      "file": "03-corredor-walk.png",
+      "fps": 14,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "03-corredor_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            58,
+            21,
+            324,
+            468
+          ]
+        },
+        {
+          "name": "03-corredor_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            68,
+            28,
+            331,
+            468
+          ]
+        },
+        {
+          "name": "03-corredor_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            68,
+            19,
+            331,
+            468
+          ]
+        },
+        {
+          "name": "03-corredor_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            17,
+            327,
+            468
+          ]
+        },
+        {
+          "name": "03-corredor_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            57,
+            22,
+            328,
+            467
+          ]
+        },
+        {
+          "name": "03-corredor_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            49,
+            27,
+            331,
+            467
+          ]
+        },
+        {
+          "name": "03-corredor_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            61,
+            21,
+            333,
+            467
+          ]
+        },
+        {
+          "name": "03-corredor_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            55,
+            23,
+            342,
+            467
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 44.16,
+        "alphaRange": [
+          0,
+          253
+        ],
+        "sha256": "844f15eb24a454e2c7f1a9c21bea77393bae3635553954e15b46c286fdecbe30"
+      }
+    },
+    {
+      "id": "04-cuspidor",
+      "name": "Cuspidor",
+      "kind": "Spitter",
+      "file": "04-cuspidor-walk.png",
+      "fps": 7,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "04-cuspidor_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            15,
+            26,
+            379,
+            476
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            18,
+            30,
+            374,
+            471
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            24,
+            30,
+            372,
+            472
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            26,
+            33,
+            366,
+            471
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            27,
+            34,
+            367,
+            472
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            33,
+            35,
+            367,
+            471
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            37,
+            37,
+            374,
+            470
+          ]
+        },
+        {
+          "name": "04-cuspidor_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            40,
+            37,
+            375,
+            472
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 43.49,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "14264d6592338756a5960216618061b9c20f57ac4e340c9dfc7c9943c7ed255d"
+      }
+    },
+    {
+      "id": "05-brutamontes",
+      "name": "Brutamontes",
+      "kind": "Brute",
+      "file": "05-brutamontes-walk.png",
+      "fps": 7,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "05-brutamontes_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            25,
+            13,
+            368,
+            462
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            21,
+            21,
+            371,
+            462
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            24,
+            13,
+            367,
+            455
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            23,
+            13,
+            365,
+            455
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            17,
+            16,
+            364,
+            466
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            22,
+            24,
+            361,
+            462
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            17,
+            14,
+            367,
+            458
+          ]
+        },
+        {
+          "name": "05-brutamontes_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            24,
+            14,
+            369,
+            466
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 43.31,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "2f102fc9c1cfe352a4b615df0f5d605baa63f406f0908a64248ecb9b879fc0f1"
+      }
+    },
+    {
+      "id": "06-comandante",
+      "name": "Comandante",
+      "kind": "Boss",
+      "file": "06-comandante-walk.png",
+      "fps": 8,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "06-comandante_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            56,
+            25,
+            344,
+            452
+          ]
+        },
+        {
+          "name": "06-comandante_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            53,
+            28,
+            338,
+            449
+          ]
+        },
+        {
+          "name": "06-comandante_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            30,
+            341,
+            449
+          ]
+        },
+        {
+          "name": "06-comandante_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            41,
+            31,
+            346,
+            450
+          ]
+        },
+        {
+          "name": "06-comandante_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            46,
+            32,
+            335,
+            450
+          ]
+        },
+        {
+          "name": "06-comandante_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            35,
+            337,
+            450
+          ]
+        },
+        {
+          "name": "06-comandante_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            35,
+            340,
+            450
+          ]
+        },
+        {
+          "name": "06-comandante_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            36,
+            334,
+            450
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 49.19,
+        "alphaRange": [
+          0,
+          253
+        ],
+        "sha256": "29470760f1e3d44ed5579036de095856aa6182fa2918a4baa9d375ffefde8a50"
+      }
+    },
+    {
+      "id": "07-blindado",
+      "name": "Blindado",
+      "kind": "Armored",
+      "file": "07-blindado-walk.png",
+      "fps": 8,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "07-blindado_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            51,
+            42,
+            333,
+            467
+          ]
+        },
+        {
+          "name": "07-blindado_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            53,
+            43,
+            335,
+            467
+          ]
+        },
+        {
+          "name": "07-blindado_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            42,
+            335,
+            464
+          ]
+        },
+        {
+          "name": "07-blindado_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            46,
+            42,
+            332,
+            467
+          ]
+        },
+        {
+          "name": "07-blindado_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            42,
+            328,
+            466
+          ]
+        },
+        {
+          "name": "07-blindado_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            43,
+            329,
+            466
+          ]
+        },
+        {
+          "name": "07-blindado_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            43,
+            338,
+            466
+          ]
+        },
+        {
+          "name": "07-blindado_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            56,
+            43,
+            338,
+            469
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 44.62,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "5c7ef5c211cf04819d4d7631d1216a70bf5ccd4772381905ddd1a2c8ab250a4b"
+      }
+    },
+    {
+      "id": "08-instavel",
+      "name": "Instável",
+      "kind": "Volatile",
+      "file": "08-instavel-walk.png",
+      "fps": 9,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "08-instavel_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            50,
+            31,
+            355,
+            468
+          ]
+        },
+        {
+          "name": "08-instavel_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            52,
+            38,
+            359,
+            468
+          ]
+        },
+        {
+          "name": "08-instavel_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            53,
+            38,
+            359,
+            468
+          ]
+        },
+        {
+          "name": "08-instavel_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            40,
+            359,
+            465
+          ]
+        },
+        {
+          "name": "08-instavel_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            41,
+            40,
+            365,
+            469
+          ]
+        },
+        {
+          "name": "08-instavel_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            40,
+            364,
+            469
+          ]
+        },
+        {
+          "name": "08-instavel_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            57,
+            40,
+            363,
+            468
+          ]
+        },
+        {
+          "name": "08-instavel_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            53,
+            40,
+            357,
+            468
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 46.52,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "64224288e55f478c9d59b11de0e6ae36cad6e8b567ba9a6f261461b81a0e1864"
+      }
+    },
+    {
+      "id": "09-medico",
+      "name": "Médico",
+      "kind": "Medic",
+      "file": "09-medico-walk.png",
+      "fps": 9,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "09-medico_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            29,
+            349,
+            479
+          ]
+        },
+        {
+          "name": "09-medico_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            32,
+            341,
+            479
+          ]
+        },
+        {
+          "name": "09-medico_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            32,
+            346,
+            479
+          ]
+        },
+        {
+          "name": "09-medico_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            45,
+            32,
+            348,
+            479
+          ]
+        },
+        {
+          "name": "09-medico_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            42,
+            32,
+            346,
+            480
+          ]
+        },
+        {
+          "name": "09-medico_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            32,
+            349,
+            480
+          ]
+        },
+        {
+          "name": "09-medico_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            46,
+            32,
+            349,
+            480
+          ]
+        },
+        {
+          "name": "09-medico_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            45,
+            32,
+            349,
+            480
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 46.47,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "f848ce1658681f5c0cc75ddf4238a82ad85284f6f5ce778987677fcc19048701"
+      }
+    },
+    {
+      "id": "10-sombra",
+      "name": "Sombra",
+      "kind": "Shade",
+      "file": "10-sombra-walk.png",
+      "fps": 11,
+      "width": 1536,
+      "height": 1024,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 384,
+      "frameHeight": 512,
+      "pivotNormalizedBottomLeft": [
+        0.5,
+        0.09375
+      ],
+      "frames": [
+        {
+          "name": "10-sombra_walk_01",
+          "index": 0,
+          "imageRectTopLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            49,
+            29,
+            355,
+            465
+          ]
+        },
+        {
+          "name": "10-sombra_walk_02",
+          "index": 1,
+          "imageRectTopLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            49,
+            38,
+            350,
+            463
+          ]
+        },
+        {
+          "name": "10-sombra_walk_03",
+          "index": 2,
+          "imageRectTopLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            37,
+            350,
+            462
+          ]
+        },
+        {
+          "name": "10-sombra_walk_04",
+          "index": 3,
+          "imageRectTopLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            32,
+            353,
+            465
+          ]
+        },
+        {
+          "name": "10-sombra_walk_05",
+          "index": 4,
+          "imageRectTopLeft": [
+            0,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            0,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            48,
+            37,
+            355,
+            466
+          ]
+        },
+        {
+          "name": "10-sombra_walk_06",
+          "index": 5,
+          "imageRectTopLeft": [
+            384,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            384,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            49,
+            39,
+            346,
+            463
+          ]
+        },
+        {
+          "name": "10-sombra_walk_07",
+          "index": 6,
+          "imageRectTopLeft": [
+            768,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            768,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            37,
+            351,
+            464
+          ]
+        },
+        {
+          "name": "10-sombra_walk_08",
+          "index": 7,
+          "imageRectTopLeft": [
+            1152,
+            512,
+            384,
+            512
+          ],
+          "unityRectBottomLeft": [
+            1152,
+            0,
+            384,
+            512
+          ],
+          "coreBoundsLocal": [
+            47,
+            35,
+            357,
+            464
+          ]
+        }
+      ],
+      "validation": {
+        "uniqueFrames": 8,
+        "transparentPixelPercent": 47.98,
+        "alphaRange": [
+          0,
+          254
+        ],
+        "sha256": "d46aae13e58135c7517fff4e1b0ab95b1de8e9a3f73346a9be04ed739e7bd21b"
+      }
+    }
+  ]
+}

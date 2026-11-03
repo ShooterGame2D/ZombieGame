@@ -111,7 +111,7 @@ namespace ZombieAttack
             foreach(var z in zombies.ToArray())
             {
                 if(!zombies.Contains(z)) continue;
-                z.hitFlash=Mathf.Max(0,z.hitFlash-dt*5); z.phase+=dt*(z.data.kind==ZombieKind.Runner?11:4.5f);
+                z.hitFlash=Mathf.Max(0,z.hitFlash-dt*5);
                 int side=SideIndex(z.side); if(rootTimers[side]>0) continue;
                 z.specialTimer-=dt;
                 if(z.specialTimer<=0)
@@ -135,7 +135,12 @@ namespace ZombieAttack
                 if(decoyTimers[side]>0) continue;
                 bool ranged=z.data.kind==ZombieKind.Spitter && z.distance<=.46f;
                 float speed=z.speed*slow*(z.data.kind==ZombieKind.Shade && z.side!=viewSide?1.5f:1);
-                if(z.distance>0 && blocking==null && !ranged) z.distance=Mathf.Max(0,z.distance-speed*dt);
+                if(z.distance>0 && blocking==null && !ranged)
+                {
+                    float previousDistance=z.distance;
+                    z.distance=Mathf.Max(0,z.distance-speed*dt);
+                    ZombieWalkAnimation.Advance(z,previousDistance-z.distance);
+                }
                 else
                 {
                     z.attackTimer-=dt;
@@ -207,7 +212,7 @@ namespace ZombieAttack
         void AddZombie(ZombieData data,ViewSide side,float lateral,float distance)
         {
             float hp=data.health*(1+catalog.waves.healthPerWave*wave);
-            zombies.Add(new Zombie{data=data,side=side,lateral=lateral,distance=distance,health=hp,maxHealth=hp,speed=data.speed*Mathf.Min(catalog.waves.speedCap,1+catalog.waves.speedPerWave*wave),phase=(float)random.NextDouble()*6});
+            zombies.Add(new Zombie{data=data,side=side,lateral=lateral,distance=distance,health=hp,maxHealth=hp,speed=data.speed*Mathf.Min(catalog.waves.speedCap,1+catalog.waves.speedPerWave*wave),phase=(float)random.NextDouble()*ZombieWalkAnimation.FrameCount});
         }
         Zombie Closest(float lateral,float range,ViewSide side)
         {
