@@ -13,6 +13,7 @@ namespace ZombieAttack
         public readonly List<Coin> coins=new List<Coin>();
         public readonly List<Projectile> projectiles=new List<Projectile>();
         public readonly List<CombatEffect> effects=new List<CombatEffect>();
+        public readonly BloodEffects blood=new BloodEffects();
         public readonly Tower[] towers=new Tower[6], barricades=new Tower[6];
         public readonly int[] upgrades=new int[4];
         public readonly HashSet<WeaponData> ownedWeapons=new HashSet<WeaponData>();
@@ -25,6 +26,13 @@ namespace ZombieAttack
         public int wave,completed,kills,wallet,spawned,total,earnedGems,healCount,reserve,waveBonus;
         public float health,ammo,reloadTimer,reloadDuration,fireCooldown,abilityCooldown,shopTimer,spawnTimer;
         public float damageFlash,recoil,hitMarker,focusTimer,temporaryTurret,smokeTimer,otherAttackTimer,switchFlash;
+        public float weaponAction,bowDrawTimer;
+        Vector2 bowAim;
+        ViewSide bowSide;
+        float bowDuration;
+        public bool BowDrawing => bowDrawTimer>0;
+        public float BowDrawProgress => BowDrawing?1-bowDrawTimer/Mathf.Max(.01f,bowDuration):0;
+        public void CancelDraw() { bowDrawTimer=0; }
         public event Action<string> OnSound;
         public event Action<string,ViewSide> OnSpatialSound;
         public event Action<int> OnWaveStarted;
@@ -63,17 +71,21 @@ namespace ZombieAttack
             wave=completed=kills=wallet=spawned=earnedGems=healCount=waveBonus=0;
             reloadTimer=reloadDuration=fireCooldown=abilityCooldown=damageFlash=recoil=hitMarker=focusTimer=temporaryTurret=smokeTimer=otherAttackTimer=switchFlash=0;
             zombies.Clear(); coins.Clear(); projectiles.Clear(); effects.Clear(); ownedWeapons.Clear(); ownedWeapons.Add(weapon);
+            blood.Clear();
+            bowDrawTimer=weaponAction=0;
             Array.Clear(upgrades,0,4); Array.Clear(towers,0,6); Array.Clear(barricades,0,6); Array.Clear(rootTimers,0,2); Array.Clear(decoyTimers,0,2);
             NextWave();
         }
         public void SwitchSide()
         {
             if(paused || state==RunState.Menu || state==RunState.GameOver) return;
+            CancelDraw();
             viewSide=OtherSide; switchFlash=.28f; OnSound?.Invoke("turn");
         }
         public void NextWave()
         {
             if(state!=RunState.Shop && wave!=0) return;
+            blood.Clear();
             wave++; total=catalog.waves.Count(wave); spawned=0; spawnTimer=.5f;
             state=RunState.Wave; OnWaveStarted?.Invoke(wave); OnSound?.Invoke("wave");
         }
@@ -81,6 +93,17 @@ namespace ZombieAttack
         {
             if(paused || state==RunState.Menu || state==RunState.GameOver) return;
             dt=Mathf.Clamp(dt,0,.05f);
+            blood.Tick(dt);
+            weaponAction=Mathf.Max(0,weaponAction-dt);
+            if(BowDrawing)
+            {
+                if(state!=RunState.Wave||viewSide!=bowSide||weapon.kind!=WeaponKind.Bow) CancelDraw();
+                else
+                {
+                    bowDrawTimer=Mathf.Max(0,bowDrawTimer-dt);
+                    if(bowDrawTimer==0 && ammo>=1 && !Reloading) { FireShot(bowAim); fireCooldown=Mathf.Max(.05f,fireCooldown-bowDuration); }
+                }
+            }
             fireCooldown=Mathf.Max(0,fireCooldown-dt); abilityCooldown=Mathf.Max(0,abilityCooldown-dt);
             damageFlash=Mathf.Max(0,damageFlash-dt*2); recoil=Mathf.Max(0,recoil-dt*6); hitMarker=Mathf.Max(0,hitMarker-dt*3);
             otherAttackTimer=Mathf.Max(0,otherAttackTimer-dt); switchFlash=Mathf.Max(0,switchFlash-dt);
@@ -113,6 +136,7 @@ namespace ZombieAttack
                 if(!zombies.Contains(z)) continue;
                 z.hitFlash=Mathf.Max(0,z.hitFlash-dt*5);
                 int side=SideIndex(z.side); if(rootTimers[side]>0) continue;
+                z.attackRecovery=Mathf.Max(0,z.attackRecovery-dt);
                 z.specialTimer-=dt;
                 if(z.specialTimer<=0)
                 {
@@ -122,31 +146,36 @@ namespace ZombieAttack
                     if(z.data.kind==ZombieKind.Boss && zombies.Count<50)
                     { AddZombie(catalog.zombies[0],z.side,Mathf.Clamp(z.lateral+.2f,-.85f,.85f),Mathf.Min(1,z.distance+.2f)); OnSpatialSound?.Invoke("groan",z.side); }
                 }
-                Tower blocking=null; int blockingIndex=-1; bool isBarricade=false; float slow=1;
+                Tower blocking=null; int blockingIndex=-1; bool isBarricade=false; float slow=1,stopDepth=0;
                 for(int slot=0;slot<3;slot++)
                 {
                     int index=side*3+slot;
                     if(Mathf.Abs((slot-1)*.66f-z.lateral)>.34f) continue;
                     var tower=towers[index]; var barrier=barricades[index];
+                    if(barrier!=null && z.distance>=.25f) stopDepth=Mathf.Max(stopDepth,.25f);
+                    else if(tower!=null && z.distance>=.11f) stopDepth=Mathf.Max(stopDepth,.11f);
                     if(tower!=null && tower.data.kind==TowerKind.Ice && z.distance<.6f) slow=.4f;
                     if(barrier!=null && z.distance<=.25f) { blocking=barrier; blockingIndex=index; isBarricade=true; }
                     else if(tower!=null && z.distance<=.11f) { blocking=tower; blockingIndex=index; }
                 }
-                if(decoyTimers[side]>0) continue;
+                if(decoyTimers[side]>0) { z.attacking=false; z.attackRecovery=0; continue; }
                 bool ranged=z.data.kind==ZombieKind.Spitter && z.distance<=.46f;
                 float speed=z.speed*slow*(z.data.kind==ZombieKind.Shade && z.side!=viewSide?1.5f:1);
                 if(z.distance>0 && blocking==null && !ranged)
                 {
+                    z.attacking=false; z.attackRecovery=0;
                     float previousDistance=z.distance;
-                    z.distance=Mathf.Max(0,z.distance-speed*dt);
+                    z.distance=Mathf.Max(stopDepth,z.distance-speed*dt);
                     ZombieWalkAnimation.Advance(z,previousDistance-z.distance);
                 }
                 else
                 {
+                    z.attacking=true;
                     z.attackTimer-=dt;
                     if(z.attackTimer<=0)
                     {
                         z.attackTimer=ranged?3.1f:z.data.attackInterval;
+                        z.attackRecovery=Zombie.AttackRecover;
                         if(ranged) { projectiles.Add(new Projectile{side=z.side,lateral=z.lateral,distance=z.distance,damage=z.data.damage}); OnSpatialSound?.Invoke("spit",z.side); }
                         else if(blocking!=null)
                         {
@@ -160,11 +189,12 @@ namespace ZombieAttack
             }
             foreach(var tower in towers)
             {
+                if(tower!=null) tower.shotRecoil=Mathf.Max(0,tower.shotRecoil-dt);
                 if(tower==null || tower.data.kind==TowerKind.Ice) continue;
                 tower.cooldown-=dt; var target=Closest(tower.Lateral,.65f,tower.side);
                 if(target==null || tower.cooldown>0) continue;
-                tower.cooldown=tower.data.interval; Vector2 aim=target.Head.center;
-                effects.Add(new CombatEffect{side=tower.side,kind=1,origin=new Vector2(280+tower.slot*520,690),position=aim,color=Color.cyan,life=.15f,duration=.15f});
+                tower.cooldown=tower.data.interval; tower.shotRecoil=.18f; Vector2 aim=target.Head.center;
+                effects.Add(new CombatEffect{side=tower.side,kind=1,origin=CombatSprites.Muzzle(tower),position=aim,color=Color.cyan,life=.15f,duration=.15f});
                 if(tower.data.kind==TowerKind.Explosive) Blast(aim,tower.data.radius,tower.data.damage*tower.level,tower.side);
                 else Hit(target,tower.data.damage*tower.level,false);
                 OnSpatialSound?.Invoke("tower",tower.side);
@@ -186,6 +216,7 @@ namespace ZombieAttack
             if(spawned==total && zombies.Count==0 && coins.Count==0 && projectiles.Count==0)
             {
                 completed=wave; waveBonus=12+wave*3; wallet+=waveBonus;
+                blood.Clear();
                 state=RunState.Shop; shopTimer=catalog.waves.shopSeconds; OnSound?.Invoke("wave");
             }
             if(demo) DemoTick(dt);
@@ -238,8 +269,20 @@ namespace ZombieAttack
             if(coin!=null) { wallet+=coin.value; coins.Remove(coin); Text(point,"+"+coin.value,Draw2D.Gold,viewSide); OnSound?.Invoke("coin"); return; }
             if(Reloading || fireCooldown>0) return;
             if(ammo<1) { BeginReload(); fireCooldown=.25f; if(reserve==0) OnSound?.Invoke("empty"); return; }
+            if(weapon.kind==WeaponKind.Bow)
+            {
+                bowAim=point;
+                if(!BowDrawing) { bowDuration=.65f/FireRate; bowDrawTimer=bowDuration; bowSide=viewSide; OnSound?.Invoke("draw_Bow"); }
+                return;
+            }
+            FireShot(point);
+        }
+        void FireShot(Vector2 point)
+        {
+            weaponAction=.28f;
             ammo-=1; fireCooldown=1/FireRate; recoil=1; OnSound?.Invoke("shot_"+weapon.kind);
-            effects.Add(new CombatEffect{side=viewSide,kind=1,origin=new Vector2(810,760),position=point,color=Draw2D.Gold,life=.09f,duration=.09f});
+            bool arrow=weapon.kind==WeaponKind.Bow||weapon.kind==WeaponKind.Crossbow;
+            effects.Add(new CombatEffect{side=viewSide,kind=arrow?4:1,origin=new Vector2(810,760),position=point,color=Draw2D.Gold,life=arrow?.18f:.09f,duration=arrow?.18f:.09f});
             bool intercepted=false;
             for(int i=projectiles.Count-1;i>=0;i--)
                 if(projectiles[i].side==viewSide && Vector2.Distance(point,projectiles[i].Position)<projectiles[i].Radius+9)
@@ -250,7 +293,7 @@ namespace ZombieAttack
                 if(weapon.kind==WeaponKind.Launcher) Blast(point,weapon.splashRadius,Damage,viewSide);
                 else if(z!=null)
                 {
-                    bool head=z.Head.Contains(point); Hit(z,Damage*(head?weapon.headMultiplier:1),head);
+                    bool head=z.Head.Contains(point); Hit(z,Damage*(head?weapon.headMultiplier:1),head,point);
                     if(weapon.splashRadius>0)
                         foreach(var other in zombies.ToArray()) if(other!=z && other.side==viewSide && Vector2.Distance(other.Body.center,point)<weapon.splashRadius) Hit(other,Damage*.6f,false);
                 }
@@ -258,17 +301,17 @@ namespace ZombieAttack
             }
             if(ammo<1) BeginReload();
         }
-        public void Hit(Zombie z,float damage,bool head)
+        public void Hit(Zombie z,float damage,bool head,Vector2? impact=null)
         {
-            if(!zombies.Contains(z)) return;
+            if(!zombies.Contains(z)||damage<=0) return;
             damage*=head?1:z.data.bodyArmor; z.health-=damage; z.hitFlash=1;
+            blood.Burst(z,impact ?? (head?z.Head.center:z.Body.center),head,z.health<=0);
             if(z.side==viewSide) hitMarker=1;
             Text(z.Head.center,head?"NA CABEÇA!":damage.ToString("0.#"),head?Draw2D.Gold:Color.white,z.side);
             OnSpatialSound?.Invoke(z.data.bodyArmor<1 && !head?"metal":head?"head":"hit",z.side);
             if(z.health>0) return;
             kills++; zombies.Remove(z);
             if(random.NextDouble()<z.data.coinChance) coins.Add(new Coin{side=z.side,position=new Vector2(z.Position.x,Mathf.Min(690,z.Position.y-35)),value=z.data.coins});
-            effects.Add(new CombatEffect{side=z.side,kind=2,position=z.Body.center,color=z.data.skin,life=.35f,duration=.35f});
             OnZombieDied?.Invoke(z);
             if(z.data.kind==ZombieKind.Volatile) { OnSpatialSound?.Invoke("explosion",z.side); Blast(z.Body.center,155,4,z.side); }
         }
@@ -312,6 +355,7 @@ namespace ZombieAttack
             OnSpatialSound?.Invoke("hurt",side);
             if(health>0) return;
             state=RunState.GameOver; paused=false; newRecord=completed>profile.bestWave;
+            CancelDraw();
             earnedGems=Mathf.Max(1,10*completed+kills/5+(newRecord?50:0));
             if(!demo) { profile.gems+=earnedGems; profile.bestWave=Mathf.Max(profile.bestWave,completed); SaveSystem.Save(profile); }
         }
@@ -331,6 +375,7 @@ namespace ZombieAttack
             var next=catalog.shopWeapons[index]; if(next==weapon) return false;
             bool owned=ownedWeapons.Contains(next); if(!owned && wallet<next.price) return false;
             if(!owned) { wallet-=next.price; ownedWeapons.Add(next); reserve+=next.capacity*2; }
+            CancelDraw(); weaponAction=0;
             reserve+=Mathf.FloorToInt(ammo); weapon=next; ammo=0; reloadTimer=0; BeginReload(); OnSound?.Invoke("buy"); return true;
         }
         public bool Heal()

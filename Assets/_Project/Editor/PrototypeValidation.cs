@@ -110,6 +110,8 @@ namespace ZombieAttack.Editor
             }
             Debug.Log("PROTOTYPE_V2_TESTS_PASSED: "+checks+" checks");
             ZombieWalkValidation.Run(c);
+            VisualFeedbackValidation.Run(c);
+            CombatAnimationValidation.Run(c);
         }
     }
 }

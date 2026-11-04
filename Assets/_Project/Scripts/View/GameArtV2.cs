@@ -39,7 +39,8 @@ namespace ZombieAttack
             GUI.color=z.hitFlash>0?new Color(1,1-z.hitFlash*.28f,1-z.hitFlash*.38f):Color.white;
             if(z.data.kind==ZombieKind.Shade) GUI.color=new Color(.8f,.86f,1,.72f+.28f*Mathf.Sin(time*2)*Mathf.Sin(time*2));
             var walk=ZombieWalkAnimation.Get(z.data.kind);
-            if(walk!=null)
+            if(CombatSprites.Attack(z)) { }
+            else if(walk!=null)
                 GUI.DrawTextureWithTexCoords(ZombieWalkAnimation.DrawRect(z,walk),walk.texture,ZombieWalkAnimation.UV(z.phase));
             else
                 GUI.DrawTextureWithTexCoords(new Rect(p.x-width/2,p.y-height,width,height),zombies,z.data.artUV);
@@ -59,16 +60,19 @@ namespace ZombieAttack
             GUI.DrawTextureWithTexCoords(new Rect(Snap(x+(width-dw)/2),Snap(y+height-dh),Snap(dw),Snap(dh)),portraits,uv);
         }
         public static void CoinArt(Coin coin,float time) => LegacyArt.CoinArt(coin,time);
-        public static void TowerArt(int slot,Tower tower,bool highlight=false) => LegacyArt.TowerArt(slot,tower,highlight);
+        public static void TowerArt(int slot,Tower tower,bool highlight=false)
+        { if(!CombatSprites.Defense(slot,tower,false)) LegacyArt.TowerArt(slot,tower,highlight); }
         public static void BarricadeArt(int slot,Tower tower)
         {
             if(tower==null) return;
+            if(CombatSprites.Defense(slot,tower,true)) return;
             float x=280+slot*520; var old=GUI.matrix;
             GUI.matrix=old*Matrix4x4.TRS(new Vector3(x*.08f,-64,0),Quaternion.identity,new Vector3(.92f,.92f,1));
             LegacyArt.TowerArt(slot,tower); GUI.matrix=old;
         }
         public static void Weapon(Vector2 aim,RunManager run,float time)
         {
+            if(CombatSprites.Weapon(aim,run,time)) return;
             float x=820+(aim.x-800)*.045f,y=916+run.recoil*17+(run.Reloading?60*Mathf.Sin(run.ReloadProgress*Mathf.PI):0);
             var old=GUI.matrix; GUI.matrix=old*Matrix4x4.Translate(new Vector3(x,y,0));
             Color metal=Hex("6E8285"),dark=Hex("15262D"),wood=Hex("95603C"),skin=run.character.theme==MapTheme.Amazon?Hex("B47B51"):Hex("D5A477");

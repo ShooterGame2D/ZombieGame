@@ -4,20 +4,18 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Defesa Zumbi · Edição Pixel</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#141526;font-family:monospace;color:#f4edd5}
+    @font-face{font-family:'Press Start 2P';src:url('Fonts/PressStart2P-Regular.ttf') format('truetype');font-display:swap}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#141526;font-family:'Press Start 2P',monospace;color:#f4edd5}
     body{display:flex;align-items:center;justify-content:center}#unity-canvas{width:100vw;height:100vh;display:block;outline:none;image-rendering:pixelated}
     #loading{position:fixed;inset:0;background:repeating-linear-gradient(0deg,#141526 0px,#141526 7px,#191b30 7px,#191b30 8px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;z-index:2}
-    .tag{font-size:13px;letter-spacing:3px;color:#a8d969}#pixel-title{width:min(80vw,480px);height:auto;image-rendering:pixelated}
+    .tag{font-size:clamp(8px,2vw,12px);color:#a8d969}#pixel-title{margin:0;font-size:clamp(24px,6vw,48px);line-height:1.5;text-align:center;color:#f7c65b}#pixel-title span{color:#a8d969}
     .bar{width:288px;height:20px;border:4px solid #59637a;background:#242a42;box-shadow:4px 4px #080a17;padding:2px}#fill{height:100%;width:0;background:#a8d969}#status{font-size:14px;color:#bcc7cf;text-align:center;max-width:600px;padding:0 24px;line-height:1.5}
   </style>
 </head>
 <body>
   <canvas id="unity-canvas" tabindex="0" aria-label="Defesa Zumbi: jogo de tiro e defesa com mouse"></canvas>
-  <div id="loading"><div class="tag">EDIÇÃO PIXEL / DUAS FRENTES</div><canvas id="pixel-title" width="72" height="24" aria-label="Defesa Zumbi"></canvas><div class="bar"><div id="fill"></div></div><p id="status">Preparando os pixels da defesa...</p></div>
+  <div id="loading"><div class="tag">EDIÇÃO PIXEL / DUAS FRENTES</div><h1 id="pixel-title">DEFESA<br><span>ZUMBI</span></h1><div class="bar"><div id="fill"></div></div><p id="status">Preparando os pixels da defesa...</p></div>
   <script>
-    const titleContext=document.querySelector('#pixel-title').getContext('2d');
-    const glyphs={D:[30,17,17,17,17,17,30],E:[31,16,16,30,16,16,31],F:[31,16,16,30,16,16,16],S:[15,16,16,14,1,1,30],A:[14,17,17,31,17,17,17],Z:[31,1,2,4,8,16,31],U:[17,17,17,17,17,17,14],M:[17,27,21,21,17,17,17],B:[30,17,17,30,17,17,30],I:[14,4,4,4,4,4,14]};
-    ['DEFESA','ZUMBI'].forEach((word,row)=>{const start=(72-word.length*6)/2;[true,false].forEach(shadow=>{titleContext.fillStyle=shadow?'#080a17':row?'#a8d969':'#f7c65b';[...word].forEach((letter,i)=>glyphs[letter].forEach((bits,y)=>{for(let x=0;x<5;x++)if(bits&(1<<(4-x)))titleContext.fillRect(start+i*6+x+(shadow?1:0),2+row*11+y+(shadow?1:0),1,1)}))})});
     const canvas=document.querySelector('#unity-canvas');
     canvas.addEventListener('contextmenu',e=>e.preventDefault());
     const fail=error=>{console.error(error);document.querySelector('#status').textContent='Não foi possível carregar o jogo. Atualize a página para tentar novamente.'};

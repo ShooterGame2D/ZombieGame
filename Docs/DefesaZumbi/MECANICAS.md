@@ -77,6 +77,14 @@ Para que a compra de munição não dependa apenas da sorte, vencer uma onda con
 
 Há dez sprites de zumbis, oito retratos de personagens e dezesseis vistas de cenário (frente e costas para cada personagem). As novas artes foram geradas por IA para este projeto e são carregadas de `Assets/_Project/Resources/Art`. Os assets atuais estão em `Assets/_Project/Resources/Art/Pixel`; os prompts estão em `ASSETS-PIXEL.md`.
 
-A edição pixel usa contornos escuros, paleta reduzida, filtro Point sem suavização, fonte bitmap própria com acentos e painéis em blocos. Armas, torres, barricadas, moedas, mira e efeitos também são desenhados sobre uma grade de pixels. Os sprites de zumbis seguem a referência enviada; os cenários mantêm vistas diferentes de frente e costas.
+A edição pixel usa contornos escuros, paleta reduzida, filtro Point sem suavização e painéis em blocos. Os textos usam Press Start 2P, do Google Fonts, sem sombras. A fonte original e sua licença SIL Open Font License estão incluídas em `Assets/_Project/Resources/Fonts`, funcionando também offline.
+
+A arte de combate fica em `Assets/_Project/Art/Combat-v1`: 13 folhas de armas, 10 folhas de ataques de zumbis, três torres e uma barricada, com seis quadros por folha (162 sprites). Os PNGs mantêm transparência e os recortes ficam disponíveis como sprites na Unity. O catálogo `Resources/CombatSpriteCatalog.asset` liga as imagens ao jogo. A geração usou a ferramenta integrada de imagens; os prompts estão em `generation-prompts.json`.
+
+As torres e barricadas têm vistas específicas para as lanes esquerda, central e direita. As barricadas possuem arame farpado, madeira, reforços metálicos e uma versão danificada abaixo de 50% de vida. A posição e a ordem de desenho usam a mesma profundidade do combate; marcas no chão delimitam as três lanes. Os ataques dos zumbis têm preparação, golpe e recuperação, incluindo a animação do cuspidor ao lançar o projétil. Pausa e raízes congelam os quadros.
+
+O arco puxa a corda antes de soltar a flecha. Um clique prepara e dispara uma flecha; segurar repete na cadência da arma. A munição só é consumida ao soltar, e trocar a câmera cancela a preparação sem gastar flechas. Cada arma tem sons próprios de disparo e recarga. Os 27 arquivos WAV de referência estão em `Combat-v1/Sounds`; a galeria `Combat-v1/preview.html` permite comparar sprites, perspectivas e sons.
+
+Acertos nos zumbis lançam partículas de sangue a partir do ponto atingido. As gotas caem e deixam manchas fixas no chão de cada câmera, apagadas ao finalizar a onda ou reiniciar a partida. Acertos na cabeça e mortes produzem rajadas mais fortes; pausar também congela as partículas. Os efeitos têm limites de quantidade e não interferem na aleatoriedade das moedas.
 
 Os sons são sintetizados em camadas: disparos de armas de fogo, corda de arco, elástico, motor de pregador, arremessos, recarga, metal, madeira, moedas, gemidos e habilidades. Efeitos de inimigos fora da câmera têm volume reduzido; os avisos visuais identificam a direção sem depender do áudio. Há botão de som no menu.

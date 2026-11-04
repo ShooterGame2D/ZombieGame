@@ -18,7 +18,7 @@ namespace ZombieAttack
             for(int i=0;i<voices.Length;i++) { voices[i]=gameObject.AddComponent<AudioSource>(); voices[i].playOnAwake=false; voices[i].spatialBlend=0; }
             foreach(WeaponKind kind in Enum.GetValues(typeof(WeaponKind))) { Add("shot_"+kind); Add("reload_"+kind); }
             foreach(AbilityKind kind in Enum.GetValues(typeof(AbilityKind))) Add("ability_"+kind);
-            foreach(string key in new[]{"hit","head","coin","empty","wave","hurt","buy","loaded","turn","metal","wood","spit","groan","explosion","tower"}) Add(key);
+            foreach(string key in new[]{"draw_Bow","hit","head","coin","empty","wave","hurt","buy","loaded","turn","metal","wood","spit","groan","explosion","tower"}) Add(key);
         }
         void Add(string key)
         {
@@ -47,38 +47,9 @@ namespace ZombieAttack
             {
                 float t=(float)i/rate,n=(float)random.NextDouble()*2-1;
                 low=low*.965f+n*.035f; mid=mid*.68f+n*.32f; float high=n-mid, value=0;
-                if(reload)
-                {
-                    bool organic=kind==WeaponKind.Bow || kind==WeaponKind.Boomerang || kind==WeaponKind.Slingshot || kind==WeaponKind.Axe;
-                    float pulse=Pulse(t,.02f,85)+Pulse(t,.24f,65)*.8f+Pulse(t,.55f,80)*.9f;
-                    value=(organic?mid*.6f+Sin(170,t)*.13f:high*.45f+Sin(1750,t)*.18f+Sin(830,t)*.15f)*pulse;
-                    value+=mid*.14f*Mathf.Sin(Mathf.PI*t/duration);
-                }
-                else if(shot)
-                {
-                    switch(kind)
-                    {
-                        case WeaponKind.Bow:
-                        case WeaponKind.Crossbow:
-                            value=(Sin(205,t)+.4f*Sin(410,t)+.2f*Sin(620,t))*.32f*Mathf.Exp(-t*24)+high*.22f*Mathf.Exp(-t*38);
-                            if(kind==WeaponKind.Crossbow) value+=mid*.4f*Mathf.Exp(-t*55); break;
-                        case WeaponKind.Slingshot:
-                            value=Sin(310-360*t,t)*.55f*Mathf.Exp(-t*31)+high*.12f*Mathf.Exp(-t*60); break;
-                        case WeaponKind.Nailgun:
-                            value=mid*.75f*Mathf.Exp(-t*65)+Sin(170,t)*.3f*Mathf.Exp(-t*42)+high*.2f*Pulse(t,.035f,80); break;
-                        case WeaponKind.Boomerang:
-                        case WeaponKind.Shuriken:
-                        case WeaponKind.Axe:
-                            float sweep=Mathf.Sin(Mathf.PI*Mathf.Clamp01(t/.24f)); float pitch=kind==WeaponKind.Shuriken?1450:kind==WeaponKind.Axe?180:520;
-                            value=(mid*.85f+Sin(pitch+1000*t,t)*.12f)*sweep*Mathf.Exp(-t*7);
-                            if(kind==WeaponKind.Shuriken) value+=Sin(2300,t)*.12f*Mathf.Exp(-t*30); break;
-                        default:
-                            float f=kind==WeaponKind.Shotgun?61:kind==WeaponKind.Revolver?92:kind==WeaponKind.Rifle?115:kind==WeaponKind.Launcher?46:145;
-                            float decay=kind==WeaponKind.Shotgun?16:kind==WeaponKind.Launcher?11:28;
-                            value=high*.64f*Mathf.Exp(-t*85)+mid*.63f*Mathf.Exp(-t*decay)+Sin(f-50*t,t)*.55f*Mathf.Exp(-t*decay);
-                            value+=high*.12f*Pulse(t,.065f,70); break;
-                    }
-                }
+                if(reload) value=WeaponSoundDesign.Reload(kind,t,mid,high);
+                else if(shot) value=WeaponSoundDesign.Shot(kind,t,low,mid,high);
+                else if(key=="draw_Bow") value=(mid*.23f+Sin(105+130*t,t)*.09f)*Mathf.Sin(Mathf.PI*Mathf.Clamp01(t/.26f));
                 else if(key=="explosion" || key=="ability_Grenade" || key=="ability_Stomp") value=low*3.4f*Mathf.Exp(-t*5)+mid*.6f*Mathf.Exp(-t*17)+Sin(42,t)*.4f*Mathf.Exp(-t*11);
                 else if(key=="groan") value=(Sin(71+5*Mathf.Sin(t*7),t)*.3f+Sin(139,t)*.1f+low*.5f)*Mathf.Sin(Mathf.PI*t/duration)*(.7f+.3f*Mathf.Sin(t*27));
                 else if(key=="spit") value=(mid+Sin(140-70*t,t)*.25f)*Mathf.Exp(-t*13)*(.5f+.5f*Mathf.Sin(t*100));

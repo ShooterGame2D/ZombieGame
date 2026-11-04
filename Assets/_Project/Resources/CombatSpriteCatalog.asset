@@ -1,0 +1,989 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab10ca3bf2eec1440bfc575e656a1f61, type: 3}
+  m_Name: CombatSpriteCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.CombatSpriteCatalog
+  weapons:
+  - id: Pistol
+    texture: {fileID: 2800000, guid: 22707d886f893714a8b58471ad9233c7, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 78
+      y: 132
+      width: 413
+      height: 355
+    - serializedVersion: 2
+      x: 71
+      y: 135
+      width: 415
+      height: 352
+    - serializedVersion: 2
+      x: 49
+      y: 102
+      width: 430
+      height: 385
+    - serializedVersion: 2
+      x: 81
+      y: 133
+      width: 412
+      height: 353
+    - serializedVersion: 2
+      x: 24
+      y: 96
+      width: 465
+      height: 390
+    - serializedVersion: 2
+      x: 65
+      y: 134
+      width: 414
+      height: 352
+    referenceHeight: 390
+  - id: Bow
+    texture: {fileID: 2800000, guid: d863e48259832f44f980a990fd2981c6, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 8
+      y: 7
+      width: 493
+      height: 495
+    - serializedVersion: 2
+      x: 12
+      y: 9
+      width: 490
+      height: 493
+    - serializedVersion: 2
+      x: 11
+      y: 16
+      width: 498
+      height: 486
+    - serializedVersion: 2
+      x: 7
+      y: 9
+      width: 504
+      height: 495
+    - serializedVersion: 2
+      x: 12
+      y: 9
+      width: 491
+      height: 495
+    - serializedVersion: 2
+      x: 19
+      y: 9
+      width: 490
+      height: 495
+    referenceHeight: 495
+  - id: Nailgun
+    texture: {fileID: 2800000, guid: 7cfc3cf3a4cb62947a9fd6418866a801, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 26
+      y: 64
+      width: 466
+      height: 420
+    - serializedVersion: 2
+      x: 23
+      y: 64
+      width: 466
+      height: 420
+    - serializedVersion: 2
+      x: 17
+      y: 37
+      width: 469
+      height: 447
+    - serializedVersion: 2
+      x: 26
+      y: 48
+      width: 466
+      height: 436
+    - serializedVersion: 2
+      x: 23
+      y: 48
+      width: 466
+      height: 436
+    - serializedVersion: 2
+      x: 19
+      y: 48
+      width: 467
+      height: 436
+    referenceHeight: 447
+  - id: Revolver
+    texture: {fileID: 2800000, guid: 81e1b94bb78f06f4ebee108ee1c779da, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 57
+      y: 141
+      width: 416
+      height: 339
+    - serializedVersion: 2
+      x: 54
+      y: 140
+      width: 420
+      height: 340
+    - serializedVersion: 2
+      x: 36
+      y: 60
+      width: 433
+      height: 420
+    - serializedVersion: 2
+      x: 46
+      y: 106
+      width: 427
+      height: 372
+    - serializedVersion: 2
+      x: 31
+      y: 125
+      width: 444
+      height: 353
+    - serializedVersion: 2
+      x: 49
+      y: 138
+      width: 421
+      height: 340
+    referenceHeight: 420
+  - id: Boomerang
+    texture: {fileID: 2800000, guid: 3481001eeb03382419f2edd2fcb9c076, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 16
+      y: 262
+      width: 479
+      height: 230
+    - serializedVersion: 2
+      x: 16
+      y: 100
+      width: 479
+      height: 392
+    - serializedVersion: 2
+      x: 16
+      y: 176
+      width: 479
+      height: 316
+    - serializedVersion: 2
+      x: 16
+      y: 121
+      width: 479
+      height: 370
+    - serializedVersion: 2
+      x: 16
+      y: 230
+      width: 479
+      height: 261
+    - serializedVersion: 2
+      x: 16
+      y: 261
+      width: 479
+      height: 230
+    referenceHeight: 392
+  - id: Slingshot
+    texture: {fileID: 2800000, guid: a0afac9ec7ae130489a4aa727623d55e, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 111
+      y: 64
+      width: 328
+      height: 398
+    - serializedVersion: 2
+      x: 89
+      y: 63
+      width: 350
+      height: 399
+    - serializedVersion: 2
+      x: 70
+      y: 63
+      width: 368
+      height: 399
+    - serializedVersion: 2
+      x: 103
+      y: 64
+      width: 354
+      height: 399
+    - serializedVersion: 2
+      x: 87
+      y: 63
+      width: 345
+      height: 400
+    - serializedVersion: 2
+      x: 73
+      y: 63
+      width: 344
+      height: 400
+    referenceHeight: 400
+  - id: Axe
+    texture: {fileID: 2800000, guid: 282ca34bbfd1eb746a66442fc95ec52a, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 59
+      y: 24
+      width: 431
+      height: 468
+    - serializedVersion: 2
+      x: 39
+      y: 25
+      width: 444
+      height: 467
+    - serializedVersion: 2
+      x: 28
+      y: 4
+      width: 465
+      height: 488
+    - serializedVersion: 2
+      x: 31
+      y: 29
+      width: 460
+      height: 460
+    - serializedVersion: 2
+      x: 39
+      y: 71
+      width: 446
+      height: 418
+    - serializedVersion: 2
+      x: 53
+      y: 24
+      width: 428
+      height: 465
+    referenceHeight: 488
+  - id: Shuriken
+    texture: {fileID: 2800000, guid: 11093fec5814ab84a9d69a766a489200, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 131
+      y: 25
+      width: 272
+      height: 477
+    - serializedVersion: 2
+      x: 42
+      y: 61
+      width: 397
+      height: 441
+    - serializedVersion: 2
+      x: 64
+      y: 66
+      width: 316
+      height: 436
+    - serializedVersion: 2
+      x: 64
+      y: 34
+      width: 348
+      height: 468
+    - serializedVersion: 2
+      x: 59
+      y: 167
+      width: 354
+      height: 334
+    - serializedVersion: 2
+      x: 131
+      y: 24
+      width: 272
+      height: 478
+    referenceHeight: 478
+  - id: Smg
+    texture: {fileID: 2800000, guid: b98a8a13bbaccbb4a90640b1e17cbac8, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 23
+      y: 75
+      width: 458
+      height: 403
+    - serializedVersion: 2
+      x: 23
+      y: 76
+      width: 465
+      height: 402
+    - serializedVersion: 2
+      x: 30
+      y: 44
+      width: 459
+      height: 434
+    - serializedVersion: 2
+      x: 23
+      y: 71
+      width: 458
+      height: 407
+    - serializedVersion: 2
+      x: 23
+      y: 72
+      width: 466
+      height: 406
+    - serializedVersion: 2
+      x: 42
+      y: 71
+      width: 447
+      height: 407
+    referenceHeight: 434
+  - id: Shotgun
+    texture: {fileID: 2800000, guid: e2d8c1aa1c61ebc458aa38c133d8805b, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 28
+      y: 103
+      width: 462
+      height: 389
+    - serializedVersion: 2
+      x: 23
+      y: 68
+      width: 466
+      height: 424
+    - serializedVersion: 2
+      x: 21
+      y: 59
+      width: 466
+      height: 433
+    - serializedVersion: 2
+      x: 24
+      y: 51
+      width: 466
+      height: 440
+    - serializedVersion: 2
+      x: 23
+      y: 51
+      width: 466
+      height: 440
+    - serializedVersion: 2
+      x: 25
+      y: 99
+      width: 462
+      height: 392
+    referenceHeight: 440
+  - id: Rifle
+    texture: {fileID: 2800000, guid: ac3f1fdc60bfe2e4ebd868be36d75152, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 16
+      y: 172
+      width: 489
+      height: 333
+    - serializedVersion: 2
+      x: 8
+      y: 138
+      width: 497
+      height: 367
+    - serializedVersion: 2
+      x: 10
+      y: 159
+      width: 495
+      height: 346
+    - serializedVersion: 2
+      x: 10
+      y: 157
+      width: 495
+      height: 348
+    - serializedVersion: 2
+      x: 15
+      y: 162
+      width: 491
+      height: 343
+    - serializedVersion: 2
+      x: 16
+      y: 172
+      width: 489
+      height: 333
+    referenceHeight: 367
+  - id: Crossbow
+    texture: {fileID: 2800000, guid: d646ae664af0aac40bc798f4f6a584c5, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 64
+      y: 103
+      width: 415
+      height: 336
+    - serializedVersion: 2
+      x: 53
+      y: 103
+      width: 411
+      height: 337
+    - serializedVersion: 2
+      x: 52
+      y: 77
+      width: 406
+      height: 371
+    - serializedVersion: 2
+      x: 64
+      y: 106
+      width: 415
+      height: 334
+    - serializedVersion: 2
+      x: 53
+      y: 107
+      width: 414
+      height: 333
+    - serializedVersion: 2
+      x: 49
+      y: 102
+      width: 413
+      height: 338
+    referenceHeight: 371
+  - id: Launcher
+    texture: {fileID: 2800000, guid: c3b21b9a4e46db14084cb6b4e75f03c5, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 17
+      y: 106
+      width: 470
+      height: 393
+    - serializedVersion: 2
+      x: 18
+      y: 106
+      width: 469
+      height: 393
+    - serializedVersion: 2
+      x: 17
+      y: 13
+      width: 482
+      height: 486
+    - serializedVersion: 2
+      x: 15
+      y: 104
+      width: 472
+      height: 395
+    - serializedVersion: 2
+      x: 18
+      y: 34
+      width: 466
+      height: 465
+    - serializedVersion: 2
+      x: 18
+      y: 106
+      width: 465
+      height: 393
+    referenceHeight: 486
+  attacks:
+  - id: Crawler
+    texture: {fileID: 2800000, guid: 086e4b3994264534ba8d0df2ef766f9a, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 87
+      y: 26
+      width: 338
+      height: 454
+    - serializedVersion: 2
+      x: 53
+      y: 29
+      width: 398
+      height: 451
+    - serializedVersion: 2
+      x: 55
+      y: 12
+      width: 406
+      height: 468
+    - serializedVersion: 2
+      x: 56
+      y: 42
+      width: 401
+      height: 439
+    - serializedVersion: 2
+      x: 78
+      y: 78
+      width: 340
+      height: 403
+    - serializedVersion: 2
+      x: 80
+      y: 27
+      width: 354
+      height: 454
+    referenceHeight: 468
+  - id: Walker
+    texture: {fileID: 2800000, guid: b80fc36aad86d5b4ab7885be52b7514c, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 93
+      y: 13
+      width: 340
+      height: 470
+    - serializedVersion: 2
+      x: 84
+      y: 19
+      width: 355
+      height: 464
+    - serializedVersion: 2
+      x: 55
+      y: 13
+      width: 407
+      height: 470
+    - serializedVersion: 2
+      x: 33
+      y: 24
+      width: 446
+      height: 460
+    - serializedVersion: 2
+      x: 79
+      y: 51
+      width: 326
+      height: 433
+    - serializedVersion: 2
+      x: 94
+      y: 14
+      width: 345
+      height: 470
+    referenceHeight: 470
+  - id: Runner
+    texture: {fileID: 2800000, guid: d90df38529c7b954b8f477b06f1a415d, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 87
+      y: 14
+      width: 338
+      height: 475
+    - serializedVersion: 2
+      x: 84
+      y: 20
+      width: 346
+      height: 469
+    - serializedVersion: 2
+      x: 59
+      y: 10
+      width: 394
+      height: 479
+    - serializedVersion: 2
+      x: 66
+      y: 43
+      width: 396
+      height: 446
+    - serializedVersion: 2
+      x: 89
+      y: 53
+      width: 313
+      height: 436
+    - serializedVersion: 2
+      x: 87
+      y: 16
+      width: 338
+      height: 473
+    referenceHeight: 479
+  - id: Spitter
+    texture: {fileID: 2800000, guid: 01fb41dda1fb71040be834fd12699084, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 78
+      y: 21
+      width: 381
+      height: 450
+    - serializedVersion: 2
+      x: 36
+      y: 16
+      width: 437
+      height: 455
+    - serializedVersion: 2
+      x: 11
+      y: 14
+      width: 454
+      height: 457
+    - serializedVersion: 2
+      x: 39
+      y: 23
+      width: 452
+      height: 447
+    - serializedVersion: 2
+      x: 55
+      y: 44
+      width: 407
+      height: 426
+    - serializedVersion: 2
+      x: 46
+      y: 18
+      width: 385
+      height: 452
+    referenceHeight: 457
+  - id: Brute
+    texture: {fileID: 2800000, guid: bc780010302cd6b49b79591c8168a85c, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 56
+      y: 21
+      width: 402
+      height: 454
+    - serializedVersion: 2
+      x: 43
+      y: 25
+      width: 424
+      height: 450
+    - serializedVersion: 2
+      x: 47
+      y: 21
+      width: 417
+      height: 454
+    - serializedVersion: 2
+      x: 17
+      y: 52
+      width: 473
+      height: 423
+    - serializedVersion: 2
+      x: 44
+      y: 77
+      width: 423
+      height: 398
+    - serializedVersion: 2
+      x: 56
+      y: 21
+      width: 402
+      height: 454
+    referenceHeight: 454
+  - id: Boss
+    texture: {fileID: 2800000, guid: 6783ce2f50bb02b4194aa53c501ee311, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 86
+      y: 24
+      width: 350
+      height: 443
+    - serializedVersion: 2
+      x: 87
+      y: 29
+      width: 347
+      height: 437
+    - serializedVersion: 2
+      x: 82
+      y: 21
+      width: 369
+      height: 446
+    - serializedVersion: 2
+      x: 73
+      y: 44
+      width: 371
+      height: 423
+    - serializedVersion: 2
+      x: 65
+      y: 73
+      width: 383
+      height: 394
+    - serializedVersion: 2
+      x: 85
+      y: 25
+      width: 356
+      height: 442
+    referenceHeight: 446
+  - id: Armored
+    texture: {fileID: 2800000, guid: 192c953d9164b6a42ad59c9116ae8087, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 112
+      y: 15
+      width: 322
+      height: 462
+    - serializedVersion: 2
+      x: 83
+      y: 23
+      width: 354
+      height: 456
+    - serializedVersion: 2
+      x: 62
+      y: 21
+      width: 360
+      height: 457
+    - serializedVersion: 2
+      x: 75
+      y: 38
+      width: 389
+      height: 439
+    - serializedVersion: 2
+      x: 75
+      y: 77
+      width: 341
+      height: 400
+    - serializedVersion: 2
+      x: 80
+      y: 17
+      width: 335
+      height: 463
+    referenceHeight: 463
+  - id: Volatile
+    texture: {fileID: 2800000, guid: d79b394daa965cb4180daef0ded601cb, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 114
+      y: 24
+      width: 311
+      height: 446
+    - serializedVersion: 2
+      x: 87
+      y: 24
+      width: 343
+      height: 446
+    - serializedVersion: 2
+      x: 76
+      y: 33
+      width: 364
+      height: 437
+    - serializedVersion: 2
+      x: 53
+      y: 38
+      width: 407
+      height: 432
+    - serializedVersion: 2
+      x: 64
+      y: 69
+      width: 377
+      height: 401
+    - serializedVersion: 2
+      x: 105
+      y: 23
+      width: 318
+      height: 447
+    referenceHeight: 447
+  - id: Medic
+    texture: {fileID: 2800000, guid: 7ce7c1ab2ebe431409caee80e7c3f5ca, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 103
+      y: 12
+      width: 337
+      height: 464
+    - serializedVersion: 2
+      x: 79
+      y: 18
+      width: 354
+      height: 459
+    - serializedVersion: 2
+      x: 62
+      y: 12
+      width: 371
+      height: 465
+    - serializedVersion: 2
+      x: 73
+      y: 32
+      width: 394
+      height: 445
+    - serializedVersion: 2
+      x: 76
+      y: 72
+      width: 378
+      height: 405
+    - serializedVersion: 2
+      x: 78
+      y: 12
+      width: 355
+      height: 465
+    referenceHeight: 465
+  - id: Shade
+    texture: {fileID: 2800000, guid: 8a36e1ee4acae864ca1408e732dc2525, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 88
+      y: 14
+      width: 342
+      height: 459
+    - serializedVersion: 2
+      x: 87
+      y: 14
+      width: 356
+      height: 459
+    - serializedVersion: 2
+      x: 69
+      y: 14
+      width: 388
+      height: 459
+    - serializedVersion: 2
+      x: 48
+      y: 42
+      width: 424
+      height: 432
+    - serializedVersion: 2
+      x: 49
+      y: 67
+      width: 387
+      height: 407
+    - serializedVersion: 2
+      x: 75
+      y: 16
+      width: 371
+      height: 458
+    referenceHeight: 459
+  defenses:
+  - id: Shooter
+    texture: {fileID: 2800000, guid: 1d15d2fe44bd863489133aa5f6cc1251, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 33
+      y: 44
+      width: 428
+      height: 438
+    - serializedVersion: 2
+      x: 31
+      y: 23
+      width: 449
+      height: 459
+    - serializedVersion: 2
+      x: 52
+      y: 44
+      width: 428
+      height: 438
+    - serializedVersion: 2
+      x: 33
+      y: 22
+      width: 440
+      height: 467
+    - serializedVersion: 2
+      x: 31
+      y: 3
+      width: 449
+      height: 486
+    - serializedVersion: 2
+      x: 38
+      y: 21
+      width: 442
+      height: 468
+    referenceHeight: 486
+  - id: Ice
+    texture: {fileID: 2800000, guid: 427a53e3fcac34845b1e4b3e942257b8, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 34
+      y: 27
+      width: 432
+      height: 453
+    - serializedVersion: 2
+      x: 86
+      y: 15
+      width: 345
+      height: 497
+    - serializedVersion: 2
+      x: 48
+      y: 27
+      width: 430
+      height: 453
+    - serializedVersion: 2
+      x: 34
+      y: 8
+      width: 452
+      height: 472
+    - serializedVersion: 2
+      x: 86
+      y: 0
+      width: 345
+      height: 480
+    - serializedVersion: 2
+      x: 26
+      y: 8
+      width: 452
+      height: 473
+    referenceHeight: 497
+  - id: Explosive
+    texture: {fileID: 2800000, guid: 00fe7d21b96736c42ab4cd3bb7ef1070, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 33
+      y: 52
+      width: 444
+      height: 415
+    - serializedVersion: 2
+      x: 40
+      y: 52
+      width: 433
+      height: 409
+    - serializedVersion: 2
+      x: 34
+      y: 55
+      width: 445
+      height: 412
+    - serializedVersion: 2
+      x: 33
+      y: 23
+      width: 444
+      height: 454
+    - serializedVersion: 2
+      x: 40
+      y: 13
+      width: 433
+      height: 456
+    - serializedVersion: 2
+      x: 34
+      y: 23
+      width: 445
+      height: 454
+    referenceHeight: 456
+  - id: Barricade
+    texture: {fileID: 2800000, guid: 9d9048d0a6591bd4590e07e77532fae8, type: 3}
+    columns: 3
+    rows: 2
+    bounds:
+    - serializedVersion: 2
+      x: 24
+      y: 53
+      width: 488
+      height: 429
+    - serializedVersion: 2
+      x: 0
+      y: 76
+      width: 511
+      height: 375
+    - serializedVersion: 2
+      x: 42
+      y: 54
+      width: 445
+      height: 428
+    - serializedVersion: 2
+      x: 24
+      y: 41
+      width: 488
+      height: 438
+    - serializedVersion: 2
+      x: 0
+      y: 61
+      width: 512
+      height: 386
+    - serializedVersion: 2
+      x: 0
+      y: 40
+      width: 488
+      height: 440
+    referenceHeight: 440

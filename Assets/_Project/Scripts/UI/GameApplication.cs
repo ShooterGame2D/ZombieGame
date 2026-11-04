@@ -105,7 +105,7 @@ namespace ZombieAttack
             Text("EDIÇÃO PIXEL  ·  VERSÃO 0.3",560,52,560,24,15,Mint);
             Text("RECORDE "+Run.profile.bestWave+"   /   "+Run.profile.gems+" GEMAS",1100,51,430,24,15,Gold,true,TextAnchor.UpperRight);
             Panel(40,120,732,285); Tag("FRENTE E COSTAS",64,144,215,Mint);
-            Text("DEFESA ZUMBI",58,186,692,83,76,Gold,true);
+            Text("DEFESA ZUMBI",58,186,708,83,76,Gold,true);
             Text("Mantenha os dois lados sob controle.",66,277,660,31,24,Cream);
             Text("Pente vazio? Recarregue. Outra câmera? Fique de olho.",66,315,660,25,17,Hex("ACC2B7"));
             if(Button("COMEÇAR DEFESA  >",65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }
@@ -125,20 +125,36 @@ namespace ZombieAttack
                 Round(x,y,368,151,13,selected?hero.accent:Hex("344B4B")); Panel(x+2,y+2,364,147);
                 GameArt.Portrait(i,x+8,y+9,111,111);
                 Text(hero.title,x+128,y+14,224,26,22,Cream,true);
-                Text(hero.weapon.title,x+128,y+48,223,43,14,Hex("B4CAC0"));
+                Text(hero.weapon.title,x+128,y+48,223,46,14,Hex("B4CAC0"));
                 Text(hero.health+" PV  /  "+hero.cooldown+" s",x+128,y+95,215,21,12,hero.accent,true);
                 if(Button(selected?"SELECIONADO":"ESCOLHER",x+12,y+120,344,23,selected?Gold:Hex("31504E"),!selected,11)) Run.SelectCharacter(i);
             }
             if(Button("VER DEMONSTRAÇÃO",40,836,300,38,Hex("31504E"),true,14)) { Run.Start(true); shopTab=0; }
-            Text("MOUSE disparar    Q / E trocar lado    ESPAÇO habilidade    ESC pausa",390,847,940,24,14,Cream);
+            Text("MOUSE atirar · Q/E trocar · ESPAÇO habilidade · ESC pausa",390,847,940,24,14,Cream);
             if(Button(sound.Muted?"SOM OFF":"SOM ON",1410,836,150,38,Hex("31504E"),true,13)) sound.Muted=!sound.Muted;
         }
         void Battle()
         {
-            var sorted=new System.Collections.Generic.List<Zombie>(); foreach(var z in Run.zombies) if(z.side==Run.viewSide) sorted.Add(z);
-            sorted.Sort((a,b)=>b.distance.CompareTo(a.distance));
-            foreach(var z in sorted)
+            BloodRenderer.Ground(Run.blood,Run.viewSide);
+            CombatSprites.LaneMarkers();
+            var sorted=new System.Collections.Generic.List<(float depth,Zombie zombie,Tower tower,int slot,bool barrier)>();
+            foreach(var z in Run.zombies) if(z.side==Run.viewSide) sorted.Add((z.distance,z,null,0,false));
+            for(int i=0;i<3;i++)
             {
+                int index=Run.SlotIndex(i,Run.viewSide);
+                if(Run.towers[index]!=null) sorted.Add((.109f,null,Run.towers[index],i,false));
+                if(Run.barricades[index]!=null) sorted.Add((.249f,null,Run.barricades[index],i,true));
+            }
+            sorted.Sort((a,b)=>b.depth.CompareTo(a.depth));
+            foreach(var item in sorted)
+            {
+                var z=item.zombie;
+                if(z==null)
+                {
+                    if(!CombatSprites.Defense(item.slot,item.tower,item.barrier,time))
+                    { if(item.barrier) GameArt.BarricadeArt(item.slot,item.tower); else GameArt.TowerArt(item.slot,item.tower); }
+                    continue;
+                }
                 GameArt.ZombieArt(z,time);
                 if(Run.rootTimers[RunManager.SideIndex(z.side)]>0)
                 {
@@ -146,10 +162,10 @@ namespace ZombieAttack
                     Line(new Vector2(p.x+30*z.Size,p.y),new Vector2(p.x-20*z.Size,p.y-35*z.Size),4*z.Size,Mint);
                 }
             }
-            for(int i=0;i<3;i++) { int index=Run.SlotIndex(i,Run.viewSide); GameArt.TowerArt(i,Run.towers[index]); GameArt.BarricadeArt(i,Run.barricades[index]); }
             if(Run.temporaryTurret>0 && Run.turretSide==Run.viewSide)
             {
-                Round(1040,686,90,65,9,Hex("3A4F51")); Rect(1072,653,26,45,Gold); Text(Mathf.CeilToInt(Run.temporaryTurret)+"s",1040,759,90,23,15,Gold,true,TextAnchor.MiddleCenter);
+                CombatSprites.TemporaryTower(new Vector2(1080,750),time);
+                Text(Mathf.CeilToInt(Run.temporaryTurret)+"s",1040,759,90,23,15,Gold,true,TextAnchor.MiddleCenter);
             }
             if(Run.decoyTimers[RunManager.SideIndex(Run.viewSide)]>0)
             {
@@ -167,7 +183,16 @@ namespace ZombieAttack
                 else if(e.kind==2) for(int i=0;i<6;i++) { float a=i*Mathf.PI/3; var v=new Vector2(Mathf.Cos(a),Mathf.Sin(a)); Line(e.position+v*(5+t*22),e.position+v*(14+t*39),4,color); }
                 else if(e.kind==3)
                 { float r=e.origin.x*(.2f+t*.8f); color.a*=.25f; Ellipse(e.position.x-r,e.position.y-r,r*2,r*2,color); for(int i=0;i<12;i++) { float a=i*Mathf.PI/6; var v=new Vector2(Mathf.Cos(a),Mathf.Sin(a)); Line(e.position+v*r*.7f,e.position+v*r,5,e.color); } }
+                else if(e.kind==4)
+                {
+                    var direction=(e.position-e.origin).normalized; var point=Vector2.Lerp(e.origin,e.position,t);
+                    var tail=point-direction*Mathf.Lerp(55,16,t); var cross=new Vector2(-direction.y,direction.x);
+                    Line(tail,point,3,Hex("B18A55"));
+                    Triangle(point+direction*6,point-direction*8+cross*5,point-direction*8-cross*5,Cream);
+                    Line(tail,tail+direction*12+cross*6,3,Gold);
+                }
             }
+            BloodRenderer.Air(Run.blood,Run.viewSide);
             GameArt.Weapon(pointer,Run,time);
             if(Run.smokeTimer>0) { Rect(0,130,1600,665,new Color(.38f,.4f,.55f,.24f)); Text("FUMAÇA: INVULNERÁVEL",515,212,570,36,20,Cream,true,TextAnchor.MiddleCenter); }
             if(Run.damageFlash>0) { var c=new Color(.95f,.19f,.1f,Run.damageFlash); Rect(0,0,1600,12,c); Rect(0,0,18,900,c); Rect(1582,0,18,900,c); Rect(0,886,1600,14,c); }

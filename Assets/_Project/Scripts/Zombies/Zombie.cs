@@ -7,6 +7,10 @@ namespace ZombieAttack
         public ViewSide side = ViewSide.Front;
         public float lateral, distance = 1, health, maxHealth, speed, attackTimer = 1.5f, hitFlash, phase;
         public float specialTimer = 8;
+        public bool attacking;
+        public float attackRecovery;
+        public const float AttackWindup=.36f,AttackRecover=.34f;
+        public int AttackFrame => attackRecovery>0 ? Mathf.Clamp(3+Mathf.FloorToInt((1-attackRecovery/AttackRecover)*3),3,5) : attackTimer<AttackWindup ? Mathf.Clamp(Mathf.FloorToInt((1-attackTimer/AttackWindup)*3),0,2) : 0;
         public float Size => DepthProjector.Scale(distance) * (data.kind == ZombieKind.Brute ? 1.32f : data.kind == ZombieKind.Boss ? 1.65f : 1);
         public Vector2 Position => DepthProjector.Project(lateral, distance);
         public float ArtWidth => 215 * ZombieWalkAnimation.Aspect(data.kind, data.artAspect) * Size;

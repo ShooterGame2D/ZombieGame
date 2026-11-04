@@ -44,7 +44,7 @@ Detalhes de personagens, loja, munição e defesas: [mecânicas](Docs/DefesaZumb
 
 ## Limites do protótipo
 
-Jogo 2D com perspectiva simulada e interface desenhada por código. Os dez tipos de zumbi usam oito quadros de caminhada, com cadência ligada à velocidade real e alinhamento dos pés. A animação continua na câmera escondida, desacelera no gelo e para durante pausa, raízes, isca e ataques estacionários. Armas e defesas são desenhadas por código; os efeitos sonoros são sintetizados. O balanceamento ainda precisa de testes com jogadores.
+Jogo 2D com perspectiva simulada e interface desenhada por código. Os dez tipos de zumbi usam oito quadros de caminhada, com cadência ligada à velocidade real e alinhamento dos pés. A animação continua na câmera escondida, desacelera no gelo e para durante pausa, raízes, isca e ataques estacionários. Armas e defesas usam folhas de sprites; os efeitos sonoros são sintetizados com assinaturas específicas por arma. O balanceamento ainda precisa de testes com jogadores.
 
 O progresso local usa `Application.persistentDataPath` e, na web, PlayerPrefs. O progresso da pasta antiga não é transferido automaticamente, pois o nome do produto e a empresa do repositório foram mantidos.
 
@@ -59,3 +59,20 @@ A Unity 6000.3.25f1 e a combinação exata dos pacotes do repositório ainda pre
 As dez folhas já estão ligadas ao combate. O catálogo `Assets/_Project/Resources/ZombieWalkAtlas.asset` referencia os PNGs e define a cadência e os apoios dos pés de cada tipo. As imagens continuam em `Assets/_Project/Art/AnimationDrafts/Walk-v1`, sem duplicação. Não é necessário configurar Animator ou Animation Clips para esta implementação.
 
 O menu **Defesa Zumbi > Validar mecânicas** executa também 127 verificações de animação, além das 91 verificações anteriores. Elas cobrem as dez texturas, os 80 apoios, os ciclos, pausa, troca de câmera, gelo, raízes, isca, barreiras e aceleração dos zumbis. A validação e as compilações locais usaram Unity 6000.3.24f1; a versão 6000.3.25f1 deste repositório foi preservada.
+
+## Textos e sangue
+
+Os textos usam a fonte original Press Start 2P, do Google Fonts, sem sombras. A fonte e a licença SIL OFL acompanham o projeto e a tela de carregamento web, sem depender de internet.
+
+Os acertos geram gotas de sangue no ponto de impacto; as gotas caem e deixam manchas no chão, separadas por câmera. Elas permanecem até o final da onda. Pausa congela os efeitos, reiniciar limpa as manchas, e a aleatoriedade visual não muda a queda de moedas.
+
+A validação inclui 51 verificações de fonte e efeitos, totalizando 269 com as mecânicas e animações. As versões Windows e Web são compiladas na cópia local com Unity 6000.3.24f1; a versão registrada neste repositório continua preservada.
+## Armas, defesas e ataques animados
+
+A pasta `Assets/_Project/Art/Combat-v1` contém 27 folhas transparentes, com seis quadros e recortes de sprites em cada uma: 13 armas, 10 ataques de zumbis, três torres e a barricada com arame farpado. As defesas têm três perspectivas por lane e um segundo estado ativo/danificado. Os prompts da geração integrada estão em `generation-prompts.json`. A galeria `preview.html` mostra animações e permite ouvir os 27 WAVs de referência em `Sounds`.
+
+O catálogo `Resources/CombatSpriteCatalog.asset` liga as artes ao jogo. Não é preciso configurar Animator: os quadros seguem o estado do combate. O menu **Defesa Zumbi > Atualizar arte de combate** reimporta recortes, recalcula os apoios e exporta os sons a partir do código.
+
+O arco prepara a corda antes de disparar e consome uma flecha ao soltar. Trocar de câmera cancela a preparação. Os zumbis animam preparação, golpe e recuperação, inclusive contra barricadas e fora da câmera. A posição das defesas e a ordem de desenho acompanham a profundidade de cada lane. Disparo e recarga têm assinatura sonora própria para cada arma.
+
+Foram acrescentadas 317 verificações de assets, animações, arco, defesas e áudio, totalizando 586. O projeto local foi validado com Unity 6000.3.24f1; a versão 6000.3.25f1 registrada neste repositório permanece preservada.
