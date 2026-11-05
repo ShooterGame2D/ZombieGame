@@ -55,7 +55,7 @@ namespace ZombieAttack.Editor
             r.decoyTimers[0]=0; r.Tick(.05f); Check(front.phase>phase,"walk resumes after crowd control");
             r=Fresh(catalog); front=Enemy(r,0,ViewSide.Front,.5f); back=Enemy(r,0,ViewSide.Back,.5f);
             r.state=RunState.Shop; r.wallet=1000; r.BuyTower(1,1); r.state=RunState.Wave; r.Tick(.05f);
-            Check(Near(front.phase,back.phase*.4f),"ice slows the animation with movement");
+            Check(Near(front.phase,back.phase*.65f),"ice slows the animation with movement");
             r=Fresh(catalog); r.state=RunState.Shop; r.wallet=1000; r.BuyTower(0,1); r.BuyTower(3,1); r.state=RunState.Wave;
             front=Enemy(r,0,ViewSide.Front,.24f); r.Tick(.05f); Check(front.phase==0,"barricade melee does not walk in place");
             r=Fresh(catalog); front=Enemy(r,0,ViewSide.Front,0); r.Tick(.05f); Check(front.phase==0,"player melee stops the walk");

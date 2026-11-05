@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Bumerangue
   kind: 4
   description:
-  damage: 1
+  damage: 3.8
   fireRate: 2.6
   reloadSeconds: 2.35
   headMultiplier: 2

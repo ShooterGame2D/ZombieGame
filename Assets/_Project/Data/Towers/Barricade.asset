@@ -15,8 +15,8 @@ MonoBehaviour:
   kind: 3
   title: Barricada
   description: "Somente \xE0 frente de uma torre"
-  price: 25
-  health: 160
-  damage: 1.5
-  interval: 1.2
+  price: 45
+  health: 135
+  damage: 0
+  interval: 2
   radius: 170

@@ -25,10 +25,10 @@ namespace ZombieAttack.Editor
             foreach(var hero in c.characters)
             {
                 skills.Add(hero.ability);
-                Check(hero.weapon.damage>=.9f && hero.weapon.damage<=1.15f && hero.weapon.fireRate>=2.3f && hero.weapon.fireRate<=3 && hero.weapon.reloadSeconds>=2.2f && hero.weapon.reloadSeconds<=2.7f,"starter balance "+hero.title);
+                Check(hero.weapon.damage>=.9f && hero.weapon.damage<=(hero.weapon.kind==WeaponKind.Boomerang?3.8f:hero.weapon.kind==WeaponKind.Axe?2.1f:1.15f) && hero.weapon.fireRate>=2.3f && hero.weapon.fireRate<=3 && hero.weapon.reloadSeconds>=2.2f && hero.weapon.reloadSeconds<=2.7f,"starter balance "+hero.title);
             }
             Check(skills.Count==8,"eight distinct abilities");
-            var r=Fresh(c); Check(r.wave==1 && r.total==7 && r.reserve==72,"initial run");
+            var r=Fresh(c); Check(r.wave==1 && r.total==c.waves.Count(1) && r.reserve==72,"initial run");
             var far=Enemy(r,ViewSide.Front,.5f); var near=Enemy(r,ViewSide.Front,.4f); var back=Enemy(r,ViewSide.Back,.4f);
             var point=near.Head.center; Check(r.ZombieAt(point)==near,"nearest target on visible side");
             r.Shoot(point); Check(Near(near.health,28) && Near(back.health,30) && Near(far.health,30),"headshot cannot hit opposite camera");
@@ -36,16 +36,16 @@ namespace ZombieAttack.Editor
             r.fireCooldown=0; r.Shoot(point); Check(Near(back.health,28),"shooting back camera");
             float d=near.distance; r.Tick(.05f); Check(near.distance<d,"hidden side continues moving");
             r.coins.Add(new Coin{side=ViewSide.Front,position=point,value=7}); Check(r.CoinAt(point)==null,"hidden coin is not collected");
-            r.SwitchSide(); float ammo=r.ammo; r.Shoot(point); Check(r.wallet==7 && r.ammo==ammo,"coin priority costs no ammo");
+            r.SwitchSide(); float ammo=r.ammo; r.CollectCoin(point); Check(r.wallet==7 && r.ammo==ammo,"coin priority costs no ammo");
             r=Fresh(c); r.ammo=4; Step(r,1); Check(r.ammo==4 && !r.Reloading,"partial magazine never regenerates");
-            r.BeginReload(); Check(!r.Reloading,"cannot reload a partial magazine");
+            r.BeginReload(); Check(r.Reloading,"manual reload accepts partial magazine");Step(r,3);Check(r.ammo==r.Capacity&&r.reserve==72-(r.Capacity-4),"manual reload only consumes missing rounds"); r=Fresh(c);
             r.ammo=1; r.Shoot(new Vector2(100,700)); Check(r.ammo==0 && r.Reloading && r.reserve==72,"last shot starts timed reload");
             float timer=r.reloadTimer; r.Shoot(new Vector2(100,700)); Check(r.ammo==0 && r.reloadTimer==timer,"no shot during reload");
-            r.coins.Add(new Coin{side=ViewSide.Front,position=new Vector2(100,600),value=3}); r.Shoot(new Vector2(100,600)); Check(r.wallet==3 && r.Reloading,"coins collectible while reloading");
+            r.coins.Add(new Coin{side=ViewSide.Front,position=new Vector2(100,600),value=3}); r.CollectCoin(new Vector2(100,600)); Check(r.wallet==3 && r.Reloading,"coins collectible while reloading");
             r.SwitchSide(); Step(r,3); Check(r.ammo==r.Capacity && r.reserve==72-r.Capacity,"reload finishes across camera change and consumes reserve");
             r=Fresh(c); r.ammo=0; r.reserve=2; r.BeginReload(); Step(r,3); Check(r.ammo==2 && r.reserve==0,"partial last reserve magazine");
             r.ammo=0; r.BeginReload(); Step(r,3); Check(r.ammo==0 && !r.Reloading,"zero reserve cannot create ammo");
-            r.state=RunState.Shop; r.wallet=100; Check(r.BuyAmmo() && r.reserve==36 && r.Reloading && r.wallet==88,"shop ammunition purchase starts empty-mag reload");
+            r.state=RunState.Shop; r.wallet=100; Check(r.BuyAmmo() && r.reserve==36 && r.Reloading && r.wallet==100-r.AmmoPackPrice,"shop ammunition purchase starts empty-mag reload");
             float duration=r.ReloadSeconds; Check(r.BuyUpgrade(3) && r.ReloadSeconds<duration,"faster reload upgrade");
             int capacity=r.Capacity; Check(r.BuyUpgrade(2) && r.Capacity==capacity+2,"magazine upgrade");
             r.wallet=1000; Check(r.BuyWeapon(0) && r.weapon==c.shopWeapons[0],"shared weapon purchase"); int balance=r.wallet;
@@ -64,7 +64,7 @@ namespace ZombieAttack.Editor
             Check(r.health<r.character.health && r.otherAttackTimer>0 && r.lastAttackSide==ViewSide.Back,"offscreen attack raises warning");
             r=Fresh(c); r.projectiles.Add(new Projectile{side=ViewSide.Back,lateral=0,distance=.001f,damage=10}); Step(r,.05f);
             Check(r.otherAttackTimer>0 && Near(r.health,r.character.health-10),"offscreen spit also warns and damages");
-            r=Fresh(c); var front=Enemy(r,ViewSide.Front,.5f,0,30); back=Enemy(r,ViewSide.Back,.5f,0,30); r.UseAbility(front.Body.center);
+            r=Fresh(c); var front=Enemy(r,ViewSide.Front,.5f,0,30); back=Enemy(r,ViewSide.Back,.5f,0,30); r.UseAbility(front.Body.center);Step(r,1.05f);
             Check(front.health<30 && back.health==30,"area ability only affects its camera");
             float cooldown=r.abilityCooldown; r.UseAbility(front.Body.center); Check(r.abilityCooldown==cooldown,"ability cooldown enforced");
             r=Fresh(c,1); front=Enemy(r,ViewSide.Front); back=Enemy(r,ViewSide.Back); r.UseAbility(front.Body.center); d=front.distance; float bd=back.distance; Step(r,1);
@@ -76,7 +76,7 @@ namespace ZombieAttack.Editor
             Check(front.distance>.3f && back.distance==.3f,"kangaroo knockback stays local");
             r=Fresh(c,5); front=Enemy(r,ViewSide.Front,0); r.UseAbility(Vector2.zero); Step(r,1);
             Check(r.health==r.character.health && r.decoyTimers[0]>0,"child decoy prevents local melee attacks");
-            r=Fresh(c,6); front=Enemy(r,ViewSide.Front); r.UseAbility(front.Body.center); Check(front.health<15,"lumberjack cleave");
+            r=Fresh(c,6); front=Enemy(r,ViewSide.Front); r.UseAbility(front.Body.center);Step(r,1.1f); Check(!r.zombies.Contains(front),"lumberjack falling tree");
             r=Fresh(c,7); r.UseAbility(Vector2.zero); r.HurtPlayer(30,ViewSide.Back); Check(r.health==r.character.health,"ninja smoke protects both sides temporarily");
             r=Fresh(c); var armor=Enemy(r,ViewSide.Front,.5f,6,30); r.Hit(armor,10,false); Check(Near(armor.health,26.5f),"armor reduces body hits"); r.Hit(armor,10,true); Check(Near(armor.health,16.5f),"headshot bypasses armor");
             r=Fresh(c); var medic=Enemy(r,ViewSide.Front,.5f,8); front=Enemy(r,ViewSide.Front); front.health=10; medic.specialTimer=0; Step(r,.05f); Check(front.health>10,"medic heals nearby allies");
@@ -88,9 +88,9 @@ namespace ZombieAttack.Editor
             Check(r.coins.Count>30 && r.coins.Count<75,"coin drops are probabilistic");
             Check(r.coins.TrueForAll(coin=>coin.value==c.zombies[0].coins),"drop value still depends on zombie");
             r=Fresh(c); r.coins.Add(new Coin{side=ViewSide.Back,life=.01f}); Step(r,.05f); Check(r.coins.Count==0,"hidden coins still expire");
-            r=Fresh(c); r.paused=true; r.ammo=0; r.BeginReload(); timer=r.reloadTimer; Step(r,1); Check(r.reloadTimer==timer,"pause freezes reload");
+            r=Fresh(c); r.ammo=0; r.BeginReload();r.paused=true; timer=r.reloadTimer; Step(r,1); Check(r.reloadTimer==timer,"pause freezes reload");
             r=Fresh(c); r.spawnTimer=.01f; Step(r,2.2f); Check(r.CountOnSide(ViewSide.Front)>0 && r.CountOnSide(ViewSide.Back)>0,"first wave spawns both directions");
-            r=Fresh(c); r.spawned=r.total; r.Tick(.05f); Check(r.state==RunState.Shop && r.wallet==15,"wave bonus funds ammunition independently of random drops");
+            r=Fresh(c); r.spawned=r.total; Step(r,3.2f); Check(r.state==RunState.Shop && r.wallet==28,"wave bonus funds ammunition independently of random drops");
             r.NextWave(); Check(r.wave==2 && r.state==RunState.Wave,"next wave transition");
             r.demo=true; r.completed=3; r.kills=15; r.HurtPlayer(999,ViewSide.Back); Check(r.state==RunState.GameOver && r.earnedGems==83 && r.profile.gems==0,"demo reward never writes real progress");
             r.Start(true); Check(r.weapon==r.character.weapon && r.wallet==0 && r.reserve==72 && r.barricades[1]==null && r.viewSide==ViewSide.Front,"restart resets all run-only equipment");
@@ -112,6 +112,7 @@ namespace ZombieAttack.Editor
             ZombieWalkValidation.Run(c);
             VisualFeedbackValidation.Run(c);
             CombatAnimationValidation.Run(c);
+            ExpansionValidation.Run(c);
         }
     }
 }

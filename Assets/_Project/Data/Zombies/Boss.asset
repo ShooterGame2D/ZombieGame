@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.ZombieData
   kind: 5
   title: Comandante
-  firstWave: 10
+  firstWave: 5
   coins: 50
   health: 38
   speed: 0.027

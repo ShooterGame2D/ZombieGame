@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Machado de arremesso
   kind: 6
   description:
-  damage: 1.1
+  damage: 2.1
   fireRate: 2.4
   reloadSeconds: 2.55
   headMultiplier: 2

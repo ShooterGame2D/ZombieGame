@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace ZombieAttack
 {
-    // Original Google Fonts face, rendered once without shadow, outline or synthetic bold.
+    // Readable Google Fonts face, rendered once without shadow, outline or synthetic bold.
     public static class PixelFont
     {
         static Font font;
         static GUIStyle style;
         static readonly Dictionary<string,int> sizes=new Dictionary<string,int>();
-        public static Font Face => font!=null?font:(font=Resources.Load<Font>("Fonts/PressStart2P-Regular"));
+        public static Font Face => font!=null?font:(font=Resources.Load<Font>("Fonts/AtkinsonHyperlegible-Regular"));
         static GUIStyle Style
         {
             get
@@ -22,9 +22,9 @@ namespace ZombieAttack
         public static int FitSize(string text,float width,float height,int preferred)
         {
             var label=new GUIContent(text); var s=Style;
-            int candidate=Mathf.Max(8,Mathf.RoundToInt(preferred/8f)*8);
-            // Prefer whole multiples of the font's eight-pixel grid.
-            for(;candidate>=8;candidate-=8)
+            int candidate=Mathf.Max(10,preferred);
+            // Fit in single-pixel increments; preserve clear accents and punctuation.
+            for(;candidate>=8;candidate--)
             {
                 s.fontSize=candidate;
                 if(s.CalcHeight(label,width)<=height+.5f && LongestWordWidth(text,s)<=width+.5f) return candidate;
@@ -49,7 +49,7 @@ namespace ZombieAttack
             var origin=matrix.MultiplyPoint3x4(new Vector3(x,y,0));
             float scale=Mathf.Max(.01f,Mathf.Abs(matrix.m00));
             var rect=new Rect(Mathf.Round(origin.x),Mathf.Round(origin.y),Mathf.Round(w*scale),Mathf.Round(h*Mathf.Abs(matrix.m11)));
-            int preferred=Mathf.Max(8,Mathf.RoundToInt(size*scale*.82f));
+            int preferred=Mathf.Max(10,Mathf.RoundToInt(size*scale*1.18f));
             string key=rect.width+":"+rect.height+":"+preferred+":"+text;
             if(!sizes.TryGetValue(key,out int fitted))
             {

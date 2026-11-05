@@ -21,7 +21,7 @@ namespace ZombieAttack.Editor
         {
             checks=0;
             var font=PixelFont.Face;
-            Check(font!=null&&font.name=="PressStart2P-Regular","bundled Press Start 2P font");
+            Check(font!=null&&font.name=="AtkinsonHyperlegible-Regular","bundled Atkinson Hyperlegible font");
             foreach(char c in "ÁÉÍÓÚÃÕÂÊÔÇáéíóúãõâêôç0123456789") Check(font.HasCharacter(c),"font glyph "+c);
             Check(PixelFont.FitSize("COMEÇAR DEFESA",188,22,16)>=8,"readable narrow-window button");
             Check(PixelFont.FitSize("DEFESA ZUMBI",385,45,32)>=24,"readable title");
@@ -46,7 +46,7 @@ namespace ZombieAttack.Editor
             Check(!run.zombies.Contains(zombie)&&run.blood.particles.Count==18,"lethal hit keeps its burst after zombie removal");
             int count=run.blood.particles.Count; run.Hit(zombie,2,true);
             Check(run.blood.particles.Count==count,"removed targets cannot emit twice");
-            run.coins.Clear(); run.spawned=run.total; run.Tick(.05f);
+            run.coins.Clear(); run.spawned=run.total; for(int i=0;i<65;i++)run.Tick(.05f);
             Check(run.state==RunState.Shop&&run.blood.stains.Count==0&&run.blood.particles.Count==0,"wave completion clears all blood");
             run=Fresh(catalog); zombie=Enemy(run); run.Hit(zombie,1,false); run.Start(true);
             Check(run.blood.stains.Count==0&&run.blood.particles.Count==0,"restart clears blood");

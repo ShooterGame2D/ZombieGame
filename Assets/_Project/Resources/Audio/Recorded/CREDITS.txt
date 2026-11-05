@@ -1,0 +1,21 @@
+Defesa Zumbi — gravações e foley de armas (CC0-1.0)
+
+The Free Firearm Sound Library
+Autores: Ben Jaszczak, Brian Nelson, Kevin Heras e Matthew Nanney.
+Fonte: https://opengameart.org/content/the-free-firearm-sound-library
+Pacote: Prepared SFX Library.7z
+Licença: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+
+Medieval sound effects — Weapon Textures
+Autores: Ben Jaszczak e Brian Nelson / Still North Media.
+Fonte: https://opengameart.org/content/medieval-sound-effects-weapon-textures
+Pacote: medieval_sfx_textures_1_of_2.7z
+Licença declarada na fonte: CC0 1.0.
+
+O arquivo sources.json identifica a gravação original e as alterações de cada WAV.
+Os disparos de pistola, revólver, submetralhadora, rifle, escopeta, arco e besta são
+recortes de gravações das respectivas famílias. Machado, bumerangue e shuriken
+usam foley de passagem/arremesso. Estilingue combina corda e elástico sintetizado;
+parafusadeira combina mecanismo e sopro pneumático; lançador usa impacto grave.
+As recargas usam foley mecânico/de manuseio com variações de velocidade.
+Efeitos complementares e as oito músicas são composições/sínteses originais do projeto.

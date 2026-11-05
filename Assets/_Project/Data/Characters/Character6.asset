@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.CharacterData
   title: Lenhador
   description: "Arremesso poderoso: 18 de dano em \xE1rea na mira."
-  abilityTitle: Corte devastador
-  abilityDescription: "Arremesso poderoso: 18 de dano em \xE1rea na mira."
+  abilityTitle: Madeira abaixo!
+  abilityDescription: "Mire em uma coluna e derrube uma \xE1rvore que elimina todos
+    os zumbis nela."
   mapTitle: Serraria na floresta
   theme: 6
   weapon: {fileID: 11400000, guid: a2541c728dd028741bd2e34648629365, type: 2}

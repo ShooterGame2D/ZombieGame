@@ -15,8 +15,8 @@ MonoBehaviour:
   kind: 2
   title: Explosiva
   description: "Disparo com dano em \xE1rea"
-  price: 80
-  health: 85
-  damage: 4
-  interval: 3
+  price: 155
+  health: 75
+  damage: 2.6
+  interval: 4
   radius: 170

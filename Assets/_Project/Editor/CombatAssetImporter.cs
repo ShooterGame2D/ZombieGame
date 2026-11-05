@@ -10,7 +10,7 @@ namespace ZombieAttack.Editor
     {
         void OnPreprocessTexture()
         {
-            if(!assetPath.StartsWith("Assets/_Project/Art/Combat-v1/")||!assetPath.EndsWith(".png")) return;
+            if((!assetPath.StartsWith("Assets/_Project/Art/Combat-v1/")&&!assetPath.StartsWith("Assets/_Project/Resources/Art/Expansion/"))||!assetPath.EndsWith(".png")) return;
             var importer=(TextureImporter)assetImporter;
             importer.textureType=TextureImporterType.Sprite; importer.spriteImportMode=SpriteImportMode.Multiple;
             importer.mipmapEnabled=false; importer.filterMode=FilterMode.Point; importer.wrapMode=TextureWrapMode.Clamp;

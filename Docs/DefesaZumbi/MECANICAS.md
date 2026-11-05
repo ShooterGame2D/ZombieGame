@@ -1,13 +1,23 @@
-# Mecânicas da edição pixel
+# Defesa Zumbi — Edição Pixel
+
+Versão 0.4 do protótipo, com visual inteiramente em pixel art, feita na Unity 6000.3.25f1. O jogador protege sua posição contra zumbis que vêm da frente e das costas. Os dois lados continuam em movimento o tempo todo.
+
+## Jogar
+
+Abra **JOGAR.cmd** nesta pasta ou `Builds/Windows/Defesa Zumbi.exe`. A versão de navegador fica em `Builds/Web` e precisa ser servida por HTTP. O endereço usado nesta sessão é http://127.0.0.1:8765/; recarregue a página para receber a nova versão.
+
+A tela inicial tem **Jogar**, **Tutorial** e **Configurações**. Em Jogar, escolha um personagem e clique em **Começar defesa**. O tutorial ensina em dez etapas, com explicações pausadas, uma mini-onda sem perda de vida e uma compra real na loja de treino. Os oito personagens estão liberados para experimentar o protótipo; gemas e recorde continuam sendo salvos. As demonstrações não gravam recompensas.
 
 ## Controles
 
 | Ação | Controle |
 | --- | --- |
 | Mirar | Mouse |
-| Disparar ou coletar | Clique esquerdo; segure para disparar na cadência da arma |
-| Alternar frente/costas | Q, E, Tab ou botão de troca na tela |
-| Habilidade especial | Espaço ou botão direito |
+| Disparar | Clique esquerdo; segure para disparar na cadência da arma |
+| Coletar moeda | Mire nela e clique com o botão direito (M2) |
+| Recarregar antes de esvaziar | R |
+| Alternar frente/costas | Q, E, Tab ou rodinha do mouse |
+| Habilidade especial | Somente Espaço |
 | Próxima onda na loja | Enter |
 | Pausar | Esc |
 
@@ -17,22 +27,22 @@ O radar mostra frente na metade superior e costas na inferior, com sua posição
 
 | Personagem | Arma inicial | Vida | Habilidade | Recarga | Cenário |
 | --- | --- | ---: | --- | ---: | --- |
-| Recruta | Pistola gasta | 110 | Granada: 12 de dano em área na mira | 22 s | Posto militar |
+| Recruta | Pistola gasta | 110 | Granada arremessada: 16 de dano ao cair | 22 s | Posto militar |
 | Indígena | Arco simples | 95 | Raízes: prende o lado atual por 5 s | 24 s | Amazônia |
 | Engenheiro | Parafusadeira de pregos | 105 | Torre automática no lado atual por 10 s | 30 s | Canteiro de obras |
-| Cowboy | Revólver antigo | 100 | Olho de águia: dano 2,5× durante 6 s | 26 s | Faroeste |
+| Cowboy | Revólver antigo | 100 | Olho de águia: dano 2,5×, visão âmbar e mundo a 32% da velocidade por 5 s | 26 s | Faroeste |
 | Canguru | Bumerangue | 125 | Salto sísmico: dano e empurrão no lado atual | 23 s | Outback |
 | Criança | Estilingue em Y | 80 | Isca: distrai o lado atual durante 6 s | 22 s | Pátio da escola |
-| Lenhador | Machado de arremesso | 135 | Corte devastador: 18 de dano em área na mira | 26 s | Serraria na floresta |
+| Lenhador | Machado de arremesso | 135 | Árvore caindo: elimina a coluna escolhida pela mira | 26 s | Serraria na floresta |
 | Ninja | Shuriken de treino | 90 | Fumaça: invulnerabilidade por 5 s e rajada no lado atual | 30 s | Templo ao luar |
 
-As armas iniciais ficam próximas em potência: dano 0,95–1,10, cadência 2,4–2,9/s e recarga 2,3–2,6 s. A identidade principal vem da habilidade, vida, visual e cenário. O machado é arremessado para permitir o mesmo combate de mira fixa. Arco, estilingue e armas arremessáveis usam lotes de projéteis equivalentes ao pente do protótipo.
+As armas iniciais têm potência inicial semelhante; o machado causa 2,1 de dano por arremesso (intervalo mínimo 0,8 s) e o bumerangue 3,8 (intervalo 1,5 s), compensando o voo mais lento. A identidade principal vem da habilidade, vida, visual e cenário. O machado é arremessado para permitir o mesmo combate de mira fixa. Arco, estilingue e armas arremessáveis usam lotes de projéteis equivalentes ao pente do protótipo.
 
 ## Munição e arsenal
 
-Não existe regeneração de munição. O pente só inicia recarga ao ficar vazio, desde que exista reserva. O jogo continua durante a recarga, inclusive após trocar de câmera. A transferência da reserva para o pente acontece quando o tempo termina; reserva insuficiente carrega apenas a quantidade disponível. Coletar moedas não gasta tiros e continua possível durante a recarga.
+Não existe regeneração de munição. R inicia uma recarga parcial, preservando as balas já no pente e consumindo apenas as que faltam na reserva. O pente vazio continua iniciando a recarga automaticamente, desde que exista reserva. O jogo continua durante a recarga, inclusive após trocar de câmera. A transferência da reserva para o pente acontece quando o tempo termina; reserva insuficiente carrega apenas a quantidade disponível. Coletar moedas não gasta tiros e continua possível durante a recarga.
 
-A loja tem três abas: **Armas**, **Melhorias e munição** e **Torres e barricadas**. O intervalo dura 45 segundos para permitir compras nos dois lados, podendo ser encerrado por Enter.
+A loja tem três abas: **Armas**, **Melhorias e munição** e **Torres e barricadas**. Depois de eliminar os inimigos, um contador de 3 segundos encerra a onda; moedas restantes são recolhidas automaticamente. O intervalo de compras dura 35 segundos para permitir compras nos dois lados, podendo ser encerrado por Enter.
 
 Todos acessam o mesmo arsenal e os mesmos preços:
 
@@ -46,13 +56,13 @@ Todos acessam o mesmo arsenal e os mesmos preços:
 
 A compra de arma inclui dois pentes de reserva. A munição carregada da arma anterior volta para a reserva, e a nova arma inicia uma recarga. Armas já compradas podem ser reequipadas gratuitamente na loja. As melhorias da partida acompanham o jogador ao trocar de arma.
 
-Um pacote de 36 unidades de munição custa 12 moedas e serve para a arma equipada, inclusive flechas e objetos arremessáveis. Pente maior adiciona duas unidades por nível. Recarga rápida reduz o tempo em 16% por nível, com mínimo de 0,65 s. Há também melhorias de dano, cadência e cura de 30% da vida.
+Um pacote de 36 unidades de munição custa 24 moedas, mais 4 a cada cinco ondas e serve para a arma equipada, inclusive flechas e objetos arremessáveis. Pente maior adiciona duas unidades por nível. Recarga rápida reduz o tempo em 16% por nível, com mínimo de 0,65 s. Há também melhorias de dano, cadência e cura de 30% da vida.
 
 ## Torres e barricadas
 
 Cada lado tem três posições independentes de torre. A posição da barricada fica mais longe do jogador, no mesmo alinhamento da torre: **horda → barricada → torre → jogador**.
 
-Uma barricada só pode ser comprada se já houver uma torre atrás dela. Ela ocupa um espaço separado, recebe os ataques primeiro e pode ser consertada ou reforçada. Para comprar defesas do outro lado, troque a câmera no painel de torres ou use Q/E. Atiradora custa 45, Gelo 60, Explosiva 80 e Barricada 25 moedas.
+Uma barricada só pode ser comprada se já houver uma torre atrás dela. Ela ocupa um espaço separado, recebe os ataques primeiro e pode ser consertada ou reforçada. Para comprar defesas do outro lado, troque a câmera no painel de torres ou use Q/E. Atiradora custa 90, Gelo 120, Explosiva 155 e Barricada 45 moedas. A atiradora causa 1,05 a cada 1,65 s; a explosiva 2,6 a cada 4 s; gelo reduz a velocidade em 35%. Melhorias acrescentam 30% do dano base por nível. É possível substituir uma torre por outro modelo pagando o preço completo: o nível reinicia e a barricada permanece. Torres/barricadas indicam nível máximo no nível 4; melhorias de arma, no 5.
 
 ## Zumbis e economia
 
@@ -67,17 +77,17 @@ Uma barricada só pode ser comprada se já houver uma torre atrás dela. Ela ocu
 | Brutamontes | 5 | Mais vida e dano | 12 |
 | Médico | 5 | Cura aliados próximos do mesmo lado | 9 |
 | Sombra | 6 | Acelera quando está fora da câmera | 10 |
-| Comandante | A cada 10 ondas | Mais vida e invoca errantes | 50 |
+| Chefes | A cada 5 ondas | Comandante invoca; Couraçado resiste a tiros no corpo; Pestilento cospe em três faixas; Colosso avança em arrancadas | 40 + 10 × categoria |
 
 A queda de moedas é aleatória: 52% nos primeiros quatro tipos, 62% nos demais e 100% no comandante. Cada moeda mantém o valor de seu tipo e expira após quatro segundos, inclusive fora da câmera. O radar também marca moedas do lado escondido com pontos pequenos.
 
-Para que a compra de munição não dependa apenas da sorte, vencer uma onda concede um bônus de `12 + 3 × número da onda` moedas. O valor aparece na loja. Esses números são balanceamento inicial ajustável.
+Para que a compra de munição não dependa apenas da sorte, vencer uma onda concede um bônus de `24 + 4 × número da onda` moedas. O valor aparece na loja. Esses números são balanceamento inicial ajustável.
 
 ## Arte e som
 
-Há dez sprites de zumbis, oito retratos de personagens e dezesseis vistas de cenário (frente e costas para cada personagem). As novas artes foram geradas por IA para este projeto e são carregadas de `Assets/_Project/Resources/Art`. Os assets atuais estão em `Assets/_Project/Resources/Art/Pixel`; os prompts estão em `ASSETS-PIXEL.md`.
+Há dez sprites de zumbis, oito retratos de personagens e dezesseis vistas de cenário (frente e costas para cada personagem). As novas artes foram geradas por IA para este projeto e são carregadas de `Assets/_Project/Resources/Art`. Os assets atuais estão em `Assets/_Project/Resources/Art/Pixel`; os prompts estão em `docs/ASSETS-PIXEL.md`. A edição anterior foi preservada em `Assets/_Project/ArtArchive`.
 
-A edição pixel usa contornos escuros, paleta reduzida, filtro Point sem suavização e painéis em blocos. Os textos usam Press Start 2P, do Google Fonts, sem sombras. A fonte original e sua licença SIL Open Font License estão incluídas em `Assets/_Project/Resources/Fonts`, funcionando também offline.
+A edição pixel usa contornos escuros, paleta reduzida, filtro Point sem suavização e painéis em blocos. Os textos usam Atkinson Hyperlegible, do Google Fonts, sem sombras. A fonte original e sua licença SIL Open Font License estão incluídas em `Assets/_Project/Resources/Fonts`, funcionando também offline.
 
 A arte de combate fica em `Assets/_Project/Art/Combat-v1`: 13 folhas de armas, 10 folhas de ataques de zumbis, três torres e uma barricada, com seis quadros por folha (162 sprites). Os PNGs mantêm transparência e os recortes ficam disponíveis como sprites na Unity. O catálogo `Resources/CombatSpriteCatalog.asset` liga as imagens ao jogo. A geração usou a ferramenta integrada de imagens; os prompts estão em `generation-prompts.json`.
 
@@ -87,4 +97,51 @@ O arco puxa a corda antes de soltar a flecha. Um clique prepara e dispara uma fl
 
 Acertos nos zumbis lançam partículas de sangue a partir do ponto atingido. As gotas caem e deixam manchas fixas no chão de cada câmera, apagadas ao finalizar a onda ou reiniciar a partida. Acertos na cabeça e mortes produzem rajadas mais fortes; pausar também congela as partículas. Os efeitos têm limites de quantidade e não interferem na aleatoriedade das moedas.
 
-Os sons são sintetizados em camadas: disparos de armas de fogo, corda de arco, elástico, motor de pregador, arremessos, recarga, metal, madeira, moedas, gemidos e habilidades. Efeitos de inimigos fora da câmera têm volume reduzido; os avisos visuais identificam a direção sem depender do áudio. Há botão de som no menu.
+Gravações e foley complementam os sons sintetizados em camadas: disparos de armas de fogo, corda de arco, elástico, motor de pregador, arremessos, recarga, metal, madeira, moedas, gemidos e habilidades. Efeitos de inimigos fora da câmera têm volume reduzido; os avisos visuais identificam a direção sem depender do áudio. As configurações oferecem volume geral, efeitos, música, brilho, sensibilidade e intensidade de tremor, salvos localmente.
+
+## Editar na Unity
+
+1. Adicione esta pasta no Unity Hub como projeto existente.
+2. Abra com Unity **6000.3.25f1**.
+3. Abra `Assets/_Project/Scenes/Boot.unity` e pressione **Play**.
+
+Os dados editáveis ficam em `Assets/_Project/Data`. O catálogo ativo fica em `Assets/_Project/Resources/GameCatalog.asset`. Não é necessário conectar objetos manualmente no Inspector.
+
+O menu **Defesa Zumbi > Preparar projeto** restaura os valores iniciais da versão 0.4. As compilações validam e usam os dados atuais, sem restaurar o balanceamento.
+
+- `Scripts/Run/RunManager.cs`: simulação dos dois lados, munição, compras e habilidades.
+- `Scripts/UI/GameApplication.cs`: entrada, radar, alertas e menus.
+- `Scripts/View/GameArtV2.cs`: sprites, cenários, armas e retratos.
+- `Scripts/View/DepthProjector.cs`: distância lógica para posição e escala.
+- `Scripts/Audio/PrototypeAudio.cs`: síntese e reprodução dos efeitos.
+- `Editor/PrototypeValidation.cs`: testes das mecânicas e integridade dos sons.
+
+## Progresso e limites
+
+O save do Windows fica em `%USERPROFILE%/AppData/LocalLow/Quintal Studio/Defesa Zumbi/profile.json`. A versão web usa o armazenamento local da Unity para o endereço usado. Os dois saves são independentes. A migração do protótipo antigo preserva gemas e recorde e adapta a seleção para o novo elenco.
+
+Esta versão permanece um protótipo 2D com perspectiva simulada e renderizador padrão da Unity. Os dez tipos de zumbi têm caminhada com oito quadros, sincronizada à velocidade real e com alinhamento dos pés. A sequência continua na câmera escondida, desacelera no gelo e para durante pausa, raízes, isca e ataques estacionários. As folhas ficam em `Assets/_Project/Art/AnimationDrafts/Walk-v1`; o catálogo de execução está em `Assets/_Project/Resources/ZombieWalkAtlas.asset`. Armas e defesas usam folhas de sprites; o chão livre e os efeitos complementares usam desenho por código. A interface usa desenho imediato; os tiros são resolvidos por áreas de cabeça/corpo e machados e bumerangues têm tempo de voo; arco e estilingue têm preparação antes de disparar. Só existem os lados frente e costas. Preços, probabilidades e dificuldade ainda precisam de teste de balanceamento com jogadores.
+
+## Validação da versão 0.4
+
+As compilações Windows e WebGL passaram em 717 verificações automatizadas: 92 de mecânicas, 127 de caminhada, 51 de texto/sangue, 317 de animações de combate e 130 da atualização 0.4. O teste manual no navegador conferiu menu, configurações, tiro, cabeça, recarga antecipada, M2, scroll, especial e contador entre ondas.
+
+Capturas da edição pixel estão na pasta Preview, com nomes iniciados por pixel-. As capturas v2- registram a edição anterior.
+
+
+### Correção do carregamento web
+
+O carregamento agora identifica os arquivos da compilação e evita reutilizar dados antigos do cache da Unity. Isso corrige a falha de inicialização causada pela mistura de versões, preservando o progresso salvo. As próximas compilações usam nomes baseados no conteúdo dos arquivos. Para iniciar o servidor e abrir o navegador, use JOGAR-WEB.cmd; se ele já estiver ativo, o atalho reutiliza o servidor.
+
+
+
+
+## Atualização 0.4
+
+O terreno usa um corredor amplo sem obstáculos nas três colunas. Todos os zumbis surgem da terra antes de avançar; a isca de ursinho troca sua animação para distração. Novos sprites de arco, estilingue, machado, granada, árvore, ursinho, emergência e distração estão em `Assets/_Project/Resources/Art/Expansion`, com seis quadros cada e prompts de geração integrados. A galeria está em `Assets/_Project/Art/Expansion-v4/preview.html`.
+
+Chefes principais aparecem nas ondas 5, 10, 15, 20 e assim por diante, alternando quatro variantes. A partir da onda 8, chefes de categorias já enfrentadas retornam como elites com 60% da vida. O chefe principal tem prioridade na barra superior, que informa também sua câmera.
+
+No Windows, a sensibilidade controla uma mira relativa com captura do mouse durante o combate. Na web, usa uma curva de resposta absoluta que mantém centro e bordas acessíveis e evita depender de pointer lock em navegadores integrados. ESC pausa. O HUD fica estável durante os tremores do cenário. A câmera lenta do cowboy afeta as duas frentes, ataques e projéteis, mas dura cinco segundos reais.
+
+Os 30 sons gravados/editados estão em `Assets/_Project/Resources/Audio/Recorded`, com créditos CC0 e manifestos. As famílias de armas de fogo, arco e besta usam gravações; arremessos e mecanismos usam foley. A síntese original complementa explosões, impactos e avisos. Oito trilhas originais por cenário são geradas por `MapMusic.cs` e exportadas em `Art/Expansion-v4/Music`.

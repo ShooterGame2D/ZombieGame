@@ -1,0 +1,30 @@
+using UnityEngine;
+namespace ZombieAttack
+{
+    public static class GameSettings
+    {
+        public static float Brightness=1, Sensitivity=1, Master=.8f, Effects=.85f, Music=.35f, Shake=.65f;
+        public static Vector2 BrowserAim(Vector2 position)
+        {
+            // Keep native coordinates over interface panels; shape movement only in the playfield.
+            if(position.y<=175||position.y>=790||position.x>1300&&position.y<405)return position;
+            float nx=Mathf.Clamp((position.x-800)/800,-1,1),ny=Mathf.Clamp((position.y-482.5f)/307.5f,-1,1);
+            float sensitivity=Mathf.Clamp(Sensitivity,.25f,3);
+            return new Vector2(800+nx*sensitivity/(1+(sensitivity-1)*Mathf.Abs(nx))*800,
+                482.5f+ny*sensitivity/(1+(sensitivity-1)*Mathf.Abs(ny))*307.5f);
+        }
+        public static void Load()
+        {
+            Brightness=Mathf.Clamp(PlayerPrefs.GetFloat("DZ.Brightness",1),.65f,1.35f);
+            Sensitivity=Mathf.Clamp(PlayerPrefs.GetFloat("DZ.Sensitivity",1),.25f,3);
+            Master=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Master",.8f)); Effects=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Effects",.85f));
+            Music=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Music",.35f)); Shake=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Shake",.65f));
+        }
+        public static void Save()
+        {
+            PlayerPrefs.SetFloat("DZ.Brightness",Brightness); PlayerPrefs.SetFloat("DZ.Sensitivity",Sensitivity);
+            PlayerPrefs.SetFloat("DZ.Master",Master); PlayerPrefs.SetFloat("DZ.Effects",Effects);
+            PlayerPrefs.SetFloat("DZ.Music",Music); PlayerPrefs.SetFloat("DZ.Shake",Shake); PlayerPrefs.Save();
+        }
+    }
+}

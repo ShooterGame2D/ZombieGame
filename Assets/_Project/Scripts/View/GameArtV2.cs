@@ -18,6 +18,7 @@ namespace ZombieAttack
             var uv=new Rect(index%2*.5f+.001f,1-(index/2+1)*.25f+.001f,.498f,.248f);
             if(rear && rearEnvironments==null) { uv.x+=uv.width; uv.width=-uv.width; }
             GUI.color=Color.white; GUI.DrawTextureWithTexCoords(new Rect(0,0,1600,900),atlas,uv);
+            ExpansionArt.Ground(theme);
             Rect(0,0,1600,120,new Color(.02f,.05f,.07f,.25f)); Rect(0,790,1600,110,new Color(.02f,.05f,.07f,.35f));
             for(int i=0;i<18;i++)
             {
@@ -39,7 +40,8 @@ namespace ZombieAttack
             GUI.color=z.hitFlash>0?new Color(1,1-z.hitFlash*.28f,1-z.hitFlash*.38f):Color.white;
             if(z.data.kind==ZombieKind.Shade) GUI.color=new Color(.8f,.86f,1,.72f+.28f*Mathf.Sin(time*2)*Mathf.Sin(time*2));
             var walk=ZombieWalkAnimation.Get(z.data.kind);
-            if(CombatSprites.Attack(z)) { }
+            if(ExpansionArt.ZombieState(z)) { }
+            else if(CombatSprites.Attack(z)) { }
             else if(walk!=null)
                 GUI.DrawTextureWithTexCoords(ZombieWalkAnimation.DrawRect(z,walk),walk.texture,ZombieWalkAnimation.UV(z.phase));
             else

@@ -28,9 +28,9 @@ namespace ZombieAttack
             if(run.BowDrawing) return Mathf.Clamp(1+Mathf.FloorToInt(run.BowDrawProgress*3),1,3);
             if(run.weaponAction>0)
             {
-                if(run.weapon.kind==WeaponKind.Bow) return run.weaponAction>.1f?4:5;
+                if(run.weapon.kind==WeaponKind.Bow||run.weapon.kind==WeaponKind.Slingshot) return run.weaponAction>.1f?4:5;
                 if(run.weapon.kind==WeaponKind.Boomerang||run.weapon.kind==WeaponKind.Shuriken||run.weapon.kind==WeaponKind.Axe)
-                    return Mathf.Clamp(1+Mathf.FloorToInt((1-run.weaponAction/.28f)*5),1,5);
+                    return Mathf.Clamp(1+Mathf.FloorToInt((1-run.weaponAction/(run.weapon.kind==WeaponKind.Boomerang?1.25f:run.weapon.kind==WeaponKind.Axe?.7f:.28f))*5),1,5);
                 return run.weaponAction>.18f?1:run.weaponAction>.08f?2:3;
             }
             if(run.Reloading) return run.ReloadProgress<.55f?4:5;
@@ -38,6 +38,8 @@ namespace ZombieAttack
         }
         public static bool Weapon(Vector2 aim,RunManager run,float time)
         {
+            if(run.weapon.kind==WeaponKind.Boomerang&&run.thrown.Exists(a=>a.kind==WeaponKind.Boomerang&&!a.grenade))return true;
+            if(ExpansionArt.Weapon(aim,run,time))return true;
             var sheet=WeaponSheet(run.weapon.kind); if(sheet==null||sheet.texture==null) return false;
             int frame=WeaponFrame(run);
             float width=run.weapon.kind==WeaponKind.Bow?440:run.weapon.kind==WeaponKind.Axe?370:340;

@@ -15,7 +15,8 @@ MonoBehaviour:
   title: Recruta
   description: "Explos\xE3o na mira: 12 de dano em \xE1rea."
   abilityTitle: Granada
-  abilityDescription: "Explos\xE3o na mira: 12 de dano em \xE1rea."
+  abilityDescription: "Arremessa uma granada: explode ao cair e causa 16 de dano
+    em \xE1rea."
   mapTitle: Posto militar
   theme: 0
   weapon: {fileID: 11400000, guid: 572c98afae41de247b363c046322635e, type: 2}

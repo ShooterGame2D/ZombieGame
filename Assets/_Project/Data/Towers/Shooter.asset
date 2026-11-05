@@ -15,8 +15,8 @@ MonoBehaviour:
   kind: 0
   title: Atiradora
   description: "Tiro autom\xE1tico neste lado"
-  price: 45
-  health: 85
-  damage: 1.5
-  interval: 1.2
+  price: 90
+  health: 75
+  damage: 1.05
+  interval: 1.65
   radius: 170

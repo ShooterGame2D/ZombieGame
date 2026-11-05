@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Cowboy
   description: "Disparos causam 2,5\xD7 dano durante 6 s."
   abilityTitle: "Olho de \xE1guia"
-  abilityDescription: "Disparos causam 2,5\xD7 dano durante 6 s."
+  abilityDescription: "5 s de c\xE2mera lenta, vis\xE3o \xE2mbar e dano 2,5\xD7."
   mapTitle: Faroeste
   theme: 3
   weapon: {fileID: 11400000, guid: 7a47a173f69dbc14bacba824d6374d75, type: 2}

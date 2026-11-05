@@ -1,0 +1,272 @@
+[
+  {
+    "file": "shot_Pistol.wav",
+    "source": "Firearms/Prepared SFX Library/1911/A_42P.wav",
+    "start_seconds": 0.934,
+    "duration": 0.8,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Revolver.wav",
+    "source": "Firearms/Prepared SFX Library/Smith & Wesson 642/V_27P.wav",
+    "start_seconds": 0.799,
+    "duration": 1.0,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Smg.wav",
+    "source": "Firearms/Prepared SFX Library/Carl Gustav M45/G_31P.wav",
+    "start_seconds": 0.304,
+    "duration": 0.55,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Rifle.wav",
+    "source": "Firearms/Prepared SFX Library/AR-15/D_32P.wav",
+    "start_seconds": 0.694,
+    "duration": 0.9,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Shotgun.wav",
+    "source": "Firearms/Prepared SFX Library/Model 12/K_22P.wav",
+    "start_seconds": 0.834,
+    "duration": 1.2,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Bow.wav",
+    "source": "Medieval/English Longbow Shoot.wav",
+    "start_seconds": 0.109,
+    "duration": 0.65,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Crossbow.wav",
+    "source": "Medieval/Crossbow Shoot.wav",
+    "start_seconds": 0.329,
+    "duration": 0.65,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Axe.wav",
+    "source": "Medieval/Katana Swing.wav",
+    "start_seconds": 0.384,
+    "duration": 0.65,
+    "speed": 0.7,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Boomerang.wav",
+    "source": "Medieval/Scythian Recurve Heavy Arrow Passby.wav",
+    "start_seconds": 0.304,
+    "duration": 0.85,
+    "speed": 0.7,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Shuriken.wav",
+    "source": "Medieval/Crossbow Bolt Pass.wav",
+    "start_seconds": 0.559,
+    "duration": 0.32,
+    "speed": 1.5,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Slingshot.wav",
+    "source": "Medieval/Scythian Recurve Shoot.wav",
+    "start_seconds": 0.219,
+    "duration": 0.4,
+    "speed": 1.6,
+    "processing": "elastic",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Nailgun.wav",
+    "source": "Medieval/Crossbow Lever Trigger.wav",
+    "start_seconds": 0.184,
+    "duration": 0.25,
+    "speed": 1.7,
+    "processing": "pneumatic",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "shot_Launcher.wav",
+    "source": "Firearms/Prepared SFX Library/CD/H_21P.wav",
+    "start_seconds": 0.454,
+    "duration": 0.9,
+    "speed": 0.6,
+    "processing": "thump",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "draw_Bow.wav",
+    "source": "Medieval/English Longbow Draw.wav",
+    "start_seconds": 1.764,
+    "duration": 0.28,
+    "speed": 1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "wood.wav",
+    "source": "Medieval/English Longbow Set Arrow.wav",
+    "start_seconds": 0.084,
+    "duration": 0.22,
+    "speed": 0.75,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "metal.wav",
+    "source": "Medieval/Katana Sheath Fast.wav",
+    "start_seconds": 2.624,
+    "duration": 0.3,
+    "speed": 1.2,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "tower.wav",
+    "source": "Firearms/Prepared SFX Library/Ruger Mark III/R_35P.wav",
+    "start_seconds": 0.474,
+    "duration": 0.4,
+    "speed": 1.1,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Pistol.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 0.85,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Bow.wav",
+    "source": "Medieval/English Longbow Nock Arrow.wav",
+    "start_seconds": 0.054,
+    "duration": 0.85,
+    "speed": 0.885,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Nailgun.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 0.9199999999999999,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Revolver.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 0.955,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Boomerang.wav",
+    "source": "Medieval/Arrow Fletching.wav",
+    "start_seconds": 5.599,
+    "duration": 0.85,
+    "speed": 0.99,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Slingshot.wav",
+    "source": "Medieval/Arrow Fletching.wav",
+    "start_seconds": 5.599,
+    "duration": 0.85,
+    "speed": 1.025,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Axe.wav",
+    "source": "Medieval/Arrow Fletching.wav",
+    "start_seconds": 5.599,
+    "duration": 0.85,
+    "speed": 1.06,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Shuriken.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 1.095,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Smg.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 1.13,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Shotgun.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 1.165,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Rifle.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 1.2,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Crossbow.wav",
+    "source": "Medieval/Crossbow Place Bolt.wav",
+    "start_seconds": 0.389,
+    "duration": 0.85,
+    "speed": 1.2349999999999999,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  },
+  {
+    "file": "reload_Launcher.wav",
+    "source": "Medieval/Crossbow Set Nut Against Sear.wav",
+    "start_seconds": 0.194,
+    "duration": 0.85,
+    "speed": 1.27,
+    "processing": "trim, mono, resample, peak normalize, boundary fade",
+    "license": "CC0-1.0"
+  }
+]

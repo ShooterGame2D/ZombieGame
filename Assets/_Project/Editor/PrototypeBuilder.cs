@@ -71,7 +71,7 @@ namespace ZombieAttack.Editor
                 importer.textureType=TextureImporterType.Default; importer.alphaIsTransparency=true; importer.mipmapEnabled=false; importer.filterMode=FilterMode.Point; importer.npotScale=TextureImporterNPOTScale.None; importer.wrapMode=TextureWrapMode.Clamp; importer.maxTextureSize=4096; importer.textureCompression=TextureImporterCompression.Uncompressed; importer.SaveAndReimport();
             }
             EditorUtility.SetDirty(catalog); EditorUtility.SetDirty(catalog.waves);
-            AssetDatabase.SaveAssets(); AssetDatabase.Refresh(); Debug.Log("PROTOTYPE_DATA_RESTORED");
+            AssetDatabase.SaveAssets(); AssetDatabase.Refresh(); ExpansionSetup.Apply(); Debug.Log("PROTOTYPE_DATA_RESTORED");
         }
         static T Asset<T>(string path) where T:ScriptableObject
         {
