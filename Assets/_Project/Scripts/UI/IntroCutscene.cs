@@ -10,6 +10,7 @@ namespace ZHold
     public sealed class IntroCutscene : MonoBehaviour
     {
         public const string RelativePath = "Cinematics/Z-Hold-Intro.mp4";
+        public const string LinuxRelativePath = "Cinematics/Z-Hold-Intro.webm";
         Action completed;
         bool finished;
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -28,7 +29,11 @@ namespace ZHold
             player=gameObject.AddComponent<VideoPlayer>();
             player.playOnAwake=false; player.isLooping=false;
             player.source=VideoSource.Url;
+#if UNITY_EDITOR_LINUX || (UNITY_STANDALONE_LINUX && !UNITY_EDITOR)
+            player.url=new Uri(Path.Combine(Application.streamingAssetsPath,LinuxRelativePath)).AbsoluteUri;
+#else
             player.url=new Uri(Path.Combine(Application.streamingAssetsPath,RelativePath)).AbsoluteUri;
+#endif
             player.renderMode=VideoRenderMode.APIOnly;
             player.audioOutputMode=VideoAudioOutputMode.Direct;
             player.waitForFirstFrame=true; player.skipOnDrop=true;
