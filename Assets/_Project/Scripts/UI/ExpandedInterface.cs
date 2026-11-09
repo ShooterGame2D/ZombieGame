@@ -11,22 +11,26 @@ namespace ZHold
         {
             if(logoAnimation==null)logoAnimation=Resources.Load<Texture2D>("Art/UI/ZHoldLogoAnimation");
             if(logoAnimation==null)return;
-            const int columns=4,rows=4,frameCount=16;
-            int cycleFrame=Mathf.FloorToInt(time*10)%36;
-            int frame=Mathf.Min(cycleFrame,frameCount-1);
-            int column=frame%columns,row=frame/columns;
-            var uv=new UnityEngine.Rect(column/(float)columns,1f-(row+1)/(float)rows,1f/columns,1f/rows);
             GUI.color=Color.white;
-            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,width,height),logoAnimation,uv,true);
+            GUI.DrawTexture(new UnityEngine.Rect(x,y,width,height),logoAnimation,ScaleMode.StretchToFill,true);
+            Vector2 center=new Vector2(x+width*.5f,y+height*.5f);
+            for(int i=0;i<9;i++)
+            {
+                float angle=time*(.72f+i%3*.08f)+i*Mathf.PI*2/9;
+                float pulse=.72f+.28f*Mathf.Sin(time*1.7f+i*1.9f);
+                float px=center.x+Mathf.Cos(angle)*width*.43f,py=center.y+Mathf.Sin(angle)*height*.43f;
+                float size=3+(i%3)*2;
+                Ellipse(px-size/2,py-size/2,size,size,new Color(1,.12f,.08f,.35f+.5f*pulse));
+            }
         }
 
         void Home()
         {
             Rect(0,0,1600,900,new Color(.055f,.075f,.12f,.22f));
-            AnimatedLogo(-80,52,740,210);
-            if(Button("JOGAR",80,314,430,62,Gold,true,27))showHome=false;
-            if(Button("TUTORIAL",80,402,430,62,Mint,true,25))Run.StartTutorial();
-            if(Button("CONFIGURAÇÕES",80,490,430,62,Hex("345452"),true,22))settings=true;
+            AnimatedLogo(-20,18,720,324);
+            if(Button("JOGAR",80,390,430,62,Gold,true,27))showHome=false;
+            if(Button("TUTORIAL",80,490,430,62,Mint,true,25))Run.StartTutorial();
+            if(Button("CONFIGURAÇÕES",80,590,430,62,Hex("345452"),true,22))settings=true;
             GameArt.Portrait(Run.profile.selected,990,214,440,475);
             Text("Recorde: "+Run.profile.bestWave+" ondas",1035,704,435,38,25,Cream,true,TextAnchor.MiddleCenter);
         }
@@ -40,6 +44,12 @@ namespace ZHold
             value=GUI.HorizontalSlider(new UnityEngine.Rect(882,y+13,116,24),value,min,max);
             return value;
         }
+        bool ToggleSetting(string label,bool value,float y)
+        {
+            Text(label,368,y,470,38,25,Cream,true);
+            if(Button(value?"VISÍVEIS":"OCULTAS",890,y,325,38,value?Mint:Hex("345452"),true,20))value=!value;
+            return value;
+        }
         void SettingsPanel()
         {
             Shade();Panel(320,115,960,680);Tag("AJUSTE DO SEU JEITO",605,142,390,Mint);
@@ -50,8 +60,9 @@ namespace ZHold
             GameSettings.Effects=Setting("Efeitos sonoros",GameSettings.Effects,0,1,460);
             GameSettings.Music=Setting("Música do cenário",GameSettings.Music,0,1,520);
             GameSettings.Shake=Setting("Tremor de câmera",GameSettings.Shake,0,1,580);
-            Text("A sensibilidade vale para a mira durante a partida. ESC pausa.",368,642,850,34,21,Hex("BBCBC8"));
-            if(Button("SALVAR E VOLTAR",540,708,520,53,Gold,true,24)) {GameSettings.Save();settings=false;}
+            GameSettings.ShowCornerCrates=ToggleSetting("Caixas nos cantos",GameSettings.ShowCornerCrates,632);
+            Text("A sensibilidade vale para a mira durante a partida. ESC pausa.",368,680,850,28,19,Hex("BBCBC8"));
+            if(Button("SALVAR E VOLTAR",540,722,520,53,Gold,true,24)) {GameSettings.Save();settings=false;}
         }
         void Brightness()
         {

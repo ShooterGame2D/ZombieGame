@@ -12,21 +12,22 @@ namespace ZHold
             environments=Resources.Load<Texture2D>("Art/Maps-v5/Front") ?? Resources.Load<Texture2D>("Art/Pixel/Front");
             rearEnvironments=Resources.Load<Texture2D>("Art/Maps-v5/Back") ?? Resources.Load<Texture2D>("Art/Pixel/Back");
         }
-        public static void Background(MapTheme theme,ViewSide side,float time)
+        public static void Background(MapTheme theme,ViewSide side,float time,bool menu=false)
         {
             Load(); int index=(int)theme; bool rear=side==ViewSide.Back;
             var atlas=rear && rearEnvironments!=null?rearEnvironments:environments;
             var uv=BackgroundUV(index);
             if(rear && rearEnvironments==null) { uv.x+=uv.width; uv.width=-uv.width; }
             GUI.color=Color.white; GUI.DrawTextureWithTexCoords(new Rect(0,0,1600,900),atlas,uv);
-            Rect(0,0,1600,120,new Color(.02f,.05f,.07f,.25f)); Rect(0,790,1600,110,new Color(.02f,.05f,.07f,.35f));
+            if(!menu)
+            { Rect(0,0,1600,120,new Color(.02f,.05f,.07f,.25f)); Rect(0,790,1600,110,new Color(.02f,.05f,.07f,.35f)); }
             for(int i=0;i<18;i++)
             {
                 float x=(i*117+time*(3+i%3))%1600, y=210+(i*71%430)+Mathf.Sin(time*.6f+i)*10;
                 Ellipse(x,y,2+i%3,2+i%3,new Color(1,.88f,.58f,.18f));
             }
             // Low foreground supply crates mark the player's defensive position.
-            for(int k=0;k<2;k++)
+            if(GameSettings.ShowCornerCrates)for(int k=0;k<2;k++)
             {
                 float x=k==0?-25:1510;
                 Round(x,745,115,95,6,Hex("283935")); Rect(x+9,756,96,10,Hex("667359")); Rect(x+9,804,96,9,Hex("667359"));

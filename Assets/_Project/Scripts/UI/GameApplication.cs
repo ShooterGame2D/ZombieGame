@@ -108,7 +108,7 @@ namespace ZHold
             GUI.matrix=Matrix4x4.TRS(new Vector3(offsetX,offsetY,0),Quaternion.identity,new Vector3(scale,scale,1));
             var screenMatrix=GUI.matrix;
             if(Run.state!=RunState.Menu&&!Run.paused) GUI.matrix*=Matrix4x4.Translate(new Vector3(Mathf.Sin(time*79)*Run.shake*10*GameSettings.Shake,Mathf.Sin(time*103)*Run.shake*7*GameSettings.Shake,0));
-            GameArt.Background(Run.character.theme,Run.state==RunState.Menu?ViewSide.Front:Run.viewSide,time);
+            GameArt.Background(Run.character.theme,Run.state==RunState.Menu?ViewSide.Front:Run.viewSide,time,Run.state==RunState.Menu);
             if(Run.state==RunState.Menu) { Brightness(); allowButtons=!settings; if(showHome) Home();else Menu(); }
             else
             {

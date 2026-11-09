@@ -4,6 +4,7 @@ namespace ZHold
     public static class GameSettings
     {
         public static float Brightness=1, Sensitivity=1, Master=.8f, Effects=.85f, Music=.35f, Shake=.65f;
+        public static bool ShowCornerCrates=true;
         public static Vector2 BrowserAim(Vector2 position)
         {
             // Keep native coordinates over interface panels; shape movement only in the playfield.
@@ -19,12 +20,14 @@ namespace ZHold
             Sensitivity=Mathf.Clamp(LegacyProgress.Setting("Sensitivity",1),.25f,3);
             Master=Mathf.Clamp01(LegacyProgress.Setting("Master",.8f)); Effects=Mathf.Clamp01(LegacyProgress.Setting("Effects",.85f));
             Music=Mathf.Clamp01(LegacyProgress.Setting("Music",.35f)); Shake=Mathf.Clamp01(LegacyProgress.Setting("Shake",.65f));
+            ShowCornerCrates=PlayerPrefs.GetInt("ZHold.ShowCornerCrates",1)!=0;
         }
         public static void Save()
         {
             PlayerPrefs.SetFloat("ZHold.Brightness",Brightness); PlayerPrefs.SetFloat("ZHold.Sensitivity",Sensitivity);
             PlayerPrefs.SetFloat("ZHold.Master",Master); PlayerPrefs.SetFloat("ZHold.Effects",Effects);
-            PlayerPrefs.SetFloat("ZHold.Music",Music); PlayerPrefs.SetFloat("ZHold.Shake",Shake); PlayerPrefs.Save();
+            PlayerPrefs.SetFloat("ZHold.Music",Music); PlayerPrefs.SetFloat("ZHold.Shake",Shake);
+            PlayerPrefs.SetInt("ZHold.ShowCornerCrates",ShowCornerCrates?1:0); PlayerPrefs.Save();
         }
     }
 }
