@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class MapProgressionValidation
     {

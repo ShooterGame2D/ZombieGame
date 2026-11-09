@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     // Primitives use a four-unit pixel grid, including weapons and effects.
     public static class Draw2D

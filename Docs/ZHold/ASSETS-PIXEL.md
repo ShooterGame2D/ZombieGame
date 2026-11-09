@@ -1,6 +1,6 @@
 # Artes da edição pixel — versão 0.3
 
-Criadas em 28/10/2026 com a ferramenta integrada de geração de imagens (modo built-in). A imagem fornecida pelo usuário foi usada como referência de estilo e foi preservada em `Docs/DefesaZumbi/references/zombie-pixel-reference.png`. Os arquivos originais gerados foram copiados para `Assets/_Project/Resources/Art/Pixel`. Esta integração inclui apenas os assets da edição pixel.
+Criadas em 28/10/2026 com a ferramenta integrada de geração de imagens (modo built-in). A imagem fornecida pelo usuário foi usada como referência de estilo e foi preservada em `Docs/ZHold/references/zombie-pixel-reference.png`. Os arquivos originais gerados foram copiados para `Assets/_Project/Resources/Art/Pixel`. Esta integração inclui apenas os assets da edição pixel.
 
 Os recortes dos sprites são definidos por `PixelArtCatalog.cs`; a importação usa filtro Point e não usa mipmaps. A fonte bitmap 5×7 com acentos, os painéis, armas, moedas, defesas, mira e partículas são desenhados pelo código do projeto sobre uma grade de pixels. As folhas abaixo não são imagens da interface: são os assets utilizados pelo jogo.
 

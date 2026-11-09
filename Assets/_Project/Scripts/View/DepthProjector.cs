@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
     public enum ViewSide { Front, Right, Back, Left }
 

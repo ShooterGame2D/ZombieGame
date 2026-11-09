@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fec3300c3ae51df43a5ef725dab095fa, type: 3}
   m_Name: Waves
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.WaveConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.WaveConfig
   baseCount: 7
   extraPerWave: 3
   healthPerWave: 0.09

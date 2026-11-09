@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 128fc0f4791e95f43bf04cbe1d2887a1, type: 3}
   m_Name: Explosive
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.TowerData
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.TowerData
   kind: 2
   title: Explosiva
   description: "Disparo com dano em \xE1rea"

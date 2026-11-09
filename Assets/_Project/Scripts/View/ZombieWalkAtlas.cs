@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Animações de caminhada")]
+    [CreateAssetMenu(menuName = "Z-Hold/Animações de caminhada")]
     public class ZombieWalkAtlas : ScriptableObject
     {
         [Serializable]

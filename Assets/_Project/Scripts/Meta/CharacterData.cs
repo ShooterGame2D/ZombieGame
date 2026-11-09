@@ -1,9 +1,9 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public enum AbilityKind { Grenade, Roots, Turret, Deadeye, Stomp, Decoy, Cleave, Smoke }
     public enum MapTheme { Outpost, Amazon, Construction, Western, Outback, Playground, Forest, Dojo }
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Personagem")]
+    [CreateAssetMenu(menuName = "Z-Hold/Personagem")]
     public class CharacterData : ScriptableObject
     {
         public string title, description, abilityTitle, abilityDescription, mapTitle;

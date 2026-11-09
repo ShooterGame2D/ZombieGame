@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class VisualFeedbackValidation
     {
@@ -24,7 +24,7 @@ namespace ZombieAttack.Editor
             Check(font!=null&&font.name=="AtkinsonHyperlegible-Regular","bundled Atkinson Hyperlegible font");
             foreach(char c in "ÁÉÍÓÚÃÕÂÊÔÇáéíóúãõâêôç0123456789") Check(font.HasCharacter(c),"font glyph "+c);
             Check(PixelFont.FitSize("COMEÇAR DEFESA",188,22,16)>=8,"readable narrow-window button");
-            Check(PixelFont.FitSize("DEFESA ZUMBI",385,45,32)>=24,"readable title");
+            Check(PixelFont.FitSize("Z-HOLD",385,45,32)>=24,"readable title");
             var run=Fresh(catalog); var zombie=Enemy(run);
             var impact=zombie.Body.center+new Vector2(8,10); run.Hit(zombie,1,false,impact);
             Check(run.blood.particles.Count==9&&run.blood.stains.Count>0,"nonlethal hit creates droplets and ground blood");

@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
-    [CreateAssetMenu(menuName="Defesa Zumbi/Arte de combate")]
+    [CreateAssetMenu(menuName="Z-Hold/Arte de combate")]
     public class CombatSpriteCatalog : ScriptableObject
     {
         [Serializable] public class Sheet

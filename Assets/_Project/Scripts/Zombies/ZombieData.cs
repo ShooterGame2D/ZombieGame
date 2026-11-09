@@ -1,8 +1,8 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public enum ZombieKind { Crawler, Walker, Runner, Spitter, Brute, Boss, Armored, Volatile, Medic, Shade }
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Zumbi")]
+    [CreateAssetMenu(menuName = "Z-Hold/Zumbi")]
     public class ZombieData : ScriptableObject
     {
         public ZombieKind kind;

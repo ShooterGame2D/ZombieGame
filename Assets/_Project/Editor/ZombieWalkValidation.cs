@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class ZombieWalkValidation
     {

@@ -4,13 +4,13 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class ZombieWalkAssetCheck
     {
         const string Root = "Assets/_Project/Art/AnimationDrafts/Walk-v1";
 
-        [MenuItem("Defesa Zumbi/Validar folhas de caminhada")]
+        [MenuItem("Z-Hold/Validar folhas de caminhada")]
         public static void Validate()
         {
             var paths = Directory.GetFiles(Root, "*-walk.png");

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class PrototypeValidation
     {
@@ -114,6 +114,7 @@ namespace ZombieAttack.Editor
             CombatAnimationValidation.Run(c);
             ExpansionValidation.Run(c);
             MapProgressionValidation.Run(c);
+            IntroBrandingValidation.Run();
         }
     }
 }

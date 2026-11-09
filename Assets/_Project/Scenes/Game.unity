@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 871443137}
   - component: {fileID: 871443136}
   m_Layer: 0
-  m_Name: Defesa Zumbi - Runtime
+  m_Name: Z-Hold - Runtime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28d3e1fa960bec04c93cd01217f6827b, type: 3}
   m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.GameApplication
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.GameApplication
 --- !u!4 &871443137
 Transform:
   m_ObjectHideFlags: 0

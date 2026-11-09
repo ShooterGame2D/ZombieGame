@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public sealed class MapTextureImport : AssetPostprocessor
     {
@@ -19,7 +19,7 @@ namespace ZombieAttack.Editor
     }
     public static class MapProgressionSetup
     {
-        [MenuItem("Defesa Zumbi/Aplicar mapas e desbloqueios 0.5")]
+        [MenuItem("Z-Hold/Aplicar mapas e desbloqueios 0.5")]
         public static void Apply()
         {
             var catalog=AssetDatabase.LoadAssetAtPath<GameCatalog>("Assets/_Project/Resources/GameCatalog.asset");

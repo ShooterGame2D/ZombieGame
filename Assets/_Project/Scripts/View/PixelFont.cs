@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
     // Readable Google Fonts face, rendered once without shadow, outline or synthetic bold.
     public static class PixelFont

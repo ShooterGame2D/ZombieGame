@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class ExpansionValidation
     {

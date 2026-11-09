@@ -1,6 +1,6 @@
 using UnityEngine;
-using static ZombieAttack.Draw2D;
-namespace ZombieAttack
+using static ZHold.Draw2D;
+namespace ZHold
 {
     public partial class GameApplication
     {
@@ -10,7 +10,7 @@ namespace ZombieAttack
             Rect(0,0,1600,900,new Color(.02f,.025f,.06f,.5f));
             Panel(120,138,820,610);
             Tag("EDIÇÃO PIXEL / DUAS FRENTES",160,176,450,Mint);
-            Text("DEFESA\nZUMBI",155,240,740,210,98,Gold,true);
+            Text("Z-HOLD",155,240,740,210,98,Gold,true);
             Text("O perigo vem dos dois lados.\nSua defesa começa aqui.",164,467,715,72,27,Cream);
             if(Button("JOGAR",160,574,330,62,Gold,true,27))showHome=false;
             if(Button("TUTORIAL",516,574,330,62,Mint,true,25))Run.StartTutorial();

@@ -1,4 +1,4 @@
-# Defesa Zumbi — Edição Pixel
+# Z-Hold — Edição Pixel
 
 Protótipo integrado ao projeto ZombieGame. Use a Unity **6000.3.25f1**, versão registrada pelo repositório, com os módulos Windows e WebGL para gerar essas versões.
 
@@ -6,7 +6,7 @@ Protótipo integrado ao projeto ZombieGame. Use a Unity **6000.3.25f1**, versão
 
 1. Abra a pasta ZombieGame pelo Unity Hub.
 2. Espere a importação e compilação terminarem.
-3. No menu, escolha **Defesa Zumbi > Abrir protótipo**.
+3. No menu, escolha **Z-Hold > Abrir protótipo**.
 4. Pressione **Play**. A tela inicial oferece Jogar, Tutorial e Configurações.
 
 A cena de entrada é `Assets/_Project/Scenes/Boot.unity`. A `SampleScene` original continua disponível. O protótipo não inicia automaticamente nas cenas originais do projeto.
@@ -15,9 +15,9 @@ Mouse mira; M1 atira; M2 coleta moedas; R recarrega antes de acabar o pente; Q, 
 
 ## Gerar o jogo para Windows ou navegador
 
-Use **Defesa Zumbi > Gerar Windows** ou **Defesa Zumbi > Gerar Web**. Esses comandos validam as mecânicas e compilam a cena Boot explicitamente, sem alterar a lista de cenas do projeto ou restaurar o balanceamento.
+Use **Z-Hold > Gerar Windows** ou **Z-Hold > Gerar Web**. Esses comandos validam as mecânicas e compilam a cena Boot explicitamente, sem alterar a lista de cenas do projeto ou restaurar o balanceamento.
 
-O executável vai para `Builds/Windows/Defesa Zumbi.exe`. O site vai para `Builds/Web`. Os módulos correspondentes precisam estar instalados no Unity Hub. As compilações não são versionadas.
+O executável vai para `Builds/Windows/Z-Hold.exe`. O site vai para `Builds/Web`. Os módulos correspondentes precisam estar instalados no Unity Hub. As compilações não são versionadas.
 
 Para jogar a versão web, sirva a pasta `Builds/Web` por HTTP. Se tiver Python instalado, abra um terminal nessa pasta e execute:
 
@@ -33,14 +33,14 @@ Acesse http://127.0.0.1:8766/. Abra um terminal na pasta gerada; não abra o HTM
 - Catálogo ativo: `Assets/_Project/Resources/GameCatalog.asset`.
 - Código do jogo: `Assets/_Project/Scripts`.
 - Arte pixel: `Assets/_Project/Resources/Art/Pixel`.
-- **Defesa Zumbi > Validar mecânicas** executa as cinco suites, totalizando 829 verificações.
-- **Defesa Zumbi > Restaurar dados iniciais** sobrescreve o balanceamento do protótipo com os valores de `PrototypeBuilder.cs` e `ExpansionSetup.cs`. Use somente quando quiser restaurá-los.
+- **Z-Hold > Validar mecânicas** executa as cinco suites, totalizando 829 verificações.
+- **Z-Hold > Restaurar dados iniciais** sobrescreve o balanceamento do protótipo com os valores de `PrototypeBuilder.cs` e `ExpansionSetup.cs`. Use somente quando quiser restaurá-los.
 
 As configurações URP, Input System, pacotes, nome do produto, versão da Unity e cenas originais foram preservadas. As opções do template WebGL são aplicadas apenas durante a compilação e restauradas ao final. A geração não redefine os dados editados no Inspector.
 
 Os arquivos `.meta` acompanham todos os assets. O repositório usa Git LFS para imagens: mantenha o Git LFS instalado para clonar e publicar os sprites corretamente.
 
-Detalhes de personagens, loja, munição e defesas: [mecânicas](Docs/DefesaZumbi/MECANICAS.md). Origem das artes: [assets pixel](Docs/DefesaZumbi/ASSETS-PIXEL.md).
+Detalhes de personagens, loja, munição e defesas: [mecânicas](Docs/ZHold/MECANICAS.md). Origem das artes: [assets pixel](Docs/ZHold/ASSETS-PIXEL.md).
 
 ## Limites do protótipo
 
@@ -58,7 +58,7 @@ A Unity 6000.3.25f1 e a combinação exata dos pacotes do repositório ainda pre
 
 As dez folhas já estão ligadas ao combate. O catálogo `Assets/_Project/Resources/ZombieWalkAtlas.asset` referencia os PNGs e define a cadência e os apoios dos pés de cada tipo. As imagens continuam em `Assets/_Project/Art/AnimationDrafts/Walk-v1`, sem duplicação. Não é necessário configurar Animator ou Animation Clips para esta implementação.
 
-O menu **Defesa Zumbi > Validar mecânicas** executa também 127 verificações de animação, além das 92 verificações de mecânicas. Elas cobrem as dez texturas, os 80 apoios, os ciclos, pausa, troca de câmera, gelo, raízes, isca, barreiras e aceleração dos zumbis. A validação e as compilações locais usaram Unity 6000.3.24f1; a versão 6000.3.25f1 deste repositório foi preservada.
+O menu **Z-Hold > Validar mecânicas** executa também 127 verificações de animação, além das 92 verificações de mecânicas. Elas cobrem as dez texturas, os 80 apoios, os ciclos, pausa, troca de câmera, gelo, raízes, isca, barreiras e aceleração dos zumbis. A validação e as compilações locais usaram Unity 6000.3.24f1; a versão 6000.3.25f1 deste repositório foi preservada.
 
 ## Textos e sangue
 
@@ -71,7 +71,7 @@ A validação inclui 51 verificações de fonte e efeitos, somadas às suites de
 
 A pasta `Assets/_Project/Art/Combat-v1` contém 27 folhas transparentes, com seis quadros e recortes de sprites em cada uma: 13 armas, 10 ataques de zumbis, três torres e a barricada com arame farpado. As defesas têm três perspectivas por lane e um segundo estado ativo/danificado. Os prompts da geração integrada estão em `generation-prompts.json`. A galeria `preview.html` mostra animações e permite ouvir os 27 WAVs de referência em `Sounds`.
 
-O catálogo `Resources/CombatSpriteCatalog.asset` liga as artes ao jogo. Não é preciso configurar Animator: os quadros seguem o estado do combate. O menu **Defesa Zumbi > Atualizar arte de combate** reimporta recortes, recalcula os apoios e exporta os sons a partir do código.
+O catálogo `Resources/CombatSpriteCatalog.asset` liga as artes ao jogo. Não é preciso configurar Animator: os quadros seguem o estado do combate. O menu **Z-Hold > Atualizar arte de combate** reimporta recortes, recalcula os apoios e exporta os sons a partir do código.
 
 O arco prepara a corda antes de disparar e consome uma flecha ao soltar. Trocar de câmera cancela a preparação. Os zumbis animam preparação, golpe e recuperação, inclusive contra barricadas e fora da câmera. A posição das defesas e a ordem de desenho acompanham a profundidade de cada lane. Disparo e recarga têm assinatura sonora própria para cada arma.
 
@@ -98,7 +98,7 @@ O Recruta é gratuito. Criança custa 60 gemas, Indígena 80, Engenheiro 100, Co
 
 O especial do lenhador agora exige dois Espaços. O primeiro mostra esquerda/centro/direita na interface; um clique na coluna do painel inferior seleciona o alvo e o segundo confirma a árvore. Só a confirmação gasta o especial. ESC e troca de câmera cancelam; a onda segue normalmente durante a seleção. Não há grid desenhado no chão nem durante a escolha.
 
-Use **Defesa Zumbi > Aplicar mapas e desbloqueios 0.5** apenas para restaurar preços e importação desta atualização. Os valores atuais já acompanham o projeto. As 829 verificações automatizadas e as compilações locais usam Unity 6000.3.24f1; a versão 6000.3.25f1 e os pacotes deste repositório foram preservados.
+Use **Z-Hold > Aplicar mapas e desbloqueios 0.5** apenas para restaurar preços e importação desta atualização. Os valores atuais já acompanham o projeto. As 829 verificações automatizadas e as compilações locais usam Unity 6000.3.24f1; a versão 6000.3.25f1 e os pacotes deste repositório foram preservados.
 
 
 ## Atualização 0.5.1 — prévia e seleção por clique
@@ -106,3 +106,12 @@ Use **Defesa Zumbi > Aplicar mapas e desbloqueios 0.5** apenas para restaurar pr
 Clicar em qualquer cartão mostra retrato, vida, cenário, arma, especial e recarga, sem comprar nem trocar o personagem em uso. A compra e a troca ficam nos botões explícitos do painel de detalhes. Os cartões aparecem em ordem crescente de preço: Recruta, Criança, Indígena, Engenheiro, Cowboy, Canguru, Lenhador e Ninja.
 
 O primeiro Espaço do lenhador abre três botões na parte inferior da tela. Clique para selecionar esquerda, centro ou direita; passar o mouse não altera a escolha. Outro Espaço confirma a coluna selecionada. Sem clique, o especial não dispara. O clique não atira a arma. ESC ou trocar de câmera cancela sem consumir a habilidade.
+
+
+## Z-Hold — abertura 0.6
+
+O jogo agora se chama **Z-Hold**. Ao terminar o carregamento, reproduz a cutscene original de aproximadamente cinco segundos antes da tela inicial. O vídeo está em `Assets/StreamingAssets/Cinematics/Z-Hold-Intro.mp4` e acompanha as versões Windows e Web. A opção **Pular introdução** ou ESC avança para o menu. O vídeo começa automaticamente. No navegador, se o áudio automático for bloqueado, a reprodução continua sem som, com o botão opcional **Ativar som**; não é necessário clicar para assistir. Uma falha de vídeo não bloqueia o acesso ao jogo.
+
+A música do menu e os controles de jogo só são ativados após a introdução. O vídeo mantém a proporção original, com faixas pretas quando necessário, e respeita o volume geral. A cutscene reaparece ao abrir o jogo, sem se repetir ao retornar ao menu durante a mesma sessão.
+
+Gemas, personagens comprados e recorde de versões anteriores são importados automaticamente. As únicas identificações antigas no código ativo são compatibilidade de save e os respectivos testes. O executável passa a ser `Z-Hold.exe`, os menus do editor usam **Z-Hold** e a documentação do repositório fica em `Docs/ZHold`.

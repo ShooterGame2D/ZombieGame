@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
     public static class ZombieWalkAnimation
     {

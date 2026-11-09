@@ -1,8 +1,8 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public enum TowerKind { Shooter, Ice, Explosive, Barricade }
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Torre")]
+    [CreateAssetMenu(menuName = "Z-Hold/Torre")]
     public class TowerData : ScriptableObject
     {
         public TowerKind kind;

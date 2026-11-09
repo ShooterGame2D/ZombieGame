@@ -1,7 +1,7 @@
 using UnityEngine;
-using static ZombieAttack.Draw2D;
+using static ZHold.Draw2D;
 
-namespace ZombieAttack
+namespace ZHold
 {
     public static class CombatSprites
     {

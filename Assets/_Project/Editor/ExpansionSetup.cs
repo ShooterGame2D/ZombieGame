@@ -1,11 +1,11 @@
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class ExpansionSetup
     {
-        [MenuItem("Defesa Zumbi/Aplicar atualização 0.4")]
+        [MenuItem("Z-Hold/Aplicar atualização 0.4")]
         public static void Apply()
         {
             var c=AssetDatabase.LoadAssetAtPath<GameCatalog>("Assets/_Project/Resources/GameCatalog.asset");

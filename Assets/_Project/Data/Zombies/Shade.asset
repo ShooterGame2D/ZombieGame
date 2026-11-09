@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81a945c77c685f54fbc0a7c33f260d46, type: 3}
   m_Name: Shade
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.ZombieData
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.ZombieData
   kind: 9
   title: Sombra
   firstWave: 6

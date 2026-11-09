@@ -1,6 +1,6 @@
 using UnityEngine;
-using static ZombieAttack.Draw2D;
-namespace ZombieAttack
+using static ZHold.Draw2D;
+namespace ZHold
 {
     public static class LegacyArt
     {

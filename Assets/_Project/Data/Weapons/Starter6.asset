@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7de5b30bd4ff8f84dbb8e8d6805f5d28, type: 3}
   m_Name: Starter6
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.WeaponData
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.WeaponData
   title: Machado de arremesso
   kind: 6
   description:

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public class Coin
     {

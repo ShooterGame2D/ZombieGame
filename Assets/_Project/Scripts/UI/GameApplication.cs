@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static ZombieAttack.Draw2D;
-namespace ZombieAttack
+using static ZHold.Draw2D;
+namespace ZHold
 {
     public partial class GameApplication : MonoBehaviour
     {
@@ -11,6 +11,7 @@ namespace ZombieAttack
         Vector2 pointer=new Vector2(800,450);
         float scale=1,offsetX,offsetY,time,waveNotice;
         bool uiClick,allowButtons,suppressFireUntilRelease;
+        bool introComplete;
         int selectedSlot,shopTab;
         readonly string[] upgradeNames={"Dano","Cadência","Pente maior","Recarga rápida"};
         readonly string[] upgradeDescriptions={"+0,45 de dano por disparo","+15% disparos por segundo","+2 unidades por pente","-16% no tempo de recarga"};
@@ -21,6 +22,7 @@ namespace ZombieAttack
             Run=new RunManager(catalog,SaveSystem.Load()); sound=gameObject.AddComponent<PrototypeAudio>();
             Run.OnSound+=sound.Play; Run.OnSpatialSound+=sound.PlaySpatial; Run.OnWaveStarted+=_=>waveNotice=3.5f;
             if(Camera.main==null) { var obj=new GameObject("Camera"); var cam=obj.AddComponent<Camera>(); cam.orthographic=true; cam.clearFlags=CameraClearFlags.SolidColor; cam.backgroundColor=Ink; obj.tag="MainCamera"; obj.AddComponent<AudioListener>(); }
+            new GameObject("ZHold Intro").AddComponent<IntroCutscene>().Begin(()=>introComplete=true);
         }
         void Layout()
         {
@@ -29,7 +31,7 @@ namespace ZombieAttack
         bool CombatPoint(Vector2 p) => p.x>=0 && p.x<1600 && p.y>175 && p.y<790 && !(p.x>1300 && p.y<405);
         void Update()
         {
-            if(Run==null)return;Layout();sound.ListenerSide=Run.viewSide;
+            if(Run==null||!introComplete)return;Layout();sound.ListenerSide=Run.viewSide;
             bool combat=Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting&&!settings&&!Run.demo;
             bool choosingAtFrameStart=Run.choosingTreeLane;
             if(Mouse.current!=null&&!Mouse.current.leftButton.isPressed)suppressFireUntilRelease=false;
@@ -102,7 +104,7 @@ namespace ZombieAttack
         void OnDestroy() { Cursor.visible=true;Cursor.lockState=CursorLockMode.None; }
         void OnGUI()
         {
-            if(Run==null) return; Layout(); Draw2D.Init(); GUI.matrix=Matrix4x4.identity; Rect(0,0,Screen.width,Screen.height,Ink);
+            if(Run==null||!introComplete) return; Layout(); Draw2D.Init(); GUI.matrix=Matrix4x4.identity; Rect(0,0,Screen.width,Screen.height,Ink);
             GUI.matrix=Matrix4x4.TRS(new Vector3(offsetX,offsetY,0),Quaternion.identity,new Vector3(scale,scale,1));
             var screenMatrix=GUI.matrix;
             if(Run.state!=RunState.Menu&&!Run.paused) GUI.matrix*=Matrix4x4.Translate(new Vector3(Mathf.Sin(time*79)*Run.shake*10*GameSettings.Shake,Mathf.Sin(time*103)*Run.shake*7*GameSettings.Shake,0));
@@ -144,11 +146,11 @@ namespace ZombieAttack
         void Menu()
         {
             Rect(0,0,1600,900,new Color(.015f,.035f,.055f,.32f));
-            Panel(40,28,1520,64); Text("DZ / DEFESA ZUMBI",62,48,430,30,21,Cream,true);
-            Text("EDIÇÃO PIXEL  ·  VERSÃO 0.5",560,52,560,24,15,Mint);
+            Panel(40,28,1520,64); Text("Z-HOLD",62,48,430,30,21,Cream,true);
+            Text("EDIÇÃO PIXEL  ·  VERSÃO 0.6",560,52,560,24,15,Mint);
             Text("RECORDE "+Run.profile.bestWave+"   /   "+Run.profile.gems+" GEMAS",1100,51,430,24,15,Gold,true,TextAnchor.UpperRight);
             Panel(40,120,732,285); Tag("FRENTE E COSTAS",64,144,215,Mint);
-            Text("DEFESA ZUMBI",58,186,708,83,76,Gold,true);
+            Text("Z-HOLD",58,186,708,83,76,Gold,true);
             Text("Mantenha os dois lados sob controle.",66,277,660,31,24,Cream);
             Text("EM USO: "+Run.character.title.ToUpperInvariant()+" · Clique nos cartões para conhecer o elenco.",66,315,660,25,16,Hex("ACC2B7"));
             if(Button("JOGAR: "+Run.character.title.ToUpperInvariant(),65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }

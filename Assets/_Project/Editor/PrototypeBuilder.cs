@@ -3,12 +3,12 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public static class PrototypeBuilder
     {
         const string Root="Assets/_Project";
-        [MenuItem("Defesa Zumbi/Restaurar dados iniciais")]
+        [MenuItem("Z-Hold/Restaurar dados iniciais")]
         public static void Prepare()
         {
             Directory.CreateDirectory(Root+"/Resources"); Directory.CreateDirectory(Root+"/Scenes");
@@ -78,21 +78,21 @@ namespace ZombieAttack.Editor
             var asset=AssetDatabase.LoadAssetAtPath<T>(path); if(asset!=null) return asset;
             Directory.CreateDirectory(Path.GetDirectoryName(path)); asset=ScriptableObject.CreateInstance<T>(); AssetDatabase.CreateAsset(asset,path); return asset;
         }
-        [MenuItem("Defesa Zumbi/Validar mecânicas")]
+        [MenuItem("Z-Hold/Validar mecânicas")]
         public static void Validate() => PrototypeValidation.Run(AssetDatabase.LoadAssetAtPath<GameCatalog>(Root+"/Resources/GameCatalog.asset"));
-        [MenuItem("Defesa Zumbi/Abrir protótipo")]
+        [MenuItem("Z-Hold/Abrir protótipo")]
         public static void OpenPrototype()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                 EditorSceneManager.OpenScene(Root+"/Scenes/Boot.unity");
         }
-        [MenuItem("Defesa Zumbi/Gerar Windows")]
+        [MenuItem("Z-Hold/Gerar Windows")]
         public static void BuildWindows()
         {
             Validate(); Directory.CreateDirectory("Builds/Windows");
-            Build("Builds/Windows/Defesa Zumbi.exe",BuildTarget.StandaloneWindows64);
+            Build("Builds/Windows/Z-Hold.exe",BuildTarget.StandaloneWindows64);
         }
-        [MenuItem("Defesa Zumbi/Gerar Web")]
+        [MenuItem("Z-Hold/Gerar Web")]
         public static void BuildWeb()
         {
             Validate();

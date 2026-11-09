@@ -10,7 +10,7 @@ Abra `preview.html` no navegador. Funciona também por duplo clique, sem instala
 
 As imagens já têm arquivos `.meta` de Sprite (2D and UI), Multiple, Point, sem mipmaps, sem compressão e com oito recortes nomeados. Ao importar, expanda cada PNG no painel Project para ver os quadros. Mantenha os `.meta` ao copiar.
 
-Importação conferida na Unity 6000.3.24f1: 10 folhas, 80 sprites, dimensões, ordem, filtro e pivôs corretos. O menu **Defesa Zumbi > Validar folhas de caminhada** repete essa checagem no editor que você estiver usando.
+Importação conferida na Unity 6000.3.24f1: 10 folhas, 80 sprites, dimensões, ordem, filtro e pivôs corretos. O menu **Z-Hold > Validar folhas de caminhada** repete essa checagem no editor que você estiver usando.
 
 - Folha: 1536 × 1024 px.
 - Grade: 4 colunas × 2 linhas; célula de 384 × 512 px.
@@ -22,7 +22,7 @@ Importação conferida na Unity 6000.3.24f1: 10 folhas, 80 sprites, dimensões, 
 
 As folhas já estão integradas ao combate por `GUI.DrawTextureWithTexCoords`. O catálogo `Assets/_Project/Resources/ZombieWalkAtlas.asset` referencia as dez texturas e permite ajustar a cadência de cada tipo. `ZombieWalkAnimation.cs` seleciona o quadro pela distância realmente percorrida, mantém a escala e alinha os pés ao chão. A câmera escondida continua atualizando; pausa, raízes, isca, gelo e bloqueio por defesas respeitam a simulação. A imagem original serve como fallback caso falte uma folha.
 
-Não é necessário criar Animator ou Animation Clips para jogar esta versão. `frames.json` mantém os retângulos originais para reutilização. O menu **Defesa Zumbi > Validar mecânicas** também executa 127 verificações de animação, incluindo as dez texturas, os 80 apoios dos pés, a troca de câmera e as condições que param ou alteram a cadência.
+Não é necessário criar Animator ou Animation Clips para jogar esta versão. `frames.json` mantém os retângulos originais para reutilização. O menu **Z-Hold > Validar mecânicas** também executa 127 verificações de animação, incluindo as dez texturas, os 80 apoios dos pés, a troca de câmera e as condições que param ou alteram a cadência.
 
 ## Direção do movimento e acabamento
 

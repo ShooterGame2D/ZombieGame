@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     [Serializable]
     public class PlayerProfile
@@ -12,20 +12,22 @@ namespace ZombieAttack
     }
     public static class SaveSystem
     {
-        const string Key = "DefesaZumbi.Profile.v1";
+        const string Key = "ZHold.Profile.v1";
         public static PlayerProfile Load()
         {
             try
             {
                 string json;
 #if UNITY_WEBGL && !UNITY_EDITOR
-                json = PlayerPrefs.GetString(Key, "");
+                json = PlayerPrefs.GetString(Key, PlayerPrefs.GetString(LegacyProgress.ProfileKey, ""));
 #else
-                string path = Path.Combine(Application.persistentDataPath, "profile.json");
+                string path = LegacyProgress.FindProfile(Application.persistentDataPath);
                 json = File.Exists(path) ? File.ReadAllText(path) : "";
 #endif
                 var profile = string.IsNullOrEmpty(json) ? new PlayerProfile() : JsonUtility.FromJson<PlayerProfile>(json);
-                return Migrate(profile);
+                profile=Migrate(profile);
+                if(!string.IsNullOrEmpty(json))Save(profile);
+                return profile;
             }
             catch (Exception e) { Debug.LogWarning("Não foi possível ler o progresso: " + e.Message); return new PlayerProfile(); }
         }
@@ -59,6 +61,7 @@ namespace ZombieAttack
                 PlayerPrefs.SetString(Key, json); PlayerPrefs.Save();
 #else
                 string path = Path.Combine(Application.persistentDataPath, "profile.json");
+                Directory.CreateDirectory(Application.persistentDataPath);
                 File.WriteAllText(path + ".tmp", json);
                 File.Copy(path + ".tmp", path, true);
                 File.Delete(path + ".tmp");

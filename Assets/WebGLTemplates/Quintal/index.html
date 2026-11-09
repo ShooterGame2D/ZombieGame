@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Defesa Zumbi · Edição Pixel</title>
+  <title>Z-Hold · Edição Pixel</title>
   <style>
     @font-face{font-family:'Atkinson Hyperlegible';src:url('Fonts/AtkinsonHyperlegible-Regular.ttf') format('truetype');font-display:swap}
     *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#141526;font-family:'Atkinson Hyperlegible',sans-serif;color:#f4edd5}
@@ -10,11 +10,18 @@
     #loading{position:fixed;inset:0;background:repeating-linear-gradient(0deg,#141526 0px,#141526 7px,#191b30 7px,#191b30 8px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;z-index:2}
     .tag{font-size:clamp(8px,2vw,12px);color:#a8d969}#pixel-title{margin:0;font-size:clamp(24px,6vw,48px);line-height:1.5;text-align:center;color:#f7c65b}#pixel-title span{color:#a8d969}
     .bar{width:288px;height:20px;border:4px solid #59637a;background:#242a42;box-shadow:4px 4px #080a17;padding:2px}#fill{height:100%;width:0;background:#a8d969}#status{font-size:14px;color:#bcc7cf;text-align:center;max-width:600px;padding:0 24px;line-height:1.5}
+    [hidden]{display:none!important}#intro{position:fixed;inset:0;background:#000;z-index:3}#intro-video{width:100%;height:100%;object-fit:contain}#intro button{font:inherit;border:1px solid #59637a;padding:14px 22px;cursor:pointer;color:#f4edd5;background:#141526e8}#intro-skip{position:absolute;right:24px;top:24px}#intro-sound{position:absolute;left:24px;top:24px}#intro button:focus-visible{outline:3px solid #f7c65b;outline-offset:4px}
   </style>
 </head>
 <body>
-  <canvas id="unity-canvas" tabindex="0" aria-label="Defesa Zumbi: jogo de tiro e defesa com mouse"></canvas>
-  <div id="loading"><div class="tag">EDIÇÃO PIXEL / DUAS FRENTES</div><h1 id="pixel-title">DEFESA<br><span>ZUMBI</span></h1><div class="bar"><div id="fill"></div></div><p id="status">Preparando os pixels da defesa...</p></div>
+  <canvas id="unity-canvas" tabindex="0" aria-label="Z-Hold: jogo de tiro e defesa com mouse"></canvas>
+  <div id="loading"><div class="tag">EDIÇÃO PIXEL / DUAS FRENTES</div><h1 id="pixel-title">Z-HOLD</h1><div class="bar"><div id="fill"></div></div><p id="status">Preparando os pixels da defesa...</p></div>
+  <section id="intro" aria-label="Introdução de Z-Hold" hidden>
+    <video id="intro-video" src="StreamingAssets/Cinematics/Z-Hold-Intro.mp4" preload="auto" playsinline aria-label="Cutscene de abertura de Z-Hold"></video>
+    <button id="intro-sound" type="button" hidden>Ativar som</button>
+    <button id="intro-skip" type="button">Pular introdução · Esc</button>
+  </section>
+  <script src="intro.js?v=0.6.1"></script>
   <script>
     const canvas=document.querySelector('#unity-canvas');
     canvas.addEventListener('contextmenu',e=>e.preventDefault());
@@ -23,8 +30,8 @@
     script.onload=()=>createUnityInstance(canvas,{
       dataUrl:'Build/{{{ DATA_FILENAME }}}',frameworkUrl:'Build/{{{ FRAMEWORK_FILENAME }}}',codeUrl:'Build/{{{ CODE_FILENAME }}}',
       cacheControl:()=> 'no-store',
-      streamingAssetsUrl:'StreamingAssets',companyName:'Quintal Studio',productName:'Defesa Zumbi',productVersion:'0.4.0',devicePixelRatio:1
-    },p=>document.querySelector('#fill').style.width=(p*100)+'%').then(instance=>{window.unityInstance=instance;document.querySelector('#loading').remove();canvas.focus()}).catch(fail);
+      streamingAssetsUrl:'StreamingAssets',companyName:'{{{ COMPANY_NAME }}}',productName:'Z-Hold',productVersion:'{{{ PRODUCT_VERSION }}}',devicePixelRatio:1
+    },p=>document.querySelector('#fill').style.width=(p*100)+'%').then(instance=>{window.unityInstance=instance;document.querySelector('#loading').remove();window.zholdIntroReady(instance)}).catch(fail);
     document.body.appendChild(script);
   </script>
 </body>

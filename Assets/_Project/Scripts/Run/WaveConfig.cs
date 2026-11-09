@@ -1,7 +1,7 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Ondas")]
+    [CreateAssetMenu(menuName = "Z-Hold/Ondas")]
     public class WaveConfig : ScriptableObject
     {
         public int baseCount = 5, extraPerWave = 2;

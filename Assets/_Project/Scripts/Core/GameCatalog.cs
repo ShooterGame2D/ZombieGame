@@ -1,7 +1,7 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Catálogo")]
+    [CreateAssetMenu(menuName = "Z-Hold/Catálogo")]
     public class GameCatalog : ScriptableObject
     {
         public WaveConfig waves;

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-namespace ZombieAttack
+namespace ZHold
 {
     public class GameBootstrap : MonoBehaviour
     {
@@ -10,7 +10,7 @@ namespace ZombieAttack
             // Keep the host project's unrelated scenes independent of the prototype.
             if (!SceneManager.GetActiveScene().path.StartsWith("Assets/_Project/Scenes/", System.StringComparison.Ordinal)) return;
             if (Object.FindFirstObjectByType<GameApplication>() != null) return;
-            var root = new GameObject("Defesa Zumbi"); root.AddComponent<GameApplication>();
+            var root = new GameObject("Z-Hold"); root.AddComponent<GameApplication>();
         }
     }
 }

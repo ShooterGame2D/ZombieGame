@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     // Layered transient/noise sound design, with separate signatures for each weapon family.
     public class PrototypeAudio : MonoBehaviour

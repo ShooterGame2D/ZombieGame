@@ -1,4 +1,4 @@
-namespace ZombieAttack
+namespace ZHold
 {
     public class Tower
     {

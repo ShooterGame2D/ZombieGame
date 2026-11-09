@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab10ca3bf2eec1440bfc575e656a1f61, type: 3}
   m_Name: CombatSpriteCatalog
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.CombatSpriteCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.CombatSpriteCatalog
   weapons:
   - id: Pistol
     texture: {fileID: 2800000, guid: 22707d886f893714a8b58471ad9233c7, type: 3}

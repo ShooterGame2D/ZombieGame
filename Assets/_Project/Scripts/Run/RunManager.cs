@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public enum RunState { Menu, Wave, Shop, GameOver, WaveEnd }
     // Both lanes always simulate; visibility filters only aiming and presentation.

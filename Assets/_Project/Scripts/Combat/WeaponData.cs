@@ -1,8 +1,8 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public enum WeaponKind { Pistol, Bow, Nailgun, Revolver, Boomerang, Slingshot, Axe, Shuriken, Smg, Shotgun, Rifle, Crossbow, Launcher }
-    [CreateAssetMenu(menuName = "Defesa Zumbi/Arma")]
+    [CreateAssetMenu(menuName = "Z-Hold/Arma")]
     public class WeaponData : ScriptableObject
     {
         public string title = "Pistola";

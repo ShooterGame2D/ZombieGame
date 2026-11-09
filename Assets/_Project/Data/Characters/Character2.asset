@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46f24898ef97ba9488f5e4679af81656, type: 3}
   m_Name: Character2
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.CharacterData
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.CharacterData
   title: Engenheiro
   description: "Monta uma torre autom\xE1tica por 10 s no lado atual."
   abilityTitle: "Torre de emerg\xEAncia"

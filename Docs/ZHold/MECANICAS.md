@@ -1,10 +1,10 @@
-# Defesa Zumbi — Edição Pixel
+# Z-Hold — Edição Pixel
 
 Versão 0.5 do protótipo, com visual inteiramente em pixel art, feita na Unity 6000.3.24f1. O jogador protege sua posição contra zumbis que vêm da frente e das costas. Os dois lados continuam em movimento o tempo todo.
 
 ## Jogar
 
-Abra **JOGAR.cmd** nesta pasta ou `Builds/Windows/Defesa Zumbi.exe`. A versão de navegador fica em `Builds/Web` e precisa ser servida por HTTP. O endereço usado nesta sessão é http://127.0.0.1:8765/; recarregue a página para receber a nova versão.
+Abra **JOGAR.cmd** nesta pasta ou `Builds/Windows/Z-Hold.exe`. A versão de navegador fica em `Builds/Web` e precisa ser servida por HTTP. O endereço usado nesta sessão é http://127.0.0.1:8765/; recarregue a página para receber a nova versão.
 
 A tela inicial tem **Jogar**, **Tutorial** e **Configurações**. Em Jogar, escolha um personagem e clique em **Jogar: nome do personagem**. O tutorial ensina em dez etapas, com explicações pausadas, uma mini-onda sem perda de vida e uma compra real na loja de treino. O Recruta começa desbloqueado. Os demais personagens são compras permanentes no menu, pagas com gemas obtidas ao encerrar partidas; gemas, desbloqueios e recorde são salvos. As demonstrações não gravam recompensas.
 
@@ -107,7 +107,7 @@ Gravações e foley complementam os sons sintetizados em camadas: disparos de ar
 
 Os dados editáveis ficam em `Assets/_Project/Data`. O catálogo ativo fica em `Assets/_Project/Resources/GameCatalog.asset`. Não é necessário conectar objetos manualmente no Inspector.
 
-O menu **Defesa Zumbi > Preparar projeto** restaura os valores iniciais da versão 0.5. As compilações validam e usam os dados atuais, sem restaurar o balanceamento.
+O menu **Z-Hold > Preparar projeto** restaura os valores iniciais da versão 0.5. As compilações validam e usam os dados atuais, sem restaurar o balanceamento.
 
 - `Scripts/Run/RunManager.cs`: simulação dos dois lados, munição, compras e habilidades.
 - `Scripts/UI/GameApplication.cs`: entrada, radar, alertas e menus.
@@ -118,7 +118,7 @@ O menu **Defesa Zumbi > Preparar projeto** restaura os valores iniciais da vers�
 
 ## Progresso e limites
 
-O save do Windows fica em `%USERPROFILE%/AppData/LocalLow/Quintal Studio/Defesa Zumbi/profile.json`. A versão web usa o armazenamento local da Unity para o endereço usado. Os dois saves são independentes. A migração do protótipo antigo preserva gemas e recorde e adapta a seleção para o novo elenco.
+O save do Windows fica em `%USERPROFILE%/AppData/LocalLow/Quintal Studio/Z-Hold/profile.json`. A versão web usa o armazenamento local da Unity para o endereço usado. Os dois saves são independentes. A migração do protótipo antigo preserva gemas e recorde e adapta a seleção para o novo elenco.
 
 Esta versão permanece um protótipo 2D com perspectiva simulada e renderizador padrão da Unity. Os dez tipos de zumbi têm caminhada com oito quadros, sincronizada à velocidade real e com alinhamento dos pés. A sequência continua na câmera escondida, desacelera no gelo e para durante pausa, raízes, isca e ataques estacionários. As folhas ficam em `Assets/_Project/Art/AnimationDrafts/Walk-v1`; o catálogo de execução está em `Assets/_Project/Resources/ZombieWalkAtlas.asset`. Armas e defesas usam folhas de sprites; o chão livre e os efeitos complementares usam desenho por código. A interface usa desenho imediato; os tiros são resolvidos por áreas de cabeça/corpo e machados e bumerangues têm tempo de voo; arco e estilingue têm preparação antes de disparar. Só existem os lados frente e costas. Preços, probabilidades e dificuldade ainda precisam de teste de balanceamento com jogadores.
 
@@ -177,3 +177,12 @@ A validação 0.5 acrescenta 112 verificações de mapas, projeção, compras, m
 Clicar em qualquer cartão mostra retrato, vida, cenário, arma, especial e recarga, sem comprar nem trocar o personagem em uso. A compra e a troca ficam nos botões explícitos do painel de detalhes. Os cartões aparecem em ordem crescente de preço: Recruta, Criança, Indígena, Engenheiro, Cowboy, Canguru, Lenhador e Ninja.
 
 O primeiro Espaço do lenhador abre três botões na parte inferior da tela. Clique para selecionar esquerda, centro ou direita; passar o mouse não altera a escolha. Outro Espaço confirma a coluna selecionada. Sem clique, o especial não dispara. O clique não atira a arma. ESC ou trocar de câmera cancela sem consumir a habilidade.
+
+
+## Z-Hold — abertura 0.6
+
+O jogo agora se chama **Z-Hold**. Ao terminar o carregamento, reproduz a cutscene original de aproximadamente cinco segundos antes da tela inicial. O vídeo está em `Assets/StreamingAssets/Cinematics/Z-Hold-Intro.mp4` e acompanha as versões Windows e Web. A opção **Pular introdução** ou ESC avança para o menu. O vídeo começa automaticamente. No navegador, se o áudio automático for bloqueado, a reprodução continua sem som, com o botão opcional **Ativar som**; não é necessário clicar para assistir. Uma falha de vídeo não bloqueia o acesso ao jogo.
+
+A música do menu e os controles de jogo só são ativados após a introdução. O vídeo mantém a proporção original, com faixas pretas quando necessário, e respeita o volume geral. A cutscene reaparece ao abrir o jogo, sem se repetir ao retornar ao menu durante a mesma sessão.
+
+Gemas, personagens comprados e recorde de versões anteriores são importados automaticamente. As únicas identificações antigas no código ativo são compatibilidade de save e os respectivos testes. O executável passa a ser `Z-Hold.exe`, os menus do editor usam **Z-Hold** e a documentação do repositório fica em `Docs/ZHold`.

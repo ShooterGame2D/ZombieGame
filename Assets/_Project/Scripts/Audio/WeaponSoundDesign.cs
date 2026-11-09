@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
     // Each weapon has a distinct transient, resonant body and mechanical tail.
     public static class WeaponSoundDesign

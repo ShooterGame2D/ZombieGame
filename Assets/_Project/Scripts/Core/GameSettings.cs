@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     public static class GameSettings
     {
@@ -15,16 +15,16 @@ namespace ZombieAttack
         }
         public static void Load()
         {
-            Brightness=Mathf.Clamp(PlayerPrefs.GetFloat("DZ.Brightness",1),.65f,1.35f);
-            Sensitivity=Mathf.Clamp(PlayerPrefs.GetFloat("DZ.Sensitivity",1),.25f,3);
-            Master=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Master",.8f)); Effects=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Effects",.85f));
-            Music=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Music",.35f)); Shake=Mathf.Clamp01(PlayerPrefs.GetFloat("DZ.Shake",.65f));
+            Brightness=Mathf.Clamp(LegacyProgress.Setting("Brightness",1),.65f,1.35f);
+            Sensitivity=Mathf.Clamp(LegacyProgress.Setting("Sensitivity",1),.25f,3);
+            Master=Mathf.Clamp01(LegacyProgress.Setting("Master",.8f)); Effects=Mathf.Clamp01(LegacyProgress.Setting("Effects",.85f));
+            Music=Mathf.Clamp01(LegacyProgress.Setting("Music",.35f)); Shake=Mathf.Clamp01(LegacyProgress.Setting("Shake",.65f));
         }
         public static void Save()
         {
-            PlayerPrefs.SetFloat("DZ.Brightness",Brightness); PlayerPrefs.SetFloat("DZ.Sensitivity",Sensitivity);
-            PlayerPrefs.SetFloat("DZ.Master",Master); PlayerPrefs.SetFloat("DZ.Effects",Effects);
-            PlayerPrefs.SetFloat("DZ.Music",Music); PlayerPrefs.SetFloat("DZ.Shake",Shake); PlayerPrefs.Save();
+            PlayerPrefs.SetFloat("ZHold.Brightness",Brightness); PlayerPrefs.SetFloat("ZHold.Sensitivity",Sensitivity);
+            PlayerPrefs.SetFloat("ZHold.Master",Master); PlayerPrefs.SetFloat("ZHold.Effects",Effects);
+            PlayerPrefs.SetFloat("ZHold.Music",Music); PlayerPrefs.SetFloat("ZHold.Shake",Shake); PlayerPrefs.Save();
         }
     }
 }

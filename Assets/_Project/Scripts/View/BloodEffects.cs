@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ZombieAttack
+namespace ZHold
 {
     public class BloodEffects
     {

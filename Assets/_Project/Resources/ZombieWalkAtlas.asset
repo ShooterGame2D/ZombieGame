@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad2021c3a68d4547a33c6c7b2c16dc4b, type: 3}
   m_Name: ZombieWalkAtlas
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.ZombieWalkAtlas
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.ZombieWalkAtlas
   entries:
   - kind: 0
     texture: {fileID: 2800000, guid: d6beaac052ac401fb38d3d1e2a52bb84, type: 3}

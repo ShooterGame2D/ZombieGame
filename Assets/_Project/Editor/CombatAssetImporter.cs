@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ZombieAttack.Editor
+namespace ZHold.Editor
 {
     public class CombatTextureImport : AssetPostprocessor
     {
@@ -27,7 +27,7 @@ namespace ZombieAttack.Editor
     public static class CombatAssetImporter
     {
         const string Root="Assets/_Project/Art/Combat-v1";
-        [MenuItem("Defesa Zumbi/Atualizar arte de combate")]
+        [MenuItem("Z-Hold/Atualizar arte de combate")]
         public static void Import()
         {
             AssetDatabase.Refresh();

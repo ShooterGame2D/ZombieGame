@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68517e602fbb5294f8e5080af413fad2, type: 3}
   m_Name: GameCatalog
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack.GameCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::ZHold.GameCatalog
   waves: {fileID: 11400000, guid: 11306dfd96c935f4a997df64490bd6b0, type: 2}
   zombies:
   - {fileID: 11400000, guid: 06d5768a80e1dcb48a4005bb7e33a6b4, type: 2}

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace ZombieAttack
+namespace ZHold
 {
     // Original short looping compositions: each map has its own mode, tempo and instrumentation.
     public static class MapMusic
