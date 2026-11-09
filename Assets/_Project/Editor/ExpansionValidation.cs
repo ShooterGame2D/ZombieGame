@@ -62,8 +62,18 @@ namespace ZHold.Editor
             r=Fresh(c);r.spawnTimer=0;Step(r,.05f);front=r.zombies[0];float distance=front.distance;Step(r,.5f);
             Check(front.emergeTimer>0&&front.distance==distance,"emergence prevents invisible walking");Step(r,.8f);Check(front.emergeTimer==0&&front.distance<distance,"walk follows emergence");
             r=Fresh(c,5);front=Enemy(r);r.UseAbility(front.Body.center);Step(r,.2f);Check(front.distracted&&front.distractPhase>0,"teddy triggers animated distraction");
-            r=Fresh(c);r.spawned=r.total;Step(r,.02f);Check(r.state==RunState.WaveEnd&&r.waveEndTimer==3,"wave enters three-second countdown");
-            r.paused=true;Step(r,1);Check(r.waveEndTimer==3,"countdown pauses");r.paused=false;Step(r,2.8f);Check(r.state==RunState.WaveEnd,"shop does not open early");Step(r,.25f);Check(r.state==RunState.Shop,"countdown opens shop");
+            r=Fresh(c);r.coins.Add(new Coin{side=ViewSide.Front,position=new Vector2(700,560),value=7,bounceX=32});
+            r.effects.Add(new CombatEffect{side=ViewSide.Front,position=new Vector2(800,500),life=.2f,duration=.2f});
+            r.weaponAction=.25f;r.spawned=r.total;Step(r,.02f);Check(r.state==RunState.WaveEnd&&r.waveEndTimer==3,"wave enters three-second countdown");
+            var fallingCoin=r.coins[0];var initialCoinPosition=fallingCoin.ScreenPosition;Step(r,.1f);
+            Check(fallingCoin.ScreenPosition.x>initialCoinPosition.x&&fallingCoin.ScreenPosition.y<fallingCoin.position.y,"coin bounces sideways while falling");
+            Check(r.weaponAction<.2f&&r.effects[0].life<.12f,"wave-end visuals continue instead of freezing");
+            r.CollectCoin(fallingCoin.ScreenPosition);Check(r.wallet==7&&r.coins.Count==0,"wave-end coins remain collectible");
+            r.coins.Add(new Coin{side=ViewSide.Front,position=new Vector2(760,560),value=9});
+            float pausedCountdown=r.waveEndTimer;r.paused=true;Step(r,1);Check(r.waveEndTimer==pausedCountdown,"countdown pauses");r.paused=false;Step(r,2.8f);Check(r.state==RunState.WaveEnd,"shop does not open early");Step(r,.25f);Check(r.state==RunState.Shop,"countdown opens shop");
+            Check(r.wallet==7+9+28,"uncollected wave-end coins are credited when the shop opens");
+            r.NextWave();Check(r.state==RunState.WaveStarting&&r.waveStartTimer==1,"shop closes into one-second wave warning");
+            Step(r,.8f);Check(r.state==RunState.WaveStarting&&r.wave==1,"warning has no countdown-driven early start");Step(r,.25f);Check(r.state==RunState.Wave&&r.wave==2,"warning finishes into next wave");
             for(int wave=5;wave<=20;wave+=5)
             {
                 r=Fresh(c);r.wave=wave;r.total=c.waves.Count(wave);r.spawned=3;r.spawnTimer=0;Step(r,.02f);

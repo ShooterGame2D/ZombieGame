@@ -9,7 +9,7 @@ namespace ZHold
         GameCatalog catalog;
         PrototypeAudio sound;
         Vector2 pointer=new Vector2(800,450);
-        float scale=1,offsetX,offsetY,time,waveNotice;
+        float scale=1,offsetX,offsetY,time,waveNotice,shopAnimation;
         bool uiClick,allowButtons,suppressFireUntilRelease;
         bool introComplete;
         int selectedSlot,shopTab;
@@ -32,7 +32,8 @@ namespace ZHold
         void Update()
         {
             if(Run==null||!introComplete)return;Layout();sound.ListenerSide=Run.viewSide;
-            bool combat=Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting&&!settings&&!Run.demo;
+            if(Run.state==RunState.Menu)UpdateMenuTransition();
+            bool combat=Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting&&!settings&&!cheats&&!Run.demo;
             bool choosingAtFrameStart=Run.choosingTreeLane;
             if(Mouse.current!=null&&!Mouse.current.leftButton.isPressed)suppressFireUntilRelease=false;
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -74,16 +75,19 @@ namespace ZHold
                 {
                     var p=Mouse.current.position.ReadValue();pointer=new Vector2((p.x-offsetX)/scale,(Screen.height-p.y-offsetY)/scale);
                     uiClick|=Mouse.current.leftButton.wasReleasedThisFrame;
+                    if(Run.state==RunState.WaveEnd&&Mouse.current.rightButton.wasPressedThisFrame)Run.CollectCoin(pointer);
                 }
+                uiClick|=Mouse.current.leftButton.wasReleasedThisFrame;
             }
             if(Keyboard.current!=null)
             {
                 var key=Keyboard.current;
                 if(key.escapeKey.wasPressedThisFrame)
                 {
-                    if(settings) { settings=false;GameSettings.Save(); }
+                    if(cheats)ToggleCheats();
+                    else if(settings) { settings=false;GameSettings.Save(); }
                     else if(Run.choosingTreeLane)Run.CancelTreeSelection();
-                    else if(Run.state==RunState.Menu)showHome=true;
+                    else if(Run.state==RunState.Menu)BeginMenuTransition(true);
                     else if(Run.state!=RunState.GameOver)Run.paused=!Run.paused;
                 }
                 if(!settings&&!Run.paused&&!Run.tutorialWaiting)
@@ -91,11 +95,14 @@ namespace ZHold
                     if(key.qKey.wasPressedThisFrame||key.eKey.wasPressedThisFrame||key.tabKey.wasPressedThisFrame)Run.SwitchSide();
                     if(key.rKey.wasPressedThisFrame)Run.BeginReload();
                     if(key.spaceKey.wasPressedThisFrame)Run.UseAbility(pointer);
-                    if(key.enterKey.wasPressedThisFrame&&Run.state==RunState.Shop&&!Run.Tutorial)Run.NextWave();
+                    if(key.enterKey.wasPressedThisFrame&&Run.state==RunState.Shop&&shopAnimation>.98f&&!Run.Tutorial)Run.NextWave();
                 }
             }
             if(choosingAtFrameStart&&!Run.choosingTreeLane&&Mouse.current!=null&&Mouse.current.leftButton.isPressed)suppressFireUntilRelease=true;
             if(!settings)Run.Tick(Time.unscaledDeltaTime);
+            if(Run.state==RunState.Shop)shopAnimation=Mathf.Min(1,shopAnimation+Time.unscaledDeltaTime*3.4f);
+            else if(Run.state==RunState.WaveStarting)shopAnimation=Run.waveStartTimer;
+            else shopAnimation=0;
             if(!Run.paused&&!settings&&!Run.tutorialWaiting) { time+=Time.unscaledDeltaTime*Run.WorldSpeed;waveNotice-=Time.unscaledDeltaTime; }
             sound.SetContext(Run.character.theme,Run.paused||settings||Run.tutorialWaiting,Run.WorldSpeed);
             Cursor.visible=!combat||Run.choosingTreeLane||!CombatPoint(pointer);
@@ -108,30 +115,48 @@ namespace ZHold
             GUI.matrix=Matrix4x4.TRS(new Vector3(offsetX,offsetY,0),Quaternion.identity,new Vector3(scale,scale,1));
             var screenMatrix=GUI.matrix;
             if(Run.state!=RunState.Menu&&!Run.paused) GUI.matrix*=Matrix4x4.Translate(new Vector3(Mathf.Sin(time*79)*Run.shake*10*GameSettings.Shake,Mathf.Sin(time*103)*Run.shake*7*GameSettings.Shake,0));
-            GameArt.Background(Run.character.theme,Run.state==RunState.Menu?ViewSide.Front:Run.viewSide,time,Run.state==RunState.Menu);
-            if(Run.state==RunState.Menu) { Brightness(); allowButtons=!settings; if(showHome) Home();else Menu(); }
+            GameArt.Background(Run.character.theme,Run.state==RunState.Menu?(showHome?ViewSide.Front:ViewSide.Back):Run.viewSide,time,Run.state==RunState.Menu);
+            if(Run.state==RunState.Menu)
+            {
+                Brightness();allowButtons=!settings&&!menuTransitioning;if(showHome)Home();else Menu();
+                if(menuTransitioning)Rect(0,0,1600,900,new Color(0,0,0,Mathf.Sin(menuTransition*Mathf.PI)));
+            }
             else
             {
                 Battle();GUI.matrix=screenMatrix;Brightness(); allowButtons=!settings && !Run.paused && Run.state==RunState.Wave; HUD();ExpandedHUD();
-                if(Run.state==RunState.Shop) { allowButtons=!settings && !Run.paused; Shop(); }
+                if(Run.state==RunState.Shop||Run.state==RunState.WaveStarting)
+                {
+                    allowButtons=!settings&&!Run.paused&&Run.state==RunState.Shop&&shopAnimation>.98f;Shop(shopAnimation);
+                    if(Run.state==RunState.WaveStarting)WaveStartingWarning();
+                }
                 if(Run.state==RunState.GameOver) { allowButtons=true; GameOver(); }
-                if(Run.paused) { allowButtons=!settings; Pause(); }
+                if(Run.paused&&!cheats) { allowButtons=!settings; Pause(); }
                 if(Run.state==RunState.Wave && !Run.paused && !Run.demo && !settings && !Run.tutorialWaiting && !Run.choosingTreeLane && CombatPoint(pointer)) Crosshair();
             }
             GUI.matrix=screenMatrix;
             if(Run.Tutorial&&!Run.paused&&!settings) { allowButtons=true;TutorialPanel(); }
             if(settings) { allowButtons=true;SettingsPanel(); }
+            if(GameSettings.ShowCornerCrates&&!settings&&Run.state!=RunState.Shop&&Run.state!=RunState.WaveStarting)
+            {
+                bool crateHover=new Rect(0,745,96,96).Contains(pointer);
+                if(crateHover) { Rect(4,749,84,4,Gold);Text("DEV",18,776,58,24,13,Gold,true,TextAnchor.MiddleCenter); }
+                if(crateHover&&uiClick&&Event.current.type==EventType.Repaint){uiClick=false;ToggleCheats();}
+            }
+            if(cheats){allowButtons=true;CheatPanel();}
             if(Event.current.type==EventType.Repaint) uiClick=false;
             GUI.matrix=Matrix4x4.identity; GUI.color=Color.white;
         }
         bool Button(string title,float x,float y,float w,float h,Color color,bool enabled=true,int size=18)
         {
-            bool over=enabled && allowButtons && new Rect(x,y,w,h).Contains(pointer);
-            Round(x-4,y-4,w+8,h+12,0,Hex("0B0C19")); Round(x,y,w,h,0,enabled?(over?Color.Lerp(color,Color.white,.18f):color):Hex("394158"));
-            Rect(x+4,y,w-8,4,enabled?Color.Lerp(color,Color.white,.3f):Hex("586079"));
-            Rect(x+4,y+h-4,w-8,4,enabled?Color.Lerp(color,Ink,.38f):Hex("22293A"));
+            bool over=enabled&&allowButtons&&new Rect(x,y,w,h).Contains(pointer);
+            bool pressed=over&&Mouse.current!=null&&Mouse.current.leftButton.isPressed;
+            float drawX=x+(pressed?2:0),drawY=y+(pressed?4:0),drawW=w-(pressed?4:0),drawH=h-(pressed?4:0);
+            Color face=!enabled?Hex("394158"):pressed?Color.Lerp(color,Ink,.14f):over?Color.Lerp(color,Color.white,.18f):color;
+            Round(drawX-4,drawY-4,drawW+8,drawH+(pressed?7:12),0,Hex("0B0C19"));Round(drawX,drawY,drawW,drawH,0,face);
+            Rect(drawX+4,drawY,drawW-8,pressed?2:4,enabled?Color.Lerp(color,Color.white,pressed?.12f:.3f):Hex("586079"));
+            Rect(drawX+4,drawY+drawH-4,drawW-8,pressed?2:4,enabled?Color.Lerp(color,Ink,pressed?.55f:.38f):Hex("22293A"));
             bool bright=color==Gold || color==Mint || color==Cream;
-            Text(title,x+8,y,w-16,h,size,enabled?(bright?Ink:Cream):Hex("87958B"),true,TextAnchor.MiddleCenter);
+            Text(title,drawX+8,drawY,drawW-16,drawH,size,enabled?(bright?Ink:Cream):Hex("87958B"),true,TextAnchor.MiddleCenter);
             if(over && uiClick && Event.current.type==EventType.Repaint) { uiClick=false; return true; } return false;
         }
         void Panel(float x,float y,float w,float h)
@@ -146,22 +171,22 @@ namespace ZHold
         void Menu()
         {
             Rect(0,0,1600,900,new Color(.015f,.035f,.055f,.32f));
-            Panel(40,28,1520,64); Text("Z-HOLD",62,48,430,30,21,Cream,true);
-            Text("EDIÇÃO PIXEL  ·  VERSÃO 0.6",560,52,560,24,15,Mint);
-            Text("RECORDE "+Run.profile.bestWave+"   /   "+Run.profile.gems+" GEMAS",1100,51,430,24,15,Gold,true,TextAnchor.UpperRight);
-            Panel(40,120,732,285); Tag("FRENTE E COSTAS",64,144,215,Mint);
-            Text("Mantenha os dois lados sob controle.",66,212,660,31,24,Cream);
+            Panel(40,68,732,337);
+            Text("RECORDE "+Run.profile.bestWave+" ONDAS",66,95,330,28,18,Mint,true);
+            Text(Run.profile.gems+" GEMAS",416,95,330,28,18,Gold,true,TextAnchor.UpperRight);
+            Text("Mantenha os dois lados sob controle.",66,156,660,34,26,Cream,true);
+            Text("Escolha seu defensor e prepare a posição.",66,204,660,28,19,Hex("ACC2B7"));
             Text("EM USO: "+Run.character.title.ToUpperInvariant()+" · Clique nos cartões para conhecer o elenco.",66,315,660,25,16,Hex("ACC2B7"));
             if(Button("JOGAR: "+Run.character.title.ToUpperInvariant(),65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }
             if(Button("TUTORIAL",446,351,300,40,Hex("345452"),true,15))Run.StartTutorial();
-            Panel(799,120,761,285); GameArt.Portrait(Run.PreviewCharacterIndex,810,130,260,260);
+            Panel(799,68,761,337); GameArt.Portrait(Run.PreviewCharacterIndex,810,83,260,304);
             var c=Run.PreviewedCharacter;
-            Text(c.title.ToUpperInvariant(),1080,137,450,38,30,c.accent,true);
-            Text(c.mapTitle+"  /  "+c.health+" PV",1083,177,430,25,17,Cream);
-            Text("ARMA: "+c.weapon.title,1083,207,430,25,16,Hex("BED1C6"));
-            Text(c.abilityTitle,1083,237,430,26,21,Gold,true);
-            Text(c.abilityDescription,1083,267,425,59,17,Hex("BED1C6"));
-            Text(c.cooldown+" s de recarga do especial",1083,329,425,21,12,Hex("91ACA6"));
+            Text(c.title.ToUpperInvariant(),1080,91,450,38,30,c.accent,true);
+            Text(c.mapTitle+"  /  "+c.health+" PV",1083,137,430,25,17,Cream);
+            Text("ARMA: "+c.weapon.title,1083,177,430,25,16,Hex("BED1C6"));
+            Text(c.abilityTitle,1083,218,430,26,21,Gold,true);
+            Text(c.abilityDescription,1083,253,425,59,17,Hex("BED1C6"));
+            Text(c.cooldown+" s de recarga do especial",1083,323,425,21,12,Hex("91ACA6"));
             bool previewOwned=Run.OwnsCharacter(Run.PreviewCharacterIndex),previewEquipped=Run.profile.selected==Run.PreviewCharacterIndex;
             string previewAction=previewOwned?(previewEquipped?"EM USO":"USAR PERSONAGEM"):Run.profile.gems>=c.price?"COMPRAR · "+c.price+" GEMAS":"FALTAM "+(c.price-Run.profile.gems)+" GEMAS";
             if(Button(previewAction,1080,358,430,32,previewOwned?Mint:Gold,!previewEquipped&&(previewOwned||Run.profile.gems>=c.price),16))
@@ -183,7 +208,7 @@ namespace ZHold
                 Text(preview?"EM PRÉVIA":selected?"EM USO · VER DETALHES":owned?"ADQUIRIDO · VER DETALHES":"VER DETALHES",x+12,y+120,344,23,12,Cream,true,TextAnchor.MiddleCenter);
                 if(hover&&uiClick&&Event.current.type==EventType.Repaint){uiClick=false;Run.PreviewCharacter(i);}
             }
-            if(Button("VOLTAR",40,836,180,38,Hex("31504E"),true,16))showHome=true;
+            if(Button("VOLTAR",40,836,180,38,Hex("31504E"),true,16))BeginMenuTransition(true);
             Text("Ganhe gemas ao encerrar partidas: ondas vencidas, eliminações e novo recorde.",290,840,1040,40,17,Cream,false,TextAnchor.MiddleCenter);
             if(Button("CONFIGURAR",1360,836,200,38,Hex("31504E"),true,15))settings=true;
         }
@@ -259,7 +284,12 @@ namespace ZHold
             Panel(1170,22,236,84); Text("$ "+Run.wallet.ToString("000"),1191,35,200,37,30,Gold,true); Text("MOEDAS DA PARTIDA",1195,79,191,17,10,Cream);
             if(Button("II",1421,22,65,84,Ink,true,27)) Run.paused=true;
             if(Button("CFG",1500,22,75,84,Ink,true,17)) {settings=true;Run.paused=true;}
-            if(Button(RunManager.SideName(Run.viewSide)+"   >   [Q / E / SCROLL]",570,122,460,42,Run.viewSide==ViewSide.Front?Hex("31564E"):Hex("594344"),true,17)) Run.SwitchSide();
+            if(Run.state==RunState.WaveEnd)
+            {
+                Panel(570,118,460,50);
+                Text("ONDA "+Run.wave+" CONCLUÍDA  ·  LOJA EM "+Mathf.CeilToInt(Run.waveEndTimer)+"s",584,129,432,28,18,Gold,true,TextAnchor.MiddleCenter);
+            }
+            else if(Run.state!=RunState.WaveStarting&&Button(RunManager.SideName(Run.viewSide)+"   >   [Q / E / SCROLL]",570,122,460,42,Run.viewSide==ViewSide.Front?Hex("31564E"):Hex("594344"),true,17)) Run.SwitchSide();
             Minimap();
             Panel(25,807,493,75); Text(Run.weapon.title.ToUpperInvariant(),43,818,326,22,15,Cream,true);
             Text(Mathf.FloorToInt(Run.ammo)+" / "+Run.Capacity,367,816,130,28,25,Gold,true,TextAnchor.UpperRight);
@@ -313,9 +343,14 @@ namespace ZHold
             Line(new Vector2(x,y-gap-9),new Vector2(x,y-gap),3,c); Line(new Vector2(x,y+gap),new Vector2(x,y+gap+9),3,c);
             if(coin!=null) Text("M2: COLETAR",x+25,y-12,110,24,12,Gold,true);
         }
-        void Shop()
+        void Shop(float progress)
         {
-            Shade(); Panel(115,119,1370,671);
+            progress=Mathf.Clamp01(progress);
+            Rect(0,0,1600,900,new Color(.01f,.035f,.055f,.76f*progress));
+            var previousMatrix=GUI.matrix;
+            float eased=progress*progress*(3-2*progress);
+            GUI.matrix=previousMatrix*Matrix4x4.Translate(new Vector3(0,(1-eased)*820,0));
+            Panel(115,119,1370,671);
             Text("REORGANIZE A DEFESA",145,143,850,48,35,Cream,true);
             Text("Onda "+Run.completed+" vencida  /  bônus de sobrevivência +"+Run.waveBonus+" moedas",148,201,930,25,17,Mint);
             Text(Run.wallet+" MOEDAS",1140,145,308,35,26,Gold,true,TextAnchor.UpperRight);
@@ -328,6 +363,12 @@ namespace ZHold
             if(Button("PRÓXIMA ONDA  >",1035,698,412,48,Gold,!Run.Tutorial,20)) Run.NextWave();
             Text("Reservas: "+Run.reserve+"  ·  Pente: "+Mathf.FloorToInt(Run.ammo)+" / "+Run.Capacity,149,759,720,22,13,Hex("A9C7B8"));
             Text(Run.Tutorial?"COMPRE MUNIÇÃO PARA CONCLUIR":"ENTER para continuar",1040,758,402,22,13,Hex("A9C7B8"),false,TextAnchor.MiddleCenter);
+            GUI.matrix=previousMatrix;
+        }
+        void WaveStartingWarning()
+        {
+            Panel(570,118,460,50);
+            Text("ONDA "+(Run.wave+1)+" COMEÇANDO",584,129,432,28,20,Gold,true,TextAnchor.MiddleCenter);
         }
         void WeaponShop()
         {

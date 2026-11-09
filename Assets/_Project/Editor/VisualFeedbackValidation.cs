@@ -51,6 +51,7 @@ namespace ZHold.Editor
             run=Fresh(catalog); zombie=Enemy(run); run.Hit(zombie,1,false); run.Start(true);
             Check(run.blood.stains.Count==0&&run.blood.particles.Count==0,"restart clears blood");
             run=Fresh(catalog); zombie=Enemy(run); run.Hit(zombie,1,false); run.state=RunState.Shop; run.NextWave();
+            for(int i=0;i<21;i++)run.Tick(.05f);
             Check(run.blood.stains.Count==0&&run.blood.particles.Count==0,"new wave starts clean");
             var a=Fresh(catalog); var b=Fresh(catalog);
             for(int i=0;i<70;i++)

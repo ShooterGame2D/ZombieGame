@@ -42,7 +42,7 @@ namespace ZHold
         }
         public void CollectCoin(Vector2 point)
         {
-            if(paused||state!=RunState.Wave||tutorialWaiting) return;
+            if(paused||(state!=RunState.Wave&&state!=RunState.WaveEnd)||tutorialWaiting) return;
             var coin=CoinAt(point); if(coin==null) return;
             wallet+=coin.value; coinsCollected++; coins.Remove(coin);
             Text(point,"+"+coin.value,Draw2D.Gold,viewSide); OnSound?.Invoke("coin");

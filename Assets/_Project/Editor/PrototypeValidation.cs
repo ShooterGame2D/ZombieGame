@@ -91,7 +91,8 @@ namespace ZHold.Editor
             r=Fresh(c); r.ammo=0; r.BeginReload();r.paused=true; timer=r.reloadTimer; Step(r,1); Check(r.reloadTimer==timer,"pause freezes reload");
             r=Fresh(c); r.spawnTimer=.01f; Step(r,2.2f); Check(r.CountOnSide(ViewSide.Front)>0 && r.CountOnSide(ViewSide.Back)>0,"first wave spawns both directions");
             r=Fresh(c); r.spawned=r.total; Step(r,3.2f); Check(r.state==RunState.Shop && r.wallet==28,"wave bonus funds ammunition independently of random drops");
-            r.NextWave(); Check(r.wave==2 && r.state==RunState.Wave,"next wave transition");
+            r.NextWave();Check(r.wave==1&&r.state==RunState.WaveStarting&&r.waveStartTimer==1,"next wave gives one-second breathing space");
+            Step(r,1.05f);Check(r.wave==2&&r.state==RunState.Wave,"next wave starts after warning");
             r.demo=true; r.completed=3; r.kills=15; r.HurtPlayer(999,ViewSide.Back); Check(r.state==RunState.GameOver && r.earnedGems==83 && r.profile.gems==0,"demo reward never writes real progress");
             r.Start(true); Check(r.weapon==r.character.weapon && r.wallet==0 && r.reserve==72 && r.barricades[1]==null && r.viewSide==ViewSide.Front,"restart resets all run-only equipment");
             var migrated=SaveSystem.Migrate(new PlayerProfile{version=0,gems=345,bestWave=9,selected=3,unlocked=new[]{true,false,false,true}});

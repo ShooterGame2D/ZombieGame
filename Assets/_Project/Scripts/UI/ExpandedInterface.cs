@@ -4,8 +4,64 @@ namespace ZHold
 {
     public partial class GameApplication
     {
-        bool showHome=true,settings,mouseCaptured;
+        bool showHome=true,settings,mouseCaptured,cheats,cheatPausedBefore;
+        bool menuTransitioning,menuTransitionSwapped,menuTargetHome=true;
+        float menuTransition;
+        int cheatWave=1;
         Texture2D logoAnimation;
+
+        void BeginMenuTransition(bool home)
+        {
+            if(settings||!menuTransitioning&&showHome==home)return;
+            menuTargetHome=home;menuTransition=0;menuTransitionSwapped=false;menuTransitioning=true;
+        }
+
+        void UpdateMenuTransition()
+        {
+            if(!menuTransitioning)return;
+            menuTransition+=Time.unscaledDeltaTime/.55f;
+            if(!menuTransitionSwapped&&menuTransition>=.5f)
+            { showHome=menuTargetHome;menuTransitionSwapped=true; }
+            if(menuTransition>=1)
+            { menuTransition=1;menuTransitioning=false; }
+        }
+
+        void ToggleCheats()
+        {
+            if(!cheats)
+            {
+                cheats=true;cheatWave=Mathf.Max(1,Run.wave);cheatPausedBefore=Run.paused;
+                if(Run.state!=RunState.Menu)Run.paused=true;
+            }
+            else
+            {
+                cheats=false;
+                if(Run.state!=RunState.Menu)Run.paused=cheatPausedBefore;
+            }
+        }
+
+        void CheatPanel()
+        {
+            Shade();Panel(365,150,870,600);Tag("FERRAMENTAS DE TESTE",580,177,440,Gold);
+            Text("MENU DE CHEATS",405,226,790,48,36,Cream,true,TextAnchor.MiddleCenter);
+            Text("GEMAS: "+Run.profile.gems,420,310,250,40,25,Gold,true);
+            if(Button("+10",700,302,140,45,Mint,true,19))Run.CheatAddGems(10);
+            if(Button("+100",860,302,140,45,Mint,true,19))Run.CheatAddGems(100);
+            if(Button("+1000",1020,302,160,45,Gold,true,19))Run.CheatAddGems(1000);
+            Text("MOEDAS DA RODADA: "+Run.wallet,420,390,330,40,24,Cream,true);
+            if(Button("−100",760,382,130,45,Hex("345452"),true,18))Run.CheatSetWallet(Run.wallet-100);
+            if(Button("+100",910,382,130,45,Mint,true,18))Run.CheatSetWallet(Run.wallet+100);
+            if(Button("+1000",1060,382,130,45,Gold,true,18))Run.CheatSetWallet(Run.wallet+1000);
+            Text("IR PARA ONDA",420,478,260,40,24,Cream,true);
+            if(Button("−5",700,470,90,45,Hex("345452"),true,18))cheatWave=Mathf.Max(1,cheatWave-5);
+            if(Button("−1",810,470,90,45,Hex("345452"),true,18))cheatWave=Mathf.Max(1,cheatWave-1);
+            Text(cheatWave.ToString(),920,470,100,45,28,Gold,true,TextAnchor.MiddleCenter);
+            if(Button("+1",1040,470,90,45,Mint,true,18))cheatWave=Mathf.Min(999,cheatWave+1);
+            if(Button("+5",1150,470,70,45,Mint,true,18))cheatWave=Mathf.Min(999,cheatWave+5);
+            if(Button("INICIAR ONDA "+cheatWave,510,555,580,55,Gold,true,23))
+            { cheatPausedBefore=false;Run.CheatStartWave(cheatWave);ToggleCheats(); }
+            if(Button("FECHAR",590,660,420,46,Hex("345452"),true,19))ToggleCheats();
+        }
 
         void AnimatedLogo(float x,float y,float width,float height)
         {
@@ -28,9 +84,9 @@ namespace ZHold
         {
             Rect(0,0,1600,900,new Color(.055f,.075f,.12f,.22f));
             AnimatedLogo(-20,18,720,324);
-            if(Button("JOGAR",80,390,430,62,Gold,true,27))showHome=false;
-            if(Button("TUTORIAL",80,490,430,62,Mint,true,25))Run.StartTutorial();
-            if(Button("CONFIGURAÇÕES",80,590,430,62,Hex("345452"),true,22))settings=true;
+            if(Button("JOGAR",120,390,430,62,Gold,true,27))BeginMenuTransition(false);
+            if(Button("TUTORIAL",120,490,430,62,Mint,true,25))Run.StartTutorial();
+            if(Button("CONFIGURAÇÕES",120,590,430,62,Hex("345452"),true,22))settings=true;
             GameArt.Portrait(Run.profile.selected,990,214,440,475);
             Text("Recorde: "+Run.profile.bestWave+" ondas",1035,704,435,38,25,Cream,true,TextAnchor.MiddleCenter);
         }
@@ -114,12 +170,6 @@ namespace ZHold
             {
                 Rect(490,759,620,37,Hex("A33C2D"));
                 Text(Run.ammo==0&&Run.reserve==0?"SEM MUNIÇÃO — USE O ESPECIAL!":"MUNIÇÃO ACABANDO!  [R] RECARREGAR",500,764,600,27,23,Cream,true,TextAnchor.MiddleCenter);
-            }
-            if(Run.state==RunState.WaveEnd)
-            {
-                Panel(495,320,610,223);Text("ONDA "+Run.wave+" CONCLUÍDA",520,344,560,43,35,Mint,true,TextAnchor.MiddleCenter);
-                Text(Mathf.CeilToInt(Run.waveEndTimer).ToString(),610,391,380,91,76,Gold,true,TextAnchor.MiddleCenter);
-                Text("A loja abre em instantes",540,491,520,30,24,Cream,false,TextAnchor.MiddleCenter);
             }
             if(Run.choosingTreeLane&&Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting)LanePreview();
         }

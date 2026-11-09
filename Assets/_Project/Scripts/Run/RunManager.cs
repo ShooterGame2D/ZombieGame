@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace ZHold
 {
-    public enum RunState { Menu, Wave, Shop, GameOver, WaveEnd }
+    public enum RunState { Menu, Wave, Shop, GameOver, WaveEnd, WaveStarting }
     // Both lanes always simulate; visibility filters only aiming and presentation.
     public partial class RunManager
     {
@@ -26,7 +26,7 @@ namespace ZHold
         public CharacterData PreviewedCharacter => catalog.characters[PreviewCharacterIndex];
         public bool paused,demo,newRecord;
         public int wave,completed,kills,wallet,spawned,total,earnedGems,healCount,reserve,waveBonus;
-        public float health,ammo,reloadTimer,reloadDuration,fireCooldown,abilityCooldown,shopTimer,spawnTimer;
+        public float health,ammo,reloadTimer,reloadDuration,fireCooldown,abilityCooldown,shopTimer,spawnTimer,waveStartTimer;
         public float damageFlash,recoil,hitMarker,focusTimer,temporaryTurret,smokeTimer,otherAttackTimer,switchFlash;
         public float weaponAction,bowDrawTimer;
         Vector2 bowAim;
@@ -93,9 +93,29 @@ namespace ZHold
         public void NextWave()
         {
             if(state!=RunState.Shop && wave!=0) return;
+            if(state==RunState.Shop&&wave!=0)
+            {
+                state=RunState.WaveStarting;waveStartTimer=1;CancelDraw();CancelTreeSelection();OnSound?.Invoke("wave");
+                return;
+            }
+            BeginWave();
+        }
+        void BeginWave()
+        {
             blood.Clear();
             wave++; total=catalog.waves.Count(wave); spawned=0; spawnTimer=.5f; waveEndTimer=0;
             state=RunState.Wave; OnWaveStarted?.Invoke(wave); OnSound?.Invoke("wave");
+        }
+        public void CheatAddGems(int amount)
+        { profile.gems=Mathf.Max(0,profile.gems+amount);PersistProfile(); }
+        public void CheatSetWallet(int amount) => wallet=Mathf.Max(0,amount);
+        public void CheatStartWave(int number)
+        {
+            number=Mathf.Clamp(number,1,999);
+            if(state==RunState.Menu||state==RunState.GameOver)Start();
+            paused=false;
+            zombies.Clear();coins.Clear();projectiles.Clear();effects.Clear();thrown.Clear();CancelDraw();CancelTreeSelection();
+            wave=number-1;completed=wave;BeginWave();
         }
         public void Tick(float dt)
         {
@@ -104,7 +124,21 @@ namespace ZHold
             float worldDt=dt*WorldSpeed;
             TickExpansion(dt,worldDt); TickTutorial(dt);
             if(tutorialWaiting) return;
-            if(state==RunState.WaveEnd) { waveEndTimer=Mathf.Max(0,waveEndTimer-dt); if(waveEndTimer==0) { completed=wave;waveBonus=24+wave*4;wallet+=waveBonus;blood.Clear();state=RunState.Shop;shopTimer=catalog.waves.shopSeconds;OnSound?.Invoke("wave"); } return; }
+            if(state==RunState.WaveEnd)
+            {
+                blood.Tick(worldDt);weaponAction=Mathf.Max(0,weaponAction-dt);recoil=Mathf.Max(0,recoil-dt*6);hitMarker=Mathf.Max(0,hitMarker-dt*3);
+                for(int i=effects.Count-1;i>=0;i--){effects[i].life-=worldDt;if(effects[i].life<=0)effects.RemoveAt(i);}
+                for(int i=coins.Count-1;i>=0;i--){coins[i].life-=worldDt;coins[i].age+=worldDt;if(coins[i].life<=0)coins.RemoveAt(i);}
+                waveEndTimer=Mathf.Max(0,waveEndTimer-dt);
+                if(waveEndTimer==0)
+                {
+                    foreach(var coin in coins)wallet+=coin.value;
+                    coins.Clear();completed=wave;waveBonus=24+wave*4;wallet+=waveBonus;blood.Clear();state=RunState.Shop;shopTimer=catalog.waves.shopSeconds;OnSound?.Invoke("wave");
+                }
+                return;
+            }
+            if(state==RunState.WaveStarting)
+            { waveStartTimer=Mathf.Max(0,waveStartTimer-dt);if(waveStartTimer==0)BeginWave();return; }
             blood.Tick(worldDt);
             weaponAction=Mathf.Max(0,weaponAction-dt);
             if(BowDrawing)
@@ -232,8 +266,9 @@ namespace ZHold
             }
             if(spawned==total && zombies.Count==0 && projectiles.Count==0 && thrown.Count==0 && treeTimer<=0 && (!Tutorial||tutorialStep==7))
             {
-                foreach(var coin in coins) wallet+=coin.value;
-                coins.Clear(); state=RunState.WaveEnd;waveEndTimer=3;CancelDraw();CancelTreeSelection();OnSound?.Invoke("wave");
+                state=RunState.WaveEnd;waveEndTimer=3;
+                foreach(var coin in coins)coin.life=Mathf.Max(coin.life,waveEndTimer+.25f);
+                CancelDraw();CancelTreeSelection();OnSound?.Invoke("wave");
             }
             if(demo) DemoTick(dt);
         }
@@ -334,7 +369,11 @@ namespace ZHold
             OnSpatialSound?.Invoke(z.data.bodyArmor<1 && !head?"metal":head?"head":"hit",z.side);
             if(z.health>0) return;
             kills++; zombies.Remove(z);
-            if(z.bossTier>0 || random.NextDouble()<z.data.coinChance) coins.Add(new Coin{side=z.side,position=new Vector2(z.Position.x,Mathf.Min(690,z.Position.y-35)),value=z.bossTier>0?40+z.bossTier*10:z.data.coins});
+            if(z.bossTier>0 || random.NextDouble()<z.data.coinChance)
+            {
+                float direction=random.NextDouble()<.5?-1:1;
+                coins.Add(new Coin{side=z.side,position=new Vector2(z.Position.x,Mathf.Min(690,z.Position.y-35)),bounceX=direction*(18+(float)random.NextDouble()*24),value=z.bossTier>0?40+z.bossTier*10:z.data.coins});
+            }
             OnZombieDied?.Invoke(z);
             if(z.data.kind==ZombieKind.Volatile) { OnSpatialSound?.Invoke("explosion",z.side); Blast(z.Body.center,155,4,z.side); }
         }
