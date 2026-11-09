@@ -9,16 +9,16 @@ namespace ZombieAttack
         {
             if(zombies!=null) return;
             zombies=Resources.Load<Texture2D>("Art/Pixel/Zombies"); portraits=Resources.Load<Texture2D>("Art/Pixel/Heroes");
-            environments=Resources.Load<Texture2D>("Art/Pixel/Front"); rearEnvironments=Resources.Load<Texture2D>("Art/Pixel/Back");
+            environments=Resources.Load<Texture2D>("Art/Maps-v5/Front") ?? Resources.Load<Texture2D>("Art/Pixel/Front");
+            rearEnvironments=Resources.Load<Texture2D>("Art/Maps-v5/Back") ?? Resources.Load<Texture2D>("Art/Pixel/Back");
         }
         public static void Background(MapTheme theme,ViewSide side,float time)
         {
             Load(); int index=(int)theme; bool rear=side==ViewSide.Back;
             var atlas=rear && rearEnvironments!=null?rearEnvironments:environments;
-            var uv=new Rect(index%2*.5f+.001f,1-(index/2+1)*.25f+.001f,.498f,.248f);
+            var uv=BackgroundUV(index);
             if(rear && rearEnvironments==null) { uv.x+=uv.width; uv.width=-uv.width; }
             GUI.color=Color.white; GUI.DrawTextureWithTexCoords(new Rect(0,0,1600,900),atlas,uv);
-            ExpansionArt.Ground(theme);
             Rect(0,0,1600,120,new Color(.02f,.05f,.07f,.25f)); Rect(0,790,1600,110,new Color(.02f,.05f,.07f,.35f));
             for(int i=0;i<18;i++)
             {
@@ -33,6 +33,9 @@ namespace ZombieAttack
                 Line(new Vector2(x+17,758),new Vector2(x+93,811),6,Hex("59644D"));
             }
         }
+        // Frame the new open clearing so the fixed spawn row (y=400) is on ground.
+        // Only the painting is framed; DepthProjector and every spawn position stay unchanged.
+        public static Rect BackgroundUV(int index) => new Rect(index%2*.5f+.001f,1-(index/2+1)*.25f+.001f,.498f,.25f*.86f-.002f);
         public static void ZombieArt(Zombie z,float time,bool bar=true)
         {
             Load(); Vector2 p=z.Position; float s=z.Size, height=215*s, width=z.ArtWidth;

@@ -54,11 +54,19 @@ namespace ZombieAttack
         }
         void LanePreview()
         {
-            int lane=RunManager.LaneAt(pointer);float lateral=(lane-1)*.66f;
-            var a=DepthProjector.Project(lateral-.30f,1);var b=DepthProjector.Project(lateral+.30f,1);
-            var c=DepthProjector.Project(lateral+.30f,0);var d=DepthProjector.Project(lateral-.30f,0);
-            Quad(a,b,c,d,new Color(1,.68f,.18f,.12f));Line(a,d,4,Gold);Line(b,c,4,Gold);
-            Text("ESPAÇO: ÁRVORE NA COLUNA "+(lane+1),470,650,660,35,24,Gold,true,TextAnchor.MiddleCenter);
+            int lane=Run.selectedTreeLane;
+            string[] names={"1 · ESQUERDA","2 · CENTRO","3 · DIREITA"};
+            Panel(186,660,1228,128);
+            string instruction=lane<0?"CLIQUE NA COLUNA DESEJADA · ESC: CANCELAR":"COLUNA "+(lane+1)+" SELECIONADA · ESPAÇO: DERRUBAR · ESC: CANCELAR";
+            Text(instruction,210,674,1180,28,23,Gold,true,TextAnchor.MiddleCenter);
+            for(int i=0;i<3;i++)
+            {
+                var box=TreeSelectionLayout.Button(i);bool hover=box.Contains(pointer);
+                Color color=lane==i?Gold:hover?Hex("466964"):Hex("293C48");
+                Rect(box.x-3,box.y-3,box.width+6,box.height+6,lane==i?Cream:Hex("62757F"));
+                Rect(box.x,box.y,box.width,box.height,color);
+                Text(names[i]+(lane==i?" · OK":""),box.x+6,box.y+4,box.width-12,box.height-8,25,lane==i?Ink:Cream,true,TextAnchor.MiddleCenter);
+            }
         }
         void ExpandedHUD()
         {
@@ -91,6 +99,7 @@ namespace ZombieAttack
                 Text(Mathf.CeilToInt(Run.waveEndTimer).ToString(),610,391,380,91,76,Gold,true,TextAnchor.MiddleCenter);
                 Text("A loja abre em instantes",540,491,520,30,24,Cream,false,TextAnchor.MiddleCenter);
             }
+            if(Run.choosingTreeLane&&Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting)LanePreview();
         }
         static readonly string[] LessonTitles={"BEM-VINDO À DEFESA","DISPARE COM M1","MIRE NA CABEÇA","RECARREGUE COM R","COLETE COM M2","TROQUE DE CÂMERA","USE SEU ESPECIAL","SUA PRIMEIRA MINI-ONDA","VISITE A LOJA","TREINO CONCLUÍDO"};
         static readonly string[] Lessons={
@@ -100,7 +109,7 @@ namespace ZombieAttack
             "Aperte R antes de esvaziar o pente. As balas que sobraram são preservadas; a reserva completa o pente.",
             "Mire na moeda dourada e clique com o botão direito. Coletar não dispara e funciona durante a recarga.",
             "Use Q, E ou a rodinha do mouse. Observe o radar: ele indica os inimigos da outra câmera.",
-            "Aperte Espaço. O poder depende do personagem. Lenhador: mire na coluna desejada antes de apertar.",
+            "Aperte Espaço. Lenhador: clique em uma das três colunas na parte inferior e aperte Espaço novamente para derrubar a árvore. ESC cancela.",
             "Elimine os quatro alvos dos dois lados. Você não perde vida. Depois, haverá um contador de 3 segundos.",
             "Compre munição no botão verde. Explore as abas: armas, melhorias e defesas. Barricadas ficam à frente das torres.",
             "Você aprendeu a atirar, acertar a cabeça, recarregar, coletar, trocar de lado, usar o especial e comprar na loja."};

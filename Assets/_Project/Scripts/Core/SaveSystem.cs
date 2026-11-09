@@ -6,8 +6,9 @@ namespace ZombieAttack
     [Serializable]
     public class PlayerProfile
     {
-        public int gems, bestWave, selected, version;
-        public bool[] unlocked = { true, true, true, true, true, true, true, true };
+        public int gems, bestWave, selected;
+        public int version=3;
+        public bool[] unlocked = { true, false, false, false, false, false, false, false };
     }
     public static class SaveSystem
     {
@@ -31,10 +32,21 @@ namespace ZombieAttack
         public static PlayerProfile Migrate(PlayerProfile profile)
         {
             if(profile == null) profile = new PlayerProfile();
-            if(profile.version < 2) profile.selected = profile.selected == 3 ? 2 : 0;
-            profile.version = 2;
-            profile.unlocked = new[]{true,true,true,true,true,true,true,true};
+            var owned=new bool[8]; owned[0]=true;
+            if(profile.version<2)
+            {
+                // The original four-character roster placed the engineer in slot 3.
+                int[] legacySlots={0,1,3,2};
+                if(profile.unlocked!=null)
+                    for(int i=0;i<Math.Min(4,profile.unlocked.Length);i++)owned[legacySlots[i]]=profile.unlocked[i];
+                profile.selected=profile.selected>=0&&profile.selected<4?legacySlots[profile.selected]:0;
+            }
+            else if(profile.version>=3 && profile.unlocked!=null)
+                Array.Copy(profile.unlocked,owned,Math.Min(8,profile.unlocked.Length));
+            // Version 2 granted the whole roster for preview, without purchases.
+            owned[0]=true; profile.unlocked=owned; profile.version=3;
             profile.selected = Mathf.Clamp(profile.selected,0,7);
+            if(!profile.unlocked[profile.selected])profile.selected=0;
             profile.gems = Mathf.Max(0,profile.gems); profile.bestWave = Mathf.Max(0,profile.bestWave);
             return profile;
         }

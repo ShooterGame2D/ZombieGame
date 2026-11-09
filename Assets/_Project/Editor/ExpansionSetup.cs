@@ -20,7 +20,7 @@ namespace ZombieAttack.Editor
             }
             c.characters[0].abilityDescription="Arremessa uma granada: explode ao cair e causa 16 de dano em área.";
             c.characters[3].abilityDescription="5 s de câmera lenta, visão âmbar e dano 2,5×.";
-            c.characters[6].abilityTitle="Madeira abaixo!";c.characters[6].abilityDescription="Mire em uma coluna e derrube uma árvore que elimina todos os zumbis nela.";
+            c.characters[6].abilityTitle="Madeira abaixo!";c.characters[6].abilityDescription="Espaço abre a seleção. Clique na coluna e aperte Espaço novamente para derrubar a árvore. ESC cancela.";
             c.characters[4].weapon.damage=3.8f;c.characters[6].weapon.damage=2.1f;
             foreach(var hero in c.characters){EditorUtility.SetDirty(hero);EditorUtility.SetDirty(hero.weapon);}
             c.zombies[5].firstWave=5;EditorUtility.SetDirty(c.zombies[5]);
@@ -32,7 +32,7 @@ namespace ZombieAttack.Editor
                 settings.compressionFormat=AudioCompressionFormat.PCM;settings.loadType=AudioClipLoadType.DecompressOnLoad;
                 importer.defaultSampleSettings=settings;importer.SaveAndReimport();
             }
-            PrototypeBuilder.Validate();Debug.Log("EXPANSION_READY_04");
+            MapProgressionSetup.Apply();PrototypeBuilder.Validate();Debug.Log("EXPANSION_READY_05");
         }
         public static void CompileOnly(){Debug.Log("EXPANSION_COMPILE_OK");}
         static void ExportMusic()

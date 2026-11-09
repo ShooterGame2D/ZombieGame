@@ -17,26 +17,6 @@ namespace ZombieAttack
             frame=Mathf.Clamp(frame,0,5);
             GUI.DrawTextureWithTexCoords(rect,texture,new UnityEngine.Rect(frame%3/3f,1-(frame/3+1)/2f,1f/3,.5f));
         }
-        public static void Ground(MapTheme theme)
-        {
-            string[] colors={"535849","566345","68625A","98764E","A66E4D","636977","5A5840","414751"};
-            Color baseColor=Hex(colors[(int)theme]);
-            // The clear ground expands beyond every projected lane; scenery stays outside this corridor.
-            for(int row=0;row<125;row++)
-            {
-                float t=row/124f,y=400+row*4,left=Mathf.Lerp(380,-100,t),right=1600-left;
-                // Overlap rows to prevent subpixel seams when the virtual canvas is scaled.
-                Rect(left,y,right-left,8,Color.Lerp(Color.Lerp(baseColor,Ink,.27f),baseColor,t));
-            }
-            for(int i=0;i<165;i++)
-            {
-                float depth=(i*37%997)/997f,lateral=(i*137%991)/495.5f-1;
-                var p=DepthProjector.Project(lateral,depth);float size=DepthProjector.Scale(depth);
-                Rect(p.x,p.y,Mathf.Max(4,14*size),4,Color.Lerp(baseColor,Ink,(i%3==0?.2f:.08f)));
-            }
-            for(int side=-1;side<=1;side+=2)
-                Line(new Vector2(800+side*420,402),new Vector2(800+side*875,900),8,Color.Lerp(baseColor,Gold,.22f));
-        }
         public static bool ZombieState(Zombie z)
         {
             if(z.emergeTimer<=0&&!z.distracted) return false;

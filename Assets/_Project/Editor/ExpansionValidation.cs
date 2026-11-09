@@ -8,7 +8,7 @@ namespace ZombieAttack.Editor
     {
         static int checks;
         static void Check(bool value,string label){if(!value)throw new Exception("EXPANSION FAILED: "+label);checks++;}
-        static RunManager Fresh(GameCatalog c,int hero=0){var r=new RunManager(c,new PlayerProfile{selected=hero,version=2},821);r.Start(true);r.demo=false;r.spawnTimer=999;return r;}
+        static RunManager Fresh(GameCatalog c,int hero=0){var r=new RunManager(c,new PlayerProfile{selected=hero,unlocked=new[]{true,true,true,true,true,true,true,true}},821,persistProgress:false);r.Start(true);r.demo=false;r.spawnTimer=999;return r;}
         static void Step(RunManager r,float time){for(int i=0;i<Mathf.CeilToInt(time/.02f);i++)r.Tick(.02f);}
         static Zombie Enemy(RunManager r,ViewSide side=ViewSide.Front,float lateral=0,float hp=100)
         {var z=new Zombie{data=r.catalog.zombies[1],side=side,lateral=lateral,distance=.5f,health=hp,maxHealth=hp,speed=0};r.zombies.Add(z);return z;}
@@ -50,7 +50,7 @@ namespace ZombieAttack.Editor
             Check(front.health==100&&r.thrown.Count==1,"grenade must fly before explosion");r.SwitchSide();Step(r,1.05f);
             Check(front.health==84&&back.health==100&&r.shake>0,"grenade explodes on original side with shake");
             r=Fresh(c,6);front=Enemy(r,ViewSide.Front,-.66f);var middle=Enemy(r);back=Enemy(r,ViewSide.Back,-.66f);
-            r.UseAbility(front.Position);Check(r.treeLane==0&&front.health==100,"tree selects projected lane and winds up");Step(r,1.1f);
+            r.UseAbility(front.Position);r.SelectTreeLane(0);r.UseAbility(front.Position);Check(r.treeLane==0&&front.health==100,"tree selects projected lane and winds up");Step(r,1.1f);
             Check(!r.zombies.Contains(front)&&middle.health==100&&back.health==100,"tree kills only selected column and side");
             r=Fresh(c,6);front=Enemy(r);r.Shoot(front.Head.center);Check(front.health==100&&r.thrown.Count==1,"axe is a projectile");
             Step(r,.4f);Check(front.health==100,"axe flight not instantaneous");Step(r,.4f);Check(front.health<100,"axe impacts after travel");

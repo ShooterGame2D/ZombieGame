@@ -50,24 +50,6 @@ namespace ZombieAttack
         }
         public static Vector2 DefensePosition(int slot,bool barrier) => DepthProjector.Project((slot-1)*.66f,barrier?.25f:.11f);
         public static Vector2 Muzzle(Tower tower) => DefensePosition(tower.slot,false)+new Vector2(0,-130*DepthProjector.Scale(.11f));
-        public static void LaneMarkers()
-        {
-            for(int slot=0;slot<3;slot++)
-            {
-                float lateral=(slot-1)*.66f;
-                var front=DepthProjector.Project(lateral,.28f); var rear=DepthProjector.Project(lateral,.04f);
-                // Dashed marks are on the ground plane and follow the same projection as combat.
-                for(int side=-1;side<=1;side+=2)
-                    for(int dash=0;dash<4;dash++)
-                    {
-                        float t=dash/4f;
-                        var a=Vector2.Lerp(front+new Vector2(side*126,0),rear+new Vector2(side*155,0),t);
-                        var b=Vector2.Lerp(front+new Vector2(side*126,0),rear+new Vector2(side*155,0),t+.10f);
-                        Line(a,b,3,new Color(.96f,.78f,.36f,.38f));
-                    }
-                Text("0"+(slot+1),rear.x-32,rear.y+8,64,20,12,Gold,false,TextAnchor.MiddleCenter);
-            }
-        }
         public static bool Defense(int slot,Tower tower,bool barrier,float time=0)
         {
             if(tower==null) return true;

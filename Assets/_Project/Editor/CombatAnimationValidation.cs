@@ -11,7 +11,7 @@ namespace ZombieAttack.Editor
         static int checks;
         static void Check(bool ok,string label) { if(!ok) throw new Exception("COMBAT ANIMATION FAILED: "+label); checks++; }
         static RunManager Fresh(GameCatalog c,int hero=0)
-        { var r=new RunManager(c,new PlayerProfile{selected=hero},418); r.Start(true); r.demo=false; r.spawnTimer=999; return r; }
+        { var r=new RunManager(c,new PlayerProfile{selected=hero,unlocked=new[]{true,true,true,true,true,true,true,true}},418,persistProgress:false); r.Start(true); r.demo=false; r.spawnTimer=999; return r; }
         static Zombie Enemy(RunManager r,ViewSide side=ViewSide.Front,int kind=0,float depth=0)
         {
             var z=new Zombie{data=r.catalog.zombies[kind],side=side,distance=depth,health=100,maxHealth=100,speed=.03f,attackTimer=.32f}; r.zombies.Add(z);return z;

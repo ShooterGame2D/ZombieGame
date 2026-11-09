@@ -10,7 +10,7 @@ namespace ZombieAttack.Editor
         static bool Near(float a,float b)=>Mathf.Abs(a-b)<.01f;
         static RunManager Fresh(GameCatalog c,int character=0)
         {
-            var r=new RunManager(c,new PlayerProfile{selected=character,version=2},1234); r.Start(); r.spawnTimer=999; return r;
+            var r=new RunManager(c,new PlayerProfile{selected=character,unlocked=new[]{true,true,true,true,true,true,true,true}},1234,persistProgress:false); r.Start(); r.spawnTimer=999; return r;
         }
         static void Step(RunManager r,float seconds) { for(int i=0;i<Mathf.CeilToInt(seconds/.05f);i++) r.Tick(.05f); }
         static Zombie Enemy(RunManager r,ViewSide side,float distance=.5f,int kind=0,float hp=30,float lateral=0)
@@ -76,7 +76,7 @@ namespace ZombieAttack.Editor
             Check(front.distance>.3f && back.distance==.3f,"kangaroo knockback stays local");
             r=Fresh(c,5); front=Enemy(r,ViewSide.Front,0); r.UseAbility(Vector2.zero); Step(r,1);
             Check(r.health==r.character.health && r.decoyTimers[0]>0,"child decoy prevents local melee attacks");
-            r=Fresh(c,6); front=Enemy(r,ViewSide.Front); r.UseAbility(front.Body.center);Step(r,1.1f); Check(!r.zombies.Contains(front),"lumberjack falling tree");
+            r=Fresh(c,6); front=Enemy(r,ViewSide.Front); r.UseAbility(front.Body.center);r.SelectTreeLane(1);r.UseAbility(front.Body.center);Step(r,1.1f); Check(!r.zombies.Contains(front),"lumberjack falling tree");
             r=Fresh(c,7); r.UseAbility(Vector2.zero); r.HurtPlayer(30,ViewSide.Back); Check(r.health==r.character.health,"ninja smoke protects both sides temporarily");
             r=Fresh(c); var armor=Enemy(r,ViewSide.Front,.5f,6,30); r.Hit(armor,10,false); Check(Near(armor.health,26.5f),"armor reduces body hits"); r.Hit(armor,10,true); Check(Near(armor.health,16.5f),"headshot bypasses armor");
             r=Fresh(c); var medic=Enemy(r,ViewSide.Front,.5f,8); front=Enemy(r,ViewSide.Front); front.health=10; medic.specialTimer=0; Step(r,.05f); Check(front.health>10,"medic heals nearby allies");
@@ -96,7 +96,7 @@ namespace ZombieAttack.Editor
             r.Start(true); Check(r.weapon==r.character.weapon && r.wallet==0 && r.reserve==72 && r.barricades[1]==null && r.viewSide==ViewSide.Front,"restart resets all run-only equipment");
             var migrated=SaveSystem.Migrate(new PlayerProfile{version=0,gems=345,bestWave=9,selected=3,unlocked=new[]{true,false,false,true}});
             Check(migrated.gems==345 && migrated.bestWave==9 && migrated.selected==2 && migrated.unlocked.Length==8,"old save migration preserves progress");
-            r=new RunManager(c,new PlayerProfile(),77); r.Start(true);
+            r=new RunManager(c,new PlayerProfile(),77,persistProgress:false); r.Start(true);
             for(int i=0;i<18000 && r.wave<3 && r.state!=RunState.GameOver;i++) r.Tick(.05f);
             Check(r.wave>=3,"demo completes two bidirectional waves and shops");
             float previous=0;
@@ -113,6 +113,7 @@ namespace ZombieAttack.Editor
             VisualFeedbackValidation.Run(c);
             CombatAnimationValidation.Run(c);
             ExpansionValidation.Run(c);
+            MapProgressionValidation.Run(c);
         }
     }
 }

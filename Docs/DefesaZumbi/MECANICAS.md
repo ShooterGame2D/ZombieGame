@@ -1,12 +1,12 @@
 # Defesa Zumbi — Edição Pixel
 
-Versão 0.4 do protótipo, com visual inteiramente em pixel art, feita na Unity 6000.3.25f1. O jogador protege sua posição contra zumbis que vêm da frente e das costas. Os dois lados continuam em movimento o tempo todo.
+Versão 0.5 do protótipo, com visual inteiramente em pixel art, feita na Unity 6000.3.24f1. O jogador protege sua posição contra zumbis que vêm da frente e das costas. Os dois lados continuam em movimento o tempo todo.
 
 ## Jogar
 
 Abra **JOGAR.cmd** nesta pasta ou `Builds/Windows/Defesa Zumbi.exe`. A versão de navegador fica em `Builds/Web` e precisa ser servida por HTTP. O endereço usado nesta sessão é http://127.0.0.1:8765/; recarregue a página para receber a nova versão.
 
-A tela inicial tem **Jogar**, **Tutorial** e **Configurações**. Em Jogar, escolha um personagem e clique em **Começar defesa**. O tutorial ensina em dez etapas, com explicações pausadas, uma mini-onda sem perda de vida e uma compra real na loja de treino. Os oito personagens estão liberados para experimentar o protótipo; gemas e recorde continuam sendo salvos. As demonstrações não gravam recompensas.
+A tela inicial tem **Jogar**, **Tutorial** e **Configurações**. Em Jogar, escolha um personagem e clique em **Jogar: nome do personagem**. O tutorial ensina em dez etapas, com explicações pausadas, uma mini-onda sem perda de vida e uma compra real na loja de treino. O Recruta começa desbloqueado. Os demais personagens são compras permanentes no menu, pagas com gemas obtidas ao encerrar partidas; gemas, desbloqueios e recorde são salvos. As demonstrações não gravam recompensas.
 
 ## Controles
 
@@ -33,7 +33,7 @@ O radar mostra frente na metade superior e costas na inferior, com sua posição
 | Cowboy | Revólver antigo | 100 | Olho de águia: dano 2,5×, visão âmbar e mundo a 32% da velocidade por 5 s | 26 s | Faroeste |
 | Canguru | Bumerangue | 125 | Salto sísmico: dano e empurrão no lado atual | 23 s | Outback |
 | Criança | Estilingue em Y | 80 | Isca: distrai o lado atual durante 6 s | 22 s | Pátio da escola |
-| Lenhador | Machado de arremesso | 135 | Árvore caindo: elimina a coluna escolhida pela mira | 26 s | Serraria na floresta |
+| Lenhador | Machado de arremesso | 135 | Árvore caindo: Espaço abre a seleção, um clique na coluna do painel inferior seleciona o alvo e outro Espaço confirma | 26 s | Serraria na floresta |
 | Ninja | Shuriken de treino | 90 | Fumaça: invulnerabilidade por 5 s e rajada no lado atual | 30 s | Templo ao luar |
 
 As armas iniciais têm potência inicial semelhante; o machado causa 2,1 de dano por arremesso (intervalo mínimo 0,8 s) e o bumerangue 3,8 (intervalo 1,5 s), compensando o voo mais lento. A identidade principal vem da habilidade, vida, visual e cenário. O machado é arremessado para permitir o mesmo combate de mira fixa. Arco, estilingue e armas arremessáveis usam lotes de projéteis equivalentes ao pente do protótipo.
@@ -91,7 +91,7 @@ A edição pixel usa contornos escuros, paleta reduzida, filtro Point sem suaviz
 
 A arte de combate fica em `Assets/_Project/Art/Combat-v1`: 13 folhas de armas, 10 folhas de ataques de zumbis, três torres e uma barricada, com seis quadros por folha (162 sprites). Os PNGs mantêm transparência e os recortes ficam disponíveis como sprites na Unity. O catálogo `Resources/CombatSpriteCatalog.asset` liga as imagens ao jogo. A geração usou a ferramenta integrada de imagens; os prompts estão em `generation-prompts.json`.
 
-As torres e barricadas têm vistas específicas para as lanes esquerda, central e direita. As barricadas possuem arame farpado, madeira, reforços metálicos e uma versão danificada abaixo de 50% de vida. A posição e a ordem de desenho usam a mesma profundidade do combate; marcas no chão delimitam as três lanes. Os ataques dos zumbis têm preparação, golpe e recuperação, incluindo a animação do cuspidor ao lançar o projétil. Pausa e raízes congelam os quadros.
+As torres e barricadas têm vistas específicas para as lanes esquerda, central e direita. As barricadas possuem arame farpado, madeira, reforços metálicos e uma versão danificada abaixo de 50% de vida. A posição e a ordem de desenho usam a mesma profundidade do combate; as três lanes ficam invisíveis, sem marcas sobre a imagem. Os ataques dos zumbis têm preparação, golpe e recuperação, incluindo a animação do cuspidor ao lançar o projétil. Pausa e raízes congelam os quadros.
 
 O arco puxa a corda antes de soltar a flecha. Um clique prepara e dispara uma flecha; segurar repete na cadência da arma. A munição só é consumida ao soltar, e trocar a câmera cancela a preparação sem gastar flechas. Cada arma tem sons próprios de disparo e recarga. Os 27 arquivos WAV de referência estão em `Combat-v1/Sounds`; a galeria `Combat-v1/preview.html` permite comparar sprites, perspectivas e sons.
 
@@ -107,7 +107,7 @@ Gravações e foley complementam os sons sintetizados em camadas: disparos de ar
 
 Os dados editáveis ficam em `Assets/_Project/Data`. O catálogo ativo fica em `Assets/_Project/Resources/GameCatalog.asset`. Não é necessário conectar objetos manualmente no Inspector.
 
-O menu **Defesa Zumbi > Preparar projeto** restaura os valores iniciais da versão 0.4. As compilações validam e usam os dados atuais, sem restaurar o balanceamento.
+O menu **Defesa Zumbi > Preparar projeto** restaura os valores iniciais da versão 0.5. As compilações validam e usam os dados atuais, sem restaurar o balanceamento.
 
 - `Scripts/Run/RunManager.cs`: simulação dos dois lados, munição, compras e habilidades.
 - `Scripts/UI/GameApplication.cs`: entrada, radar, alertas e menus.
@@ -122,7 +122,7 @@ O save do Windows fica em `%USERPROFILE%/AppData/LocalLow/Quintal Studio/Defesa 
 
 Esta versão permanece um protótipo 2D com perspectiva simulada e renderizador padrão da Unity. Os dez tipos de zumbi têm caminhada com oito quadros, sincronizada à velocidade real e com alinhamento dos pés. A sequência continua na câmera escondida, desacelera no gelo e para durante pausa, raízes, isca e ataques estacionários. As folhas ficam em `Assets/_Project/Art/AnimationDrafts/Walk-v1`; o catálogo de execução está em `Assets/_Project/Resources/ZombieWalkAtlas.asset`. Armas e defesas usam folhas de sprites; o chão livre e os efeitos complementares usam desenho por código. A interface usa desenho imediato; os tiros são resolvidos por áreas de cabeça/corpo e machados e bumerangues têm tempo de voo; arco e estilingue têm preparação antes de disparar. Só existem os lados frente e costas. Preços, probabilidades e dificuldade ainda precisam de teste de balanceamento com jogadores.
 
-## Validação da versão 0.4
+## Validação anterior (0.4)
 
 As compilações Windows e WebGL passaram em 717 verificações automatizadas: 92 de mecânicas, 127 de caminhada, 51 de texto/sangue, 317 de animações de combate e 130 da atualização 0.4. O teste manual no navegador conferiu menu, configurações, tiro, cabeça, recarga antecipada, M2, scroll, especial e contador entre ondas.
 
@@ -145,3 +145,35 @@ Chefes principais aparecem nas ondas 5, 10, 15, 20 e assim por diante, alternand
 No Windows, a sensibilidade controla uma mira relativa com captura do mouse durante o combate. Na web, usa uma curva de resposta absoluta que mantém centro e bordas acessíveis e evita depender de pointer lock em navegadores integrados. ESC pausa. O HUD fica estável durante os tremores do cenário. A câmera lenta do cowboy afeta as duas frentes, ataques e projéteis, mas dura cinco segundos reais.
 
 Os 30 sons gravados/editados estão em `Assets/_Project/Resources/Audio/Recorded`, com créditos CC0 e manifestos. As famílias de armas de fogo, arco e besta usam gravações; arremessos e mecanismos usam foley. A síntese original complementa explosões, impactos e avisos. Oito trilhas originais por cenário são geradas por `MapMusic.cs` e exportadas em `Art/Expansion-v4/Music`.
+
+
+## Atualização 0.5 — mapas, gemas e seleção da árvore
+
+Os oito mapas têm novas vistas de frente e costas em `Assets/_Project/Resources/Art/Maps-v5/Front.png` e `Back.png`. As folhas têm duas colunas e quatro linhas, na ordem dos personagens. O jogo usa a parte inferior de cada célula para alinhar o chão com a linha de surgimento fixa em y=400. A projeção, os pontos de surgimento e as posições das três colunas permanecem os mesmos. A camada opaca de chão e as marcações foram removidas. A galeria fica em `Assets/_Project/Art/Maps-v5/preview.html`; os prompts acompanham os PNGs.
+
+| Personagem | Gemas para desbloquear |
+| --- | ---: |
+| Recruta | Grátis |
+| Criança | 60 |
+| Indígena | 80 |
+| Engenheiro | 100 |
+| Cowboy | 140 |
+| Canguru | 180 |
+| Lenhador | 220 |
+| Ninja | 260 |
+
+Comprar seleciona o personagem e desconta o preço uma única vez. Depois disso, trocar entre personagens comprados é gratuito. O menu informa quanto falta quando não há gemas suficientes. As recompensas continuam sendo calculadas ao fim da partida: `máximo(1, 10 × ondas concluídas + eliminações / 5 + 50 se houver novo recorde)`.
+
+Saves da versão 0.4 (perfil v2) preservam gemas e recorde, mas deixam de tratar o elenco liberado para teste como compras. O Recruta fica disponível e a seleção volta para ele. Saves novos (perfil v3) preservam os desbloqueios permanentemente, inclusive após reiniciar. A migração do elenco antigo de quatro personagens mantém os desbloqueios registrados.
+
+O primeiro Espaço do lenhador apenas entra na seleção, sem gastar a habilidade. Clique em esquerda, centro ou direita no painel inferior e aperte Espaço novamente: só então a árvore cai e começa a recarga. ESC ou trocar de câmera cancela sem custo. A indicação é uma faixa na interface, sem desenhar grid no chão. A onda continua durante a escolha; os demais personagens continuam usando um único Espaço.
+
+
+A validação 0.5 acrescenta 112 verificações de mapas, projeção, compras, migração de saves e seleção da árvore, totalizando 829. A validação e as compilações locais usam Unity 6000.3.24f1. Os testes simulam compras em perfis isolados, sem salvar sobre o progresso do jogador.
+
+
+## Atualização 0.5.1 — prévia e seleção por clique
+
+Clicar em qualquer cartão mostra retrato, vida, cenário, arma, especial e recarga, sem comprar nem trocar o personagem em uso. A compra e a troca ficam nos botões explícitos do painel de detalhes. Os cartões aparecem em ordem crescente de preço: Recruta, Criança, Indígena, Engenheiro, Cowboy, Canguru, Lenhador e Ninja.
+
+O primeiro Espaço do lenhador abre três botões na parte inferior da tela. Clique para selecionar esquerda, centro ou direita; passar o mouse não altera a escolha. Outro Espaço confirma a coluna selecionada. Sem clique, o especial não dispara. O clique não atira a arma. ESC ou trocar de câmera cancela sem consumir a habilidade.

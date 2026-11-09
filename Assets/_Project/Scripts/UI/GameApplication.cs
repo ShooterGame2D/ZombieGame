@@ -10,7 +10,7 @@ namespace ZombieAttack
         PrototypeAudio sound;
         Vector2 pointer=new Vector2(800,450);
         float scale=1,offsetX,offsetY,time,waveNotice;
-        bool uiClick,allowButtons;
+        bool uiClick,allowButtons,suppressFireUntilRelease;
         int selectedSlot,shopTab;
         readonly string[] upgradeNames={"Dano","Cadência","Pente maior","Recarga rápida"};
         readonly string[] upgradeDescriptions={"+0,45 de dano por disparo","+15% disparos por segundo","+2 unidades por pente","-16% no tempo de recarga"};
@@ -31,17 +31,30 @@ namespace ZombieAttack
         {
             if(Run==null)return;Layout();sound.ListenerSide=Run.viewSide;
             bool combat=Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting&&!settings&&!Run.demo;
+            bool choosingAtFrameStart=Run.choosingTreeLane;
+            if(Mouse.current!=null&&!Mouse.current.leftButton.isPressed)suppressFireUntilRelease=false;
 #if UNITY_WEBGL && !UNITY_EDITOR
             // Embedded browser documents may reject pointer lock. Absolute aiming stays usable there.
             Cursor.lockState=CursorLockMode.None;mouseCaptured=false;
 #else
-            if(mouseCaptured&&Cursor.lockState!=CursorLockMode.Locked&&combat) { Run.paused=true;combat=false; }
-            Cursor.lockState=combat?CursorLockMode.Locked:CursorLockMode.None; mouseCaptured=combat;
+            bool capture=combat&&!Run.choosingTreeLane;
+            if(mouseCaptured&&Cursor.lockState!=CursorLockMode.Locked&&capture) { Run.paused=true;combat=false;capture=false; }
+            Cursor.lockState=capture?CursorLockMode.Locked:CursorLockMode.None; mouseCaptured=capture;
 #endif
             if(Mouse.current!=null)
             {
                 if(combat)
                 {
+                    if(Run.choosingTreeLane)
+                    {
+                        // Selection buttons use the visible system cursor, independent of aiming sensitivity.
+                        var selectionPointer=Mouse.current.position.ReadValue();
+                        pointer=new Vector2((selectionPointer.x-offsetX)/scale,(Screen.height-selectionPointer.y-offsetY)/scale);
+                        uiClick|=Mouse.current.leftButton.wasReleasedThisFrame;
+                        if(Mouse.current.leftButton.wasPressedThisFrame)Run.SelectTreeLane(TreeSelectionLayout.HitTest(pointer));
+                    }
+                    else
+                    {
 #if UNITY_WEBGL && !UNITY_EDITOR
                     var absolute=Mouse.current.position.ReadValue();
                     pointer=GameSettings.BrowserAim(new Vector2((absolute.x-offsetX)/scale,(Screen.height-absolute.y-offsetY)/scale));
@@ -50,7 +63,8 @@ namespace ZombieAttack
                     Vector2 delta=Mouse.current.delta.ReadValue()*GameSettings.Sensitivity/scale;
                     pointer+=new Vector2(delta.x,-delta.y);pointer.x=Mathf.Clamp(pointer.x,8,1592);pointer.y=Mathf.Clamp(pointer.y,180,786);
 #endif
-                    if(Mouse.current.leftButton.isPressed&&CombatPoint(pointer))Run.Shoot(pointer);
+                        if(!suppressFireUntilRelease&&Mouse.current.leftButton.isPressed&&CombatPoint(pointer))Run.Shoot(pointer);
+                    }
                     if(Mouse.current.rightButton.wasPressedThisFrame&&CombatPoint(pointer))Run.CollectCoin(pointer);
                     if(Mathf.Abs(Mouse.current.scroll.ReadValue().y)>0)Run.SwitchSide();
                 }
@@ -66,6 +80,7 @@ namespace ZombieAttack
                 if(key.escapeKey.wasPressedThisFrame)
                 {
                     if(settings) { settings=false;GameSettings.Save(); }
+                    else if(Run.choosingTreeLane)Run.CancelTreeSelection();
                     else if(Run.state==RunState.Menu)showHome=true;
                     else if(Run.state!=RunState.GameOver)Run.paused=!Run.paused;
                 }
@@ -77,10 +92,11 @@ namespace ZombieAttack
                     if(key.enterKey.wasPressedThisFrame&&Run.state==RunState.Shop&&!Run.Tutorial)Run.NextWave();
                 }
             }
+            if(choosingAtFrameStart&&!Run.choosingTreeLane&&Mouse.current!=null&&Mouse.current.leftButton.isPressed)suppressFireUntilRelease=true;
             if(!settings)Run.Tick(Time.unscaledDeltaTime);
             if(!Run.paused&&!settings&&!Run.tutorialWaiting) { time+=Time.unscaledDeltaTime*Run.WorldSpeed;waveNotice-=Time.unscaledDeltaTime; }
             sound.SetContext(Run.character.theme,Run.paused||settings||Run.tutorialWaiting,Run.WorldSpeed);
-            Cursor.visible=!combat||!CombatPoint(pointer);
+            Cursor.visible=!combat||Run.choosingTreeLane||!CombatPoint(pointer);
         }
         void OnApplicationFocus(bool focused) { if(!focused && Run!=null && !Run.demo && (Run.state==RunState.Wave || Run.state==RunState.Shop)) Run.paused=true; }
         void OnDestroy() { Cursor.visible=true;Cursor.lockState=CursorLockMode.None; }
@@ -98,7 +114,7 @@ namespace ZombieAttack
                 if(Run.state==RunState.Shop) { allowButtons=!settings && !Run.paused; Shop(); }
                 if(Run.state==RunState.GameOver) { allowButtons=true; GameOver(); }
                 if(Run.paused) { allowButtons=!settings; Pause(); }
-                if(Run.state==RunState.Wave && !Run.paused && !Run.demo && !settings && !Run.tutorialWaiting && CombatPoint(pointer)) Crosshair();
+                if(Run.state==RunState.Wave && !Run.paused && !Run.demo && !settings && !Run.tutorialWaiting && !Run.choosingTreeLane && CombatPoint(pointer)) Crosshair();
             }
             GUI.matrix=screenMatrix;
             if(Run.Tutorial&&!Run.paused&&!settings) { allowButtons=true;TutorialPanel(); }
@@ -129,42 +145,50 @@ namespace ZombieAttack
         {
             Rect(0,0,1600,900,new Color(.015f,.035f,.055f,.32f));
             Panel(40,28,1520,64); Text("DZ / DEFESA ZUMBI",62,48,430,30,21,Cream,true);
-            Text("EDIÇÃO PIXEL  ·  VERSÃO 0.4",560,52,560,24,15,Mint);
+            Text("EDIÇÃO PIXEL  ·  VERSÃO 0.5",560,52,560,24,15,Mint);
             Text("RECORDE "+Run.profile.bestWave+"   /   "+Run.profile.gems+" GEMAS",1100,51,430,24,15,Gold,true,TextAnchor.UpperRight);
             Panel(40,120,732,285); Tag("FRENTE E COSTAS",64,144,215,Mint);
             Text("DEFESA ZUMBI",58,186,708,83,76,Gold,true);
             Text("Mantenha os dois lados sob controle.",66,277,660,31,24,Cream);
-            Text("Recarregue com R. Defenda a frente e as costas.",66,315,660,25,17,Hex("ACC2B7"));
-            if(Button("COMEÇAR DEFESA  >",65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }
+            Text("EM USO: "+Run.character.title.ToUpperInvariant()+" · Clique nos cartões para conhecer o elenco.",66,315,660,25,16,Hex("ACC2B7"));
+            if(Button("JOGAR: "+Run.character.title.ToUpperInvariant(),65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }
             if(Button("TUTORIAL",446,351,300,40,Hex("345452"),true,15))Run.StartTutorial();
-            Panel(799,120,761,285); GameArt.Portrait(Run.profile.selected,810,130,260,260);
-            var c=Run.character;
-            Text(c.title.ToUpperInvariant(),1080,142,450,40,31,c.accent,true);
-            Text(c.mapTitle+"  /  "+c.health+" PV",1083,190,430,30,18,Cream);
-            Text(c.abilityTitle,1083,242,430,28,22,Gold,true);
-            Text(c.abilityDescription,1083,280,425,64,18,Hex("BED1C6"));
-            Text(c.cooldown+" s de recarga da habilidade",1083,363,425,24,13,Hex("91ACA6"));
-            Text("ESCOLHA SEU SOBREVIVENTE",46,424,950,29,17,Cream,true);
-            Text("8 PERSONAGENS DISPONÍVEIS PARA TESTAR",1020,428,530,24,12,Mint,false,TextAnchor.UpperRight);
-            for(int i=0;i<8;i++)
+            Panel(799,120,761,285); GameArt.Portrait(Run.PreviewCharacterIndex,810,130,260,260);
+            var c=Run.PreviewedCharacter;
+            Text(c.title.ToUpperInvariant(),1080,137,450,38,30,c.accent,true);
+            Text(c.mapTitle+"  /  "+c.health+" PV",1083,177,430,25,17,Cream);
+            Text("ARMA: "+c.weapon.title,1083,207,430,25,16,Hex("BED1C6"));
+            Text(c.abilityTitle,1083,237,430,26,21,Gold,true);
+            Text(c.abilityDescription,1083,267,425,59,17,Hex("BED1C6"));
+            Text(c.cooldown+" s de recarga do especial",1083,329,425,21,12,Hex("91ACA6"));
+            bool previewOwned=Run.OwnsCharacter(Run.PreviewCharacterIndex),previewEquipped=Run.profile.selected==Run.PreviewCharacterIndex;
+            string previewAction=previewOwned?(previewEquipped?"EM USO":"USAR PERSONAGEM"):Run.profile.gems>=c.price?"COMPRAR · "+c.price+" GEMAS":"FALTAM "+(c.price-Run.profile.gems)+" GEMAS";
+            if(Button(previewAction,1080,358,430,32,previewOwned?Mint:Gold,!previewEquipped&&(previewOwned||Run.profile.gems>=c.price),16))
+            {if(previewOwned)Run.SelectCharacter(Run.PreviewCharacterIndex);else Run.BuyCharacter(Run.PreviewCharacterIndex);}
+            Text("CLIQUE EM UM PERSONAGEM PARA VER OS DETALHES",46,424,950,29,17,Cream,true);
+            Text("DO MENOR PARA O MAIOR PREÇO",1060,428,490,24,13,Mint,false,TextAnchor.UpperRight);
+            var characterOrder=Run.CharacterMenuOrder();
+            for(int slot=0;slot<characterOrder.Length;slot++)
             {
-                float x=40+(i%4)*384,y=467+(i/4)*166; var hero=catalog.characters[i]; bool selected=Run.profile.selected==i;
-                Round(x,y,368,151,13,selected?hero.accent:Hex("344B4B")); Panel(x+2,y+2,364,147);
+                int i=characterOrder[slot];
+                float x=40+(slot%4)*384,y=467+(slot/4)*166; var hero=catalog.characters[i]; bool selected=Run.profile.selected==i,owned=Run.OwnsCharacter(i),preview=Run.PreviewCharacterIndex==i;
+                bool hover=new Rect(x,y,368,151).Contains(pointer)&&allowButtons;
+                Round(x-2,y-2,372,155,13,preview?Gold:hover?Cream:Hex("344B4B")); Panel(x+2,y+2,364,147);
                 GameArt.Portrait(i,x+8,y+9,111,111);
                 Text(hero.title,x+128,y+14,224,26,22,Cream,true);
                 Text(hero.weapon.title,x+128,y+48,223,46,14,Hex("B4CAC0"));
-                Text(hero.health+" PV  /  "+hero.cooldown+" s",x+128,y+95,215,21,12,hero.accent,true);
-                if(Button(selected?"SELECIONADO":"ESCOLHER",x+12,y+120,344,23,selected?Gold:Hex("31504E"),!selected,11)) Run.SelectCharacter(i);
+                Text(hero.price==0?"GRÁTIS":hero.price+" GEMAS",x+128,y+95,215,21,14,Gold,true);
+                Rect(x+12,y+120,344,23,preview?Hex("625335"):Hex("31504E"));
+                Text(preview?"EM PRÉVIA":selected?"EM USO · VER DETALHES":owned?"ADQUIRIDO · VER DETALHES":"VER DETALHES",x+12,y+120,344,23,12,Cream,true,TextAnchor.MiddleCenter);
+                if(hover&&uiClick&&Event.current.type==EventType.Repaint){uiClick=false;Run.PreviewCharacter(i);}
             }
             if(Button("VOLTAR",40,836,180,38,Hex("31504E"),true,16))showHome=true;
-            Text("M1 atirar · M2 moedas · R recarregar · Q/E/Scroll trocar · Espaço especial",390,847,940,24,14,Cream);
+            Text("Ganhe gemas ao encerrar partidas: ondas vencidas, eliminações e novo recorde.",290,840,1040,40,17,Cream,false,TextAnchor.MiddleCenter);
             if(Button("CONFIGURAR",1360,836,200,38,Hex("31504E"),true,15))settings=true;
         }
         void Battle()
         {
             BloodRenderer.Ground(Run.blood,Run.viewSide);
-            CombatSprites.LaneMarkers();
-            if(Run.character.ability==AbilityKind.Cleave&&Run.abilityCooldown<=0&&Run.state==RunState.Wave)LanePreview();
             var sorted=new System.Collections.Generic.List<(float depth,Zombie zombie,Tower tower,int slot,bool barrier)>();
             foreach(var z in Run.zombies) if(z.side==Run.viewSide) sorted.Add((z.distance,z,null,0,false));
             for(int i=0;i<3;i++)
@@ -250,8 +274,8 @@ namespace ZombieAttack
             }
             Text("RESERVA "+Run.reserve,357,850,142,24,13,Mint,true,TextAnchor.UpperRight);
             Panel(1095,807,480,75); Text(Run.character.abilityTitle.ToUpperInvariant(),1113,821,322,25,17,Cream,true);
-            Text("ESPAÇO: ESPECIAL  ·  ESC: PAUSA",1115,855,305,21,10,Hex("9AB8AD"));
-            Tag(Run.abilityCooldown>0?Mathf.CeilToInt(Run.abilityCooldown)+" s":"PRONTA",1454,832,104,Run.abilityCooldown>0?Hex("B1BBB0"):Mint);
+            Text(Run.character.ability==AbilityKind.Cleave?(Run.choosingTreeLane?(Run.selectedTreeLane<0?"CLIQUE EM UMA COLUNA":"ESPAÇO: CONFIRMAR · ESC: CANCELAR"):"ESPAÇO: ESCOLHER COLUNA"):"ESPAÇO: ESPECIAL  ·  ESC: PAUSA",1115,855,305,21,10,Hex("9AB8AD"));
+            Tag(Run.abilityCooldown>0?Mathf.CeilToInt(Run.abilityCooldown)+" s":Run.choosingTreeLane?"MIRANDO":"PRONTA",1454,832,104,Run.abilityCooldown>0?Hex("B1BBB0"):Mint);
             if(Run.focusTimer>0) Text("OLHO DE ÁGUIA  ·  DANO 2,5×",500,750,600,31,18,Gold,true,TextAnchor.MiddleCenter);
             if(Run.demo)
             {

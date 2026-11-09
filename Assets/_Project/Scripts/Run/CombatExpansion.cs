@@ -16,6 +16,15 @@ namespace ZombieAttack
         public float waveEndTimer, shake, bossNotice, treeTimer, tutorialActionTime;
         public int treeLane;
         public ViewSide treeSide;
+        public bool choosingTreeLane;
+        public int selectedTreeLane=-1;
+        public ViewSide treeSelectionSide;
+        public void CancelTreeSelection() { choosingTreeLane=false;selectedTreeLane=-1; }
+        public bool SelectTreeLane(int lane)
+        {
+            if(!choosingTreeLane||state!=RunState.Wave||paused||tutorialWaiting||treeSelectionSide!=viewSide||lane<0||lane>2)return false;
+            selectedTreeLane=lane;return true;
+        }
         bool treeHit;
         public int shotsFired,headshots,coinsCollected,reloadsCompleted,sidesSwitched,abilityUses;
         public int tutorialStep=-1;
@@ -43,6 +52,7 @@ namespace ZombieAttack
             thrown.Clear(); waveEndTimer=shake=bossNotice=treeTimer=tutorialActionTime=0;
             shotsFired=headshots=coinsCollected=reloadsCompleted=sidesSwitched=abilityUses=0;
             tutorialStep=-1;tutorialWaiting=false;
+            CancelTreeSelection();
         }
         void TickExpansion(float dt,float worldDt)
         {

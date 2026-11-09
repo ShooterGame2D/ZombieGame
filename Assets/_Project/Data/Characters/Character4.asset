@@ -20,7 +20,7 @@ MonoBehaviour:
   theme: 4
   weapon: {fileID: 11400000, guid: 0e92b03dc21290d44a3c0d5e708cb057, type: 2}
   ability: 4
-  price: 0
+  price: 180
   health: 125
   cooldown: 23
   accent: {r: 0.92156863, g: 0.65882355, b: 0.4392157, a: 1}

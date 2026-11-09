@@ -22,6 +22,8 @@ namespace ZombieAttack
         public ViewSide viewSide=ViewSide.Front,lastAttackSide,turretSide;
         public CharacterData character;
         public WeaponData weapon;
+        public int PreviewCharacterIndex { get; private set; }
+        public CharacterData PreviewedCharacter => catalog.characters[PreviewCharacterIndex];
         public bool paused,demo,newRecord;
         public int wave,completed,kills,wallet,spawned,total,earnedGems,healCount,reserve,waveBonus;
         public float health,ammo,reloadTimer,reloadDuration,fireCooldown,abilityCooldown,shopTimer,spawnTimer;
@@ -38,10 +40,14 @@ namespace ZombieAttack
         public event Action<int> OnWaveStarted;
         public event Action<Zombie> OnZombieDied;
         readonly System.Random random;
+        readonly bool persistProgress;
         float demoTimer,temporaryShot;
-        public RunManager(GameCatalog catalog,PlayerProfile profile,int? seed=null)
+        public RunManager(GameCatalog catalog,PlayerProfile profile,int? seed=null,bool persistProgress=true)
         {
             this.catalog=catalog; this.profile=profile; random=seed.HasValue?new System.Random(seed.Value):new System.Random();
+            this.persistProgress=persistProgress;
+            if(!OwnsCharacter(profile.selected))profile.selected=0;
+            PreviewCharacterIndex=profile.selected;
             character=catalog.characters[Mathf.Clamp(profile.selected,0,catalog.characters.Length-1)]; weapon=character.weapon;
         }
         public float Damage => (weapon.damage+upgrades[0]*.45f)*(focusTimer>0?2.5f:1);
@@ -65,6 +71,7 @@ namespace ZombieAttack
         public void Start(bool demonstration=false)
         {
             ResetExpansion(); demo=demonstration; paused=false; newRecord=false; viewSide=ViewSide.Front;
+            if(!OwnsCharacter(profile.selected))profile.selected=0;
             character=catalog.characters[profile.selected]; weapon=character.weapon;
             DepthProjector.Configure(character.theme);
             health=character.health; ammo=weapon.capacity; reserve=weapon.startingReserve;
@@ -80,6 +87,7 @@ namespace ZombieAttack
         {
             if(paused || state==RunState.Menu || state==RunState.GameOver) return;
             CancelDraw();
+            CancelTreeSelection();
             viewSide=OtherSide; sidesSwitched++; switchFlash=.28f; OnSound?.Invoke("turn");
         }
         public void NextWave()
@@ -225,7 +233,7 @@ namespace ZombieAttack
             if(spawned==total && zombies.Count==0 && projectiles.Count==0 && thrown.Count==0 && treeTimer<=0 && (!Tutorial||tutorialStep==7))
             {
                 foreach(var coin in coins) wallet+=coin.value;
-                coins.Clear(); state=RunState.WaveEnd;waveEndTimer=3;CancelDraw();OnSound?.Invoke("wave");
+                coins.Clear(); state=RunState.WaveEnd;waveEndTimer=3;CancelDraw();CancelTreeSelection();OnSound?.Invoke("wave");
             }
             if(demo) DemoTick(dt);
         }
@@ -274,7 +282,7 @@ namespace ZombieAttack
         }
         public void Shoot(Vector2 point)
         {
-            if(paused || tutorialWaiting || state!=RunState.Wave) return;
+            if(paused || tutorialWaiting || choosingTreeLane || state!=RunState.Wave) return;
             if(Reloading || fireCooldown>0) return;
             if(ammo<1) { BeginReload(); fireCooldown=.25f; if(reserve==0) OnSound?.Invoke("empty"); return; }
             if(weapon.kind==WeaponKind.Bow||weapon.kind==WeaponKind.Slingshot)
@@ -333,6 +341,14 @@ namespace ZombieAttack
         public void UseAbility(Vector2 point)
         {
             if(state!=RunState.Wave || paused || tutorialWaiting || abilityCooldown>0) return;
+            if(character.ability==AbilityKind.Cleave)
+            {
+                if(!choosingTreeLane) { choosingTreeLane=true;selectedTreeLane=-1;treeSelectionSide=viewSide;CancelDraw();return; }
+                if(treeSelectionSide!=viewSide) { CancelTreeSelection();return; }
+                if(selectedTreeLane<0)return;
+                treeLane=selectedTreeLane;
+                CancelTreeSelection();
+            }
             abilityUses++;
             abilityCooldown=character.cooldown; OnSound?.Invoke("ability_"+character.ability);
             switch(character.ability)
@@ -349,7 +365,7 @@ namespace ZombieAttack
                     foreach(var z in zombies) if(z.side==viewSide) z.distance=Mathf.Max(.28f,z.distance);
                     break;
                 case AbilityKind.Cleave:
-                    treeLane=LaneAt(point);treeSide=viewSide;treeTimer=1.65f;treeHit=false;break;
+                    treeSide=viewSide;treeTimer=1.65f;treeHit=false;break;
                 case AbilityKind.Smoke:
                     smokeTimer=5; Ring(new Vector2(800,620),600,new Color(.6f,.6f,.85f));
                     foreach(var z in zombies.ToArray()) if(z.side==viewSide) Hit(z,4,true); break;
@@ -370,10 +386,10 @@ namespace ZombieAttack
             if(side!=viewSide) otherAttackTimer=2.5f;
             OnSpatialSound?.Invoke("hurt",side);
             if(health>0) return;
-            state=RunState.GameOver; paused=false; newRecord=completed>profile.bestWave;
+            state=RunState.GameOver; paused=false; newRecord=completed>profile.bestWave;CancelTreeSelection();
             CancelDraw();
             earnedGems=Mathf.Max(1,10*completed+kills/5+(newRecord?50:0));
-            if(!demo) { profile.gems+=earnedGems; profile.bestWave=Mathf.Max(profile.bestWave,completed); SaveSystem.Save(profile); }
+            if(!demo) { profile.gems+=earnedGems; profile.bestWave=Mathf.Max(profile.bestWave,completed); PersistProfile(); }
         }
         public bool BuyUpgrade(int index)
         {
@@ -418,9 +434,37 @@ namespace ZombieAttack
         }
         public bool SelectCharacter(int index)
         {
-            if(state!=RunState.Menu || index<0 || index>=catalog.characters.Length) return false;
-            profile.selected=index; character=catalog.characters[index]; weapon=character.weapon; SaveSystem.Save(profile); return true;
+            if(state!=RunState.Menu || !OwnsCharacter(index)) return false;
+            PreviewCharacterIndex=index;profile.selected=index; character=catalog.characters[index]; weapon=character.weapon; PersistProfile(); return true;
         }
+        public bool PreviewCharacter(int index)
+        {
+            if(state!=RunState.Menu||index<0||index>=catalog.characters.Length)return false;
+            PreviewCharacterIndex=index;return true;
+        }
+        public int[] CharacterMenuOrder()
+        {
+            var order=new int[catalog.characters.Length];for(int i=0;i<order.Length;i++)order[i]=i;
+            Array.Sort(order,(a,b)=>{int price=catalog.characters[a].price.CompareTo(catalog.characters[b].price);return price!=0?price:a.CompareTo(b);});
+            return order;
+        }
+        public bool OwnsCharacter(int index) => index>=0&&index<catalog.characters.Length&&profile.unlocked!=null&&index<profile.unlocked.Length&&profile.unlocked[index];
+        public bool BuyCharacter(int index)
+        {
+            if(state!=RunState.Menu||index<=0||index>=catalog.characters.Length||OwnsCharacter(index))return false;
+            int price=catalog.characters[index].price;
+            if(price<=0||profile.gems<price)return false;
+            if(profile.unlocked==null||profile.unlocked.Length!=catalog.characters.Length)
+            {
+                var owned=new bool[catalog.characters.Length];owned[0]=true;
+                if(profile.unlocked!=null)Array.Copy(profile.unlocked,owned,Math.Min(profile.unlocked.Length,owned.Length));
+                profile.unlocked=owned;
+            }
+            profile.gems-=price;profile.unlocked[index]=true;
+            PreviewCharacterIndex=index;profile.selected=index;character=catalog.characters[index];weapon=character.weapon;
+            PersistProfile();OnSound?.Invoke("buy");return true;
+        }
+        void PersistProfile() { if(persistProgress)SaveSystem.Save(profile); }
         void Text(Vector2 pos,string text,Color color,ViewSide side) => effects.Add(new CombatEffect{side=side,position=pos,text=text,color=color});
         void DemoTick(float dt)
         {
