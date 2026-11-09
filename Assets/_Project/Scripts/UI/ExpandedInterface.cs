@@ -5,19 +5,30 @@ namespace ZHold
     public partial class GameApplication
     {
         bool showHome=true,settings,mouseCaptured;
+        Texture2D logoAnimation;
+
+        void AnimatedLogo(float x,float y,float width,float height)
+        {
+            if(logoAnimation==null)logoAnimation=Resources.Load<Texture2D>("Art/UI/ZHoldLogoAnimation");
+            if(logoAnimation==null)return;
+            const int columns=4,rows=4,frameCount=16;
+            int cycleFrame=Mathf.FloorToInt(time*10)%36;
+            int frame=Mathf.Min(cycleFrame,frameCount-1);
+            int column=frame%columns,row=frame/columns;
+            var uv=new UnityEngine.Rect(column/(float)columns,1f-(row+1)/(float)rows,1f/columns,1f/rows);
+            GUI.color=Color.white;
+            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,width,height),logoAnimation,uv,true);
+        }
+
         void Home()
         {
-            Rect(0,0,1600,900,new Color(.02f,.025f,.06f,.5f));
-            Panel(120,138,820,610);
-            Tag("EDIÇÃO PIXEL / DUAS FRENTES",160,176,450,Mint);
-            Text("Z-HOLD",155,240,740,210,98,Gold,true);
-            Text("O perigo vem dos dois lados.\nSua defesa começa aqui.",164,467,715,72,27,Cream);
-            if(Button("JOGAR",160,574,330,62,Gold,true,27))showHome=false;
-            if(Button("TUTORIAL",516,574,330,62,Mint,true,25))Run.StartTutorial();
-            if(Button("CONFIGURAÇÕES",160,660,686,49,Hex("345452"),true,22))settings=true;
+            Rect(0,0,1600,900,new Color(.055f,.075f,.12f,.22f));
+            AnimatedLogo(-80,52,740,210);
+            if(Button("JOGAR",80,314,430,62,Gold,true,27))showHome=false;
+            if(Button("TUTORIAL",80,402,430,62,Mint,true,25))Run.StartTutorial();
+            if(Button("CONFIGURAÇÕES",80,490,430,62,Hex("345452"),true,22))settings=true;
             GameArt.Portrait(Run.profile.selected,990,214,440,475);
             Text("Recorde: "+Run.profile.bestWave+" ondas",1035,704,435,38,25,Cream,true,TextAnchor.MiddleCenter);
-            Text("M1 atirar   ·   M2 coletar   ·   R recarregar   ·   Espaço especial",185,804,1230,38,23,Cream,false,TextAnchor.MiddleCenter);
         }
         float Setting(string label,float value,float min,float max,float y,string suffix="%")
         {

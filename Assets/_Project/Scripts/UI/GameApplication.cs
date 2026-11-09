@@ -150,8 +150,7 @@ namespace ZHold
             Text("EDIÇÃO PIXEL  ·  VERSÃO 0.6",560,52,560,24,15,Mint);
             Text("RECORDE "+Run.profile.bestWave+"   /   "+Run.profile.gems+" GEMAS",1100,51,430,24,15,Gold,true,TextAnchor.UpperRight);
             Panel(40,120,732,285); Tag("FRENTE E COSTAS",64,144,215,Mint);
-            Text("Z-HOLD",58,186,708,83,76,Gold,true);
-            Text("Mantenha os dois lados sob controle.",66,277,660,31,24,Cream);
+            Text("Mantenha os dois lados sob controle.",66,212,660,31,24,Cream);
             Text("EM USO: "+Run.character.title.ToUpperInvariant()+" · Clique nos cartões para conhecer o elenco.",66,315,660,25,16,Hex("ACC2B7"));
             if(Button("JOGAR: "+Run.character.title.ToUpperInvariant(),65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }
             if(Button("TUTORIAL",446,351,300,40,Hex("345452"),true,15))Run.StartTutorial();
