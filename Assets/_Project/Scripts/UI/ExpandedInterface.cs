@@ -9,6 +9,7 @@ namespace ZHold
         float menuTransition;
         int cheatWave=1;
         Texture2D logoAnimation;
+        Texture2D metalPlateStates,rangeTargetStates,woodSignStates,woodPostSupport,fieldDossier,rosterRail,recruitBanner;
 
         void BeginMenuTransition(bool home)
         {
@@ -24,6 +25,115 @@ namespace ZHold
             { showHome=menuTargetHome;menuTransitionSwapped=true; }
             if(menuTransition>=1)
             { menuTransition=1;menuTransitioning=false; }
+        }
+
+        void HoverCue(string id,bool over)
+        {
+            if(!over||Event.current.type!=EventType.Repaint)return;
+            sawHover=true;
+            if(hoveredControl==id)return;
+            hoveredControl=id;sound.Play("ui_hover");
+        }
+
+        void QueueShot(string id,System.Action action)
+        {
+            if(transitionShotDelay>0)return;
+            transitionDamageId=id;transitionDamage=.34f;transitionShotDelay=.19f;pendingTransitionAction=action;
+            sound.Play("ui_shot");
+        }
+
+        void PixelSight(float x,float y,Color ignored)
+            => DrawCrosshair(new Vector2(x,y),Cream,0);
+
+        void LoadExtractedUI()
+        {
+            if(metalPlateStates!=null)return;
+            metalPlateStates=Resources.Load<Texture2D>("Art/UI/Extracted/MetalPlateStates");
+            rangeTargetStates=Resources.Load<Texture2D>("Art/UI/Extracted/RangeTargetStates");
+            woodSignStates=Resources.Load<Texture2D>("Art/UI/Extracted/WoodSignStates");
+            woodPostSupport=Resources.Load<Texture2D>("Art/UI/Extracted/WoodPostSupport");
+            fieldDossier=Resources.Load<Texture2D>("Art/UI/Extracted/FieldDossier");
+            rosterRail=Resources.Load<Texture2D>("Art/UI/Extracted/RosterRail");
+            recruitBanner=Resources.Load<Texture2D>("Art/UI/Extracted/RecruitBanner");
+            foreach(var texture in new[]{metalPlateStates,rangeTargetStates,woodSignStates,woodPostSupport,fieldDossier,rosterRail,recruitBanner})
+                if(texture!=null){texture.filterMode=FilterMode.Point;texture.wrapMode=TextureWrapMode.Clamp;}
+        }
+
+        void ExtractedSprite(Texture2D texture,float x,float y,float w,float h,bool damaged,Color tint)
+        {
+            if(texture==null)return;
+            GUI.color=tint;
+            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,w,h),texture,new UnityEngine.Rect(damaged?.5f:0,0,.5f,1),true);
+            GUI.color=Color.white;
+        }
+
+        void WoodSprite(float x,float y,float w,float h,bool damaged)
+        {
+            if(woodSignStates==null)return;
+            GUI.color=Color.white;
+            var uv=damaged?new UnityEngine.Rect(.5f,0,.5f,1):new UnityEngine.Rect(0,0,.445f,1);
+            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,w,h),woodSignStates,uv,true);
+            GUI.color=Color.white;
+        }
+
+        void ScenarioSprite(Texture2D texture,float x,float y,float w,float h)
+        {
+            if(texture==null)return;
+            GUI.color=Color.white;GUI.DrawTexture(new UnityEngine.Rect(x,y,w,h),texture,ScaleMode.StretchToFill,true);GUI.color=Color.white;
+        }
+
+        void RosterRailSprite(float x,float y,float w,float h)
+        {
+            if(rosterRail==null)return;
+            GUI.color=Color.white;
+            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,w,h),rosterRail,new UnityEngine.Rect(0,.17f,1,.66f),true);
+            GUI.color=Color.white;
+        }
+
+        float ShotSlide(string id) => transitionDamageId==id&&transitionDamage>0?-10*Mathf.Clamp01(transitionDamage/.34f):0;
+
+        void MetalPlate(float x,float y,float w,float h,string title,Color color,bool dim=false,bool damaged=false)
+        {
+            LoadExtractedUI();
+            ExtractedSprite(metalPlateStates,x-8,y-11,w+16,h+22,damaged,dim?new Color(.48f,.48f,.48f,.9f):Color.white);
+            Text(title,x+24,y,w-48,h,Mathf.RoundToInt(Mathf.Min(22,h*.38f)),dim?Hex("777A75"):Cream,true,TextAnchor.MiddleCenter);
+        }
+
+        void MetalPlateButton(string id,string title,float x,float y,float w,float h,System.Action action,bool shoot=true)
+        {
+            bool over=allowButtons&&new Rect(x,y,w,h).Contains(pointer);HoverCue(id,over);
+            bool damaged=transitionDamageId==id&&transitionDamage>0;
+            MetalPlate(x,y,w,h,title,Hex("3E504B"),false,damaged);
+            if(over)PixelSight(pointer.x,pointer.y,Hex("E84835"));
+            if(over&&uiClick&&Event.current.type==EventType.Repaint)
+            {uiClick=false;if(shoot)QueueShot(id,action);else{sound.Play("wood");action();}}
+        }
+
+        void ShootTarget(string id,string title,float x,float y,float w,float h,bool enabled,System.Action action)
+        {
+            bool inside=new Rect(x,y,w,h).Contains(pointer),over=allowButtons&&inside;HoverCue(id,over);
+            LoadExtractedUI();bool damaged=transitionDamageId==id&&transitionDamage>0;
+            ExtractedSprite(rangeTargetStates,x-20,y-12,w+40,h+24,damaged,enabled?Color.white:new Color(.42f,.42f,.42f,.92f));
+            // A solid painted strip separates the action label from the target's bullseye lines.
+            Color targetText=enabled?Cream:Hex("777A75");
+            Rect(x+40,y+h*.44f,w-80,h*.18f,enabled?Hex("9B2F28"):Hex("3F4240"));
+            Text(title,x+21,y+h*.42f+3,w-36,h*.22f,42,new Color(.12f,.09f,.07f,.82f),true,TextAnchor.MiddleCenter);
+            Text(title,x+18,y+h*.42f,w-36,h*.22f,42,targetText,true,TextAnchor.MiddleCenter);
+            if(over)PixelSight(pointer.x,pointer.y,Hex("E84835"));
+            if(inside&&uiClick&&Event.current.type==EventType.Repaint)
+            {uiClick=false;if(enabled&&allowButtons)QueueShot(id,action);else sound.Play("ui_locked");}
+        }
+
+        void WoodPostButton(string id,string title,float x,float y,float w,float h,System.Action action,bool shoot)
+        {
+            bool over=allowButtons&&new Rect(x,y,w,h).Contains(pointer);HoverCue(id,over);
+            LoadExtractedUI();bool damaged=transitionDamageId==id&&transitionDamage>0;
+            x+=ShotSlide(id);
+            WoodSprite(x-12,y-31,w+24,h+62,damaged);
+            Text(title,x+30,y,w-60,h,24,Cream,true,TextAnchor.MiddleCenter);
+            if(over&&shoot)PixelSight(pointer.x,pointer.y,Hex("E84835"));
+            if(over&&uiClick&&Event.current.type==EventType.Repaint)
+            {uiClick=false;if(shoot)QueueShot(id,action);else{sound.Play("wood");action();}}
         }
 
         void ToggleCheats()
@@ -84,11 +194,12 @@ namespace ZHold
         {
             Rect(0,0,1600,900,new Color(.055f,.075f,.12f,.22f));
             AnimatedLogo(-20,18,720,324);
-            if(Button("JOGAR",120,390,430,62,Gold,true,27))BeginMenuTransition(false);
-            if(Button("TUTORIAL",120,490,430,62,Mint,true,25))Run.StartTutorial();
-            if(Button("CONFIGURAÇÕES",120,590,430,62,Hex("345452"),true,22))settings=true;
+            LoadExtractedUI();ScenarioSprite(woodPostSupport,92,350,490,370);
+            WoodPostButton("home_play","JOGAR",120,390,430,62,()=>BeginMenuTransition(false),true);
+            WoodPostButton("home_tutorial","TUTORIAL",120,490,430,62,()=>Run.StartTutorial(),true);
+            WoodPostButton("home_settings","CONFIGURAÇÕES",120,590,430,62,()=>settings=true,false);
             GameArt.Portrait(Run.profile.selected,990,214,440,475);
-            Text("Recorde: "+Run.profile.bestWave+" ondas",1035,704,435,38,25,Cream,true,TextAnchor.MiddleCenter);
+            MetalPlate(1035,695,435,50,"RECORDE: "+Run.profile.bestWave+" ONDAS",Hex("3E504B"));
         }
         float Setting(string label,float value,float min,float max,float y,string suffix="%")
         {

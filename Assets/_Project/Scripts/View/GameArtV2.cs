@@ -5,6 +5,7 @@ namespace ZHold
     public static class GameArt
     {
         static Texture2D zombies,portraits,environments,rearEnvironments;
+        static Material silhouetteMaterial;
         static void Load()
         {
             if(zombies!=null) return;
@@ -64,6 +65,21 @@ namespace ZHold
             var uv=PixelArtCatalog.HeroUV(index); float aspect=uv.width*2/uv.height;
             float dw=Mathf.Min(width,height*aspect),dh=dw/aspect;
             GUI.DrawTextureWithTexCoords(new Rect(Snap(x+(width-dw)/2),Snap(y+height-dh),Snap(dw),Snap(dh)),portraits,uv);
+        }
+        public static void PortraitMask(int index,float x,float y,float width,float height,Color tint)
+        {
+            Load();
+            if(silhouetteMaterial==null)
+            {
+                var shader=Resources.Load<Shader>("Shaders/UISilhouette");
+                if(shader!=null)silhouetteMaterial=new Material(shader);
+            }
+            var uv=PixelArtCatalog.HeroUV(index);float aspect=uv.width*2/uv.height;
+            float dw=Mathf.Min(width,height*aspect),dh=dw/aspect;
+            var destination=new Rect(Snap(x+(width-dw)/2),Snap(y+height-dh),Snap(dw),Snap(dh));
+            if(silhouetteMaterial==null)return;
+            silhouetteMaterial.SetColor("_Tint",tint);
+            Graphics.DrawTexture(destination,portraits,uv,0,0,0,0,Color.white,silhouetteMaterial);
         }
         public static void CoinArt(Coin coin,float time) => LegacyArt.CoinArt(coin,time);
         public static void TowerArt(int slot,Tower tower,bool highlight=false)

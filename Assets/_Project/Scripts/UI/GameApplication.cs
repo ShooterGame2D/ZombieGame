@@ -11,6 +11,10 @@ namespace ZHold
         Vector2 pointer=new Vector2(800,450);
         float scale=1,offsetX,offsetY,time,waveNotice,shopAnimation;
         bool uiClick,allowButtons,suppressFireUntilRelease;
+        float transitionShotDelay,transitionDamage;
+        string transitionDamageId,hoveredControl;
+        bool sawHover;
+        System.Action pendingTransitionAction;
         bool introComplete;
         int selectedSlot,shopTab;
         readonly string[] upgradeNames={"Dano","Cadência","Pente maior","Recarga rápida"};
@@ -33,6 +37,14 @@ namespace ZHold
         {
             if(Run==null||!introComplete)return;Layout();sound.ListenerSide=Run.viewSide;
             if(Run.state==RunState.Menu)UpdateMenuTransition();
+            transitionDamage=Mathf.Max(0,transitionDamage-Time.unscaledDeltaTime);
+            if(transitionDamage==0)transitionDamageId=null;
+            if(transitionShotDelay>0)
+            {
+                transitionShotDelay=Mathf.Max(0,transitionShotDelay-Time.unscaledDeltaTime);
+                if(transitionShotDelay==0&&pendingTransitionAction!=null)
+                {var action=pendingTransitionAction;pendingTransitionAction=null;action();}
+            }
             bool combat=Run.state==RunState.Wave&&!Run.paused&&!Run.tutorialWaiting&&!settings&&!cheats&&!Run.demo;
             bool choosingAtFrameStart=Run.choosingTreeLane;
             if(Mouse.current!=null&&!Mouse.current.leftButton.isPressed)suppressFireUntilRelease=false;
@@ -118,7 +130,7 @@ namespace ZHold
             GameArt.Background(Run.character.theme,Run.state==RunState.Menu?(showHome?ViewSide.Front:ViewSide.Back):Run.viewSide,time,Run.state==RunState.Menu);
             if(Run.state==RunState.Menu)
             {
-                Brightness();allowButtons=!settings&&!menuTransitioning;if(showHome)Home();else Menu();
+                Brightness();allowButtons=!settings&&!menuTransitioning&&transitionShotDelay<=0;if(showHome)Home();else Menu();
                 if(menuTransitioning)Rect(0,0,1600,900,new Color(0,0,0,Mathf.Sin(menuTransition*Mathf.PI)));
             }
             else
@@ -143,7 +155,7 @@ namespace ZHold
                 if(crateHover&&uiClick&&Event.current.type==EventType.Repaint){uiClick=false;ToggleCheats();}
             }
             if(cheats){allowButtons=true;CheatPanel();}
-            if(Event.current.type==EventType.Repaint) uiClick=false;
+            if(Event.current.type==EventType.Repaint) {if(!sawHover)hoveredControl=null;sawHover=false;uiClick=false;}
             GUI.matrix=Matrix4x4.identity; GUI.color=Color.white;
         }
         bool Button(string title,float x,float y,float w,float h,Color color,bool enabled=true,int size=18)
@@ -171,46 +183,70 @@ namespace ZHold
         void Menu()
         {
             Rect(0,0,1600,900,new Color(.015f,.035f,.055f,.32f));
-            Panel(40,68,732,337);
-            Text("RECORDE "+Run.profile.bestWave+" ONDAS",66,95,330,28,18,Mint,true);
-            Text(Run.profile.gems+" GEMAS",416,95,330,28,18,Gold,true,TextAnchor.UpperRight);
-            Text("Mantenha os dois lados sob controle.",66,156,660,34,26,Cream,true);
-            Text("Escolha seu defensor e prepare a posição.",66,204,660,28,19,Hex("ACC2B7"));
-            Text("EM USO: "+Run.character.title.ToUpperInvariant()+" · Clique nos cartões para conhecer o elenco.",66,315,660,25,16,Hex("ACC2B7"));
-            if(Button("JOGAR: "+Run.character.title.ToUpperInvariant(),65,351,360,40,Gold)) { Run.Start(); shopTab=0; selectedSlot=0; }
-            if(Button("TUTORIAL",446,351,300,40,Hex("345452"),true,15))Run.StartTutorial();
-            Panel(799,68,761,337); GameArt.Portrait(Run.PreviewCharacterIndex,810,83,260,304);
             var c=Run.PreviewedCharacter;
-            Text(c.title.ToUpperInvariant(),1080,91,450,38,30,c.accent,true);
-            Text(c.mapTitle+"  /  "+c.health+" PV",1083,137,430,25,17,Cream);
-            Text("ARMA: "+c.weapon.title,1083,177,430,25,16,Hex("BED1C6"));
-            Text(c.abilityTitle,1083,218,430,26,21,Gold,true);
-            Text(c.abilityDescription,1083,253,425,59,17,Hex("BED1C6"));
-            Text(c.cooldown+" s de recarga do especial",1083,323,425,21,12,Hex("91ACA6"));
-            bool previewOwned=Run.OwnsCharacter(Run.PreviewCharacterIndex),previewEquipped=Run.profile.selected==Run.PreviewCharacterIndex;
-            string previewAction=previewOwned?(previewEquipped?"EM USO":"USAR PERSONAGEM"):Run.profile.gems>=c.price?"COMPRAR · "+c.price+" GEMAS":"FALTAM "+(c.price-Run.profile.gems)+" GEMAS";
-            if(Button(previewAction,1080,358,430,32,previewOwned?Mint:Gold,!previewEquipped&&(previewOwned||Run.profile.gems>=c.price),16))
-            {if(previewOwned)Run.SelectCharacter(Run.PreviewCharacterIndex);else Run.BuyCharacter(Run.PreviewCharacterIndex);}
-            Text("CLIQUE EM UM PERSONAGEM PARA VER OS DETALHES",46,424,950,29,17,Cream,true);
-            Text("DO MENOR PARA O MAIOR PREÇO",1060,428,490,24,13,Mint,false,TextAnchor.UpperRight);
+            bool previewOwned=Run.OwnsCharacter(Run.PreviewCharacterIndex);
+            MetalPlateButton("select_back","VOLTAR",38,28,205,54,()=>BeginMenuTransition(true));
+            MetalPlate(1300,28,260,54,Run.profile.gems+"  GEMAS",Hex("536257"));
+            // Keep the title clear of the top HUD and visually tied to the selection scene.
+            LoadExtractedUI();ScenarioSprite(recruitBanner,405,-16,790,112);Text("ESCOLHA SEU DEFENSOR",450,27,700,42,29,Hex("332A20"),true,TextAnchor.MiddleCenter);
+
+            // The dossier, roster and target are physical set dressing in the outpost, not flat panels.
+            ScenarioSprite(fieldDossier,20,100,600,500);
+            Text(c.title.ToUpperInvariant(),168,202,330,42,27,Cream,true,TextAnchor.MiddleCenter);
+            // Three concise, icon-led rows keep the paper readable at a glance.
+            // Keep each value between the dossier's printed rules instead of letting a rule strike through it.
+            Rect(192,287,30,10,Ink);Rect(215,283,17,15,Ink);Rect(226,286,18,7,Ink);Rect(230,281,8,5,Hex("7D8790"));
+            int weaponFont=c.weapon.title.Length>18?14:18;
+            Text(c.weapon.title.ToUpperInvariant(),256,278,230,28,weaponFont,Ink,true);
+            Ellipse(196,329,28,28,Hex("53734D"));Ellipse(204,337,12,12,Gold);Line(new Vector2(210,325),new Vector2(210,361),4,Hex("315039"));Line(new Vector2(196,343),new Vector2(224,343),4,Hex("315039"));
+            Text(c.abilityTitle.ToUpperInvariant(),256,325,230,28,18,Hex("7A412B"),true);
+            Ellipse(192,377,18,18,Hex("C94D40"));Ellipse(204,377,18,18,Hex("C94D40"));Triangle(new Vector2(192,385),new Vector2(222,385),new Vector2(207,405),Hex("C94D40"));
+            Text(Mathf.RoundToInt(c.health)+" PV",256,372,160,30,20,Hex("B74435"),true);
+
+            // Large selected hero spotlight.
+            Ellipse(716,528,470,54,new Color(.05f,.06f,.07f,.35f));
+            GameArt.Portrait(Run.PreviewCharacterIndex,650,102,600,502);
+            if(!previewOwned)
+                GameArt.PortraitMask(Run.PreviewCharacterIndex,650,102,600,502,new Color(.24f,.26f,.26f,.86f));
+
+            ShootTarget("select_play","JOGAR",1290,554,290,326,previewOwned,()=>
+            {
+                Run.SelectCharacter(Run.PreviewCharacterIndex);Run.Start();shopTab=0;selectedSlot=0;
+            });
+            if(!previewOwned)
+            {
+                bool canBuy=Run.profile.gems>=c.price;
+                string buyText=canBuy?"COMPRAR  ·  "+c.price:"FALTAM "+(c.price-Run.profile.gems)+" GEMAS";
+                bool buyOver=allowButtons&&canBuy&&new Rect(402,570,240,55).Contains(pointer);HoverCue("select_buy",buyOver);
+                MetalPlate(402,570,240,55,buyText,canBuy?(buyOver?Hex("8D7139"):Hex("665633")):Hex("3D4140"),!canBuy);
+                if(buyOver&&uiClick&&Event.current.type==EventType.Repaint)
+                {uiClick=false;Run.BuyCharacter(Run.PreviewCharacterIndex);}
+            }
+            RosterRailSprite(10,648,1270,244);
             var characterOrder=Run.CharacterMenuOrder();
             for(int slot=0;slot<characterOrder.Length;slot++)
             {
                 int i=characterOrder[slot];
-                float x=40+(slot%4)*384,y=467+(slot/4)*166; var hero=catalog.characters[i]; bool selected=Run.profile.selected==i,owned=Run.OwnsCharacter(i),preview=Run.PreviewCharacterIndex==i;
-                bool hover=new Rect(x,y,368,151).Contains(pointer)&&allowButtons;
-                Round(x-2,y-2,372,155,13,preview?Gold:hover?Cream:Hex("344B4B")); Panel(x+2,y+2,364,147);
-                GameArt.Portrait(i,x+8,y+9,111,111);
-                Text(hero.title,x+128,y+14,224,26,22,Cream,true);
-                Text(hero.weapon.title,x+128,y+48,223,46,14,Hex("B4CAC0"));
-                Text(hero.price==0?"GRÁTIS":hero.price+" GEMAS",x+128,y+95,215,21,14,Gold,true);
-                Rect(x+12,y+120,344,23,preview?Hex("625335"):Hex("31504E"));
-                Text(preview?"EM PRÉVIA":selected?"EM USO · VER DETALHES":owned?"ADQUIRIDO · VER DETALHES":"VER DETALHES",x+12,y+120,344,23,12,Cream,true,TextAnchor.MiddleCenter);
+                // Match the measured centers of the widened rail's eight recessed bays.
+                float x=68+slot*146,y=696;var hero=catalog.characters[i];bool owned=Run.OwnsCharacter(i),preview=Run.PreviewCharacterIndex==i;
+                bool hover=new Rect(x,y,120,126).Contains(pointer)&&allowButtons;
+                HoverCue("hero_"+i,hover);
+                if(preview||hover)
+                {
+                    Color glow=preview?new Color(1f,.72f,.12f,.07f):new Color(1f,1f,1f,.035f);
+                    for(int ring=0;ring<6;ring++)
+                    {
+                        float size=98-ring*12;
+                        Color layer=glow;layer.a*=1+ring*.42f;
+                        Ellipse(x+66-size*.5f,y+51-size*.5f,size,size,layer);
+                    }
+                }
+                GameArt.Portrait(i,x+12,y+12,108,84);
+                if(!owned)GameArt.PortraitMask(i,x+12,y+12,108,84,new Color(.25f,.27f,.27f,.88f));
+                Text(hero.title.ToUpperInvariant(),x+4,y+93,112,16,11,owned?Cream:Hex("9B9E98"),true,TextAnchor.MiddleCenter);
+                Text(owned?(Run.profile.selected==i?"EM USO":"DISPONÍVEL"):hero.price+" GEMAS",x+4,y+110,112,14,9,owned?Mint:Hex("C5A46B"),true,TextAnchor.MiddleCenter);
                 if(hover&&uiClick&&Event.current.type==EventType.Repaint){uiClick=false;Run.PreviewCharacter(i);}
             }
-            if(Button("VOLTAR",40,836,180,38,Hex("31504E"),true,16))BeginMenuTransition(true);
-            Text("Ganhe gemas ao encerrar partidas: ondas vencidas, eliminações e novo recorde.",290,840,1040,40,17,Cream,false,TextAnchor.MiddleCenter);
-            if(Button("CONFIGURAR",1360,836,200,38,Hex("31504E"),true,15))settings=true;
         }
         void Battle()
         {
@@ -337,11 +373,15 @@ namespace ZHold
         void Crosshair()
         {
             var coin=Run.CoinAt(pointer); var target=Run.ZombieAt(pointer); Color c=coin!=null?Gold:target!=null?Hex("F29B7A"):Cream;
-            float x=pointer.x,y=pointer.y,gap=8+Run.recoil*7;
+            DrawCrosshair(pointer,c,Run.recoil);
+            if(coin!=null) Text("M2: COLETAR",pointer.x+25,pointer.y-12,110,24,12,Gold,true);
+        }
+        void DrawCrosshair(Vector2 position,Color c,float recoil)
+        {
+            float x=position.x,y=position.y,gap=8+recoil*7;
             Ellipse(x-2,y-2,4,4,c);
             Line(new Vector2(x-gap-9,y),new Vector2(x-gap,y),3,c); Line(new Vector2(x+gap,y),new Vector2(x+gap+9,y),3,c);
             Line(new Vector2(x,y-gap-9),new Vector2(x,y-gap),3,c); Line(new Vector2(x,y+gap),new Vector2(x,y+gap+9),3,c);
-            if(coin!=null) Text("M2: COLETAR",x+25,y-12,110,24,12,Gold,true);
         }
         void Shop(float progress)
         {

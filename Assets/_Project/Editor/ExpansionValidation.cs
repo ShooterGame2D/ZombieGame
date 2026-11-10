@@ -33,6 +33,12 @@ namespace ZHold.Editor
                     Check(peak<.92f&&energy>1&&soundHashes.Add(hash),"audible unique normalized recording "+action+kind+" peak="+peak+" energy="+energy);
                 }
             }
+            foreach(string key in new[]{"ui_hover","ui_shot","ui_locked"})
+            {
+                var samples=PrototypeAudio.CreateSamples(key);float peak=0,energy=0;
+                foreach(float v in samples){peak=Mathf.Max(peak,Mathf.Abs(v));energy+=v*v;}
+                Check(energy>.01f&&peak<=.92f&&!float.IsNaN(energy),"audible unclipped interface sound "+key);
+            }
             foreach(string id in new[]{"Bow","Slingshot","Axe","Grenade","Teddy","Tree","Emerge","Distracted"})
             {
                 var texture=ExpansionArt.Texture(id);Check(texture!=null&&texture.filterMode==FilterMode.Point,"pixel sheet "+id);

@@ -33,7 +33,7 @@ namespace ZHold
             for(int i=0;i<voices.Length;i++) { voices[i]=gameObject.AddComponent<AudioSource>(); voices[i].playOnAwake=false; voices[i].spatialBlend=0; }
             foreach(WeaponKind kind in Enum.GetValues(typeof(WeaponKind))) { Add("shot_"+kind); Add("reload_"+kind); }
             foreach(AbilityKind kind in Enum.GetValues(typeof(AbilityKind))) Add("ability_"+kind);
-            foreach(string key in new[]{"boss","draw_Bow","hit","head","coin","empty","wave","hurt","buy","loaded","turn","metal","wood","spit","groan","explosion","tower"}) Add(key);
+            foreach(string key in new[]{"boss","draw_Bow","hit","head","coin","empty","wave","hurt","buy","loaded","turn","metal","wood","spit","groan","explosion","tower","ui_hover","ui_shot","ui_locked"}) Add(key);
         }
         void Add(string key)
         {
@@ -58,7 +58,7 @@ namespace ZHold
             const int rate=44100; bool reload=key.StartsWith("reload_"),shot=key.StartsWith("shot_");
             WeaponKind kind=WeaponKind.Pistol;
             if(shot || reload) Enum.TryParse(key.Substring(reload?7:5),out kind);
-            float duration=reload?.9f:key=="groan"?1.1f:key=="wave"?.75f:key.StartsWith("ability_")?.75f:.45f;
+            float duration=reload?.9f:key=="groan"?1.1f:key=="wave"?.75f:key=="ui_hover"?.12f:key=="ui_locked"?.24f:key.StartsWith("ability_")?.75f:.45f;
             var data=new float[(int)(rate*duration)]; var random=new System.Random(773); float low=0,mid=0;
             for(int i=0;i<data.Length;i++)
             {
@@ -76,6 +76,9 @@ namespace ZHold
                 else if(key=="metal" || key=="loaded" || key=="empty") value=(high*.35f+Sin(1870,t)*.3f+Sin(2903,t)*.12f)*Mathf.Exp(-t*(key=="metal"?23:65));
                 else if(key=="tower") value=(high*.4f+Sin(130,t)*.3f)*Mathf.Exp(-t*50);
                 else if(key=="coin" || key=="buy") value=Sin(1320,t)*.3f*Mathf.Exp(-t*19)+Sin(1980,t)*.22f*Pulse(t,.06f,22);
+                else if(key=="ui_hover") value=(Sin(930,t)*.17f+Sin(1395,t)*.08f)*Mathf.Exp(-t*32);
+                else if(key=="ui_shot") value=high*.52f*Mathf.Exp(-t*48)+low*2.2f*Mathf.Exp(-t*12)+Sin(840,t)*.25f*Pulse(t,.025f,16);
+                else if(key=="ui_locked") value=(Sin(145,t)*.35f+mid*.28f)*(Pulse(t,.01f,28)+Pulse(t,.105f,24));
                 else if(key=="boss") value=(Sin(90,t)+Sin(135,t))*.3f*Mathf.Sin(Mathf.PI*t/duration);
                 else if(key=="wave") value=(Sin(t<.2f?330:t<.4f?440:660,t)*.2f+Sin(220,t)*.08f)*Mathf.Sin(Mathf.PI*t/duration);
                 else if(key=="turn" || key=="ability_Smoke") value=mid*.65f*Mathf.Sin(Mathf.PI*t/duration)*Mathf.Exp(-t*8);
