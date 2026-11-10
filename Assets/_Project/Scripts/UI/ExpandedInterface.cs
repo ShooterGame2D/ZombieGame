@@ -280,11 +280,11 @@ namespace ZHold
         }
         void Brightness()
         {
-            if(GameSettings.Brightness<1)Rect(0,110,1600,690,new Color(0,0,0,1-GameSettings.Brightness));
-            else if(GameSettings.Brightness>1)Rect(0,110,1600,690,new Color(1,.97f,.88f,(GameSettings.Brightness-1)*.4f));
+            if(GameSettings.Brightness<1)Rect(0,0,1600,900,new Color(0,0,0,1-GameSettings.Brightness));
+            else if(GameSettings.Brightness>1)Rect(0,0,1600,900,new Color(1,.97f,.88f,(GameSettings.Brightness-1)*.4f));
             if(Run.focusTimer>0&&Run.state==RunState.Wave)
             {
-                Rect(0,110,1600,690,new Color(1,.36f,.035f,.22f));
+                Rect(0,0,1600,900,new Color(1,.36f,.035f,.22f));
                 Rect(0,110,24,690,new Color(.8f,.27f,.025f,.65f));Rect(1576,110,24,690,new Color(.8f,.27f,.025f,.65f));
             }
         }
@@ -345,7 +345,7 @@ namespace ZHold
             "Use Q, E ou a rodinha do mouse. Observe o radar: ele indica os inimigos da outra câmera.",
             "Aperte Espaço. Lenhador: clique em uma das três colunas na parte inferior e aperte Espaço novamente para derrubar a árvore. ESC cancela.",
             "Elimine os quatro alvos dos dois lados. Você não perde vida. Depois, haverá um contador de 3 segundos.",
-            "Compre munição no botão verde. Explore as abas: armas, melhorias e defesas. Barricadas ficam à frente das torres.",
+            "Compre munição no botão verde. Neste treino, as outras compras ficam bloqueadas. Nas partidas, você poderá comprar armas, melhorias e defesas.",
             "Você aprendeu a atirar, acertar a cabeça, recarregar, coletar, trocar de lado, usar o especial e comprar na loja."};
         void TutorialPanel()
         {

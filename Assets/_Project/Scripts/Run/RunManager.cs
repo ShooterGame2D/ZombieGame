@@ -432,6 +432,7 @@ namespace ZHold
         }
         public bool BuyUpgrade(int index)
         {
+            if(Tutorial) return false;
             if(state!=RunState.Shop || index<0 || index>3 || upgrades[index]>=5 || wallet<UpgradePrice(index)) return false;
             wallet-=UpgradePrice(index); upgrades[index]++; OnSound?.Invoke("buy"); return true;
         }
@@ -442,6 +443,7 @@ namespace ZHold
         }
         public bool BuyWeapon(int index)
         {
+            if(Tutorial) return false;
             if(state!=RunState.Shop || index<0 || index>=catalog.shopWeapons.Length) return false;
             var next=catalog.shopWeapons[index]; if(next==weapon) return false;
             bool owned=ownedWeapons.Contains(next); if(!owned && wallet<next.price) return false;
@@ -451,11 +453,13 @@ namespace ZHold
         }
         public bool Heal()
         {
+            if(Tutorial) return false;
             if(state!=RunState.Shop || wallet<HealPrice || health>=character.health) return false;
             wallet-=HealPrice; healCount++; health=Mathf.Min(character.health,health+character.health*.3f); OnSound?.Invoke("buy"); return true;
         }
         public bool BuyTower(int type,int slot)
         {
+            if(Tutorial) return false;
             if(state!=RunState.Shop || slot<0 || slot>2 || type<0 || type>=catalog.towers.Length || wallet<TowerPrice(type)) return false;
             int index=SlotIndex(slot,viewSide); var data=catalog.towers[type]; bool barrier=data.kind==TowerKind.Barricade;
             if(barrier?(towers[index]==null || barricades[index]!=null):(towers[index]!=null&&towers[index].data==data)) return false;
@@ -465,6 +469,7 @@ namespace ZHold
         }
         public bool ServiceTower(int slot,bool upgrade,bool barrier=false)
         {
+            if(Tutorial) return false;
             if(state!=RunState.Shop || slot<0 || slot>2) return false;
             var tower=(barrier?barricades:towers)[SlotIndex(slot,viewSide)]; if(tower==null) return false;
             int price=upgrade?25*tower.level:12;

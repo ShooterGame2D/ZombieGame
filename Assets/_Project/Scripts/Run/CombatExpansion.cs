@@ -111,14 +111,14 @@ namespace ZHold
             }
             if(tutorialStep==3) { ammo=Mathf.Max(1,Capacity-3);reloadTimer=0; }
             if(tutorialStep==4) { coins.Clear();coins.Add(new Coin{side=viewSide,position=new Vector2(800,540),value=8,life=999}); }
-            if(tutorialStep==5) { zombies.Clear();AddTrainingZombie(OtherSide,100); }
+            if(tutorialStep==5) { sidesSwitched=0;zombies.Clear();AddTrainingZombie(OtherSide,100); }
             if(tutorialStep==6) { abilityCooldown=0;tutorialActionTime=0; }
             if(tutorialStep==7)
             {
                 zombies.Clear();coins.Clear();total=spawned=4;
                 for(int i=0;i<4;i++) AddTrainingZombie(i%2==0?ViewSide.Front:ViewSide.Back,2,(i-1.5f)*.38f);
             }
-            if(tutorialStep==8) { wallet=Mathf.Max(wallet,100);state=RunState.Shop;shopTimer=999; }
+            if(tutorialStep==8) { wallet=Mathf.Max(wallet,AmmoPackPrice);state=RunState.Shop;shopTimer=999; }
         }
         void AddTrainingZombie(ViewSide side,float hp,float lateral=0)
         { zombies.Add(new Zombie{data=catalog.zombies[1],side=side,lateral=lateral,distance=.45f,health=hp,maxHealth=hp,speed=0}); }

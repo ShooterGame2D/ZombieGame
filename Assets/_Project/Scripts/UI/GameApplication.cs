@@ -10,7 +10,7 @@ namespace ZHold
         PrototypeAudio sound;
         Vector2 pointer=new Vector2(800,450);
         float scale=1,offsetX,offsetY,time,waveNotice,shopAnimation;
-        bool uiClick,allowButtons,suppressFireUntilRelease;
+        bool uiClick,allowButtons,suppressFireUntilRelease,drawingShop;
         float transitionShotDelay,transitionDamage;
         string transitionDamageId,hoveredControl;
         bool sawHover;
@@ -127,7 +127,7 @@ namespace ZHold
             GUI.matrix=Matrix4x4.TRS(new Vector3(offsetX,offsetY,0),Quaternion.identity,new Vector3(scale,scale,1));
             var screenMatrix=GUI.matrix;
             if(Run.state!=RunState.Menu&&!Run.paused) GUI.matrix*=Matrix4x4.Translate(new Vector3(Mathf.Sin(time*79)*Run.shake*10*GameSettings.Shake,Mathf.Sin(time*103)*Run.shake*7*GameSettings.Shake,0));
-            GameArt.Background(Run.character.theme,Run.state==RunState.Menu?(showHome?ViewSide.Front:ViewSide.Back):Run.viewSide,time,Run.state==RunState.Menu);
+            GameArt.Background(Run.state==RunState.Menu?Run.PreviewedCharacter.theme:Run.character.theme,Run.state==RunState.Menu?(showHome?ViewSide.Front:ViewSide.Back):Run.viewSide,time,Run.state==RunState.Menu);
             if(Run.state==RunState.Menu)
             {
                 Brightness();allowButtons=!settings&&!menuTransitioning&&transitionShotDelay<=0;if(showHome)Home();else Menu();
@@ -160,6 +160,7 @@ namespace ZHold
         }
         bool Button(string title,float x,float y,float w,float h,Color color,bool enabled=true,int size=18)
         {
+            if(Run.Tutorial && drawingShop && !title.StartsWith("MUNIÇÃO +")) enabled=false;
             bool over=enabled&&allowButtons&&new Rect(x,y,w,h).Contains(pointer);
             bool pressed=over&&Mouse.current!=null&&Mouse.current.leftButton.isPressed;
             float drawX=x+(pressed?2:0),drawY=y+(pressed?4:0),drawW=w-(pressed?4:0),drawH=h-(pressed?4:0);
@@ -168,7 +169,7 @@ namespace ZHold
             Rect(drawX+4,drawY,drawW-8,pressed?2:4,enabled?Color.Lerp(color,Color.white,pressed?.12f:.3f):Hex("586079"));
             Rect(drawX+4,drawY+drawH-4,drawW-8,pressed?2:4,enabled?Color.Lerp(color,Ink,pressed?.55f:.38f):Hex("22293A"));
             bool bright=color==Gold || color==Mint || color==Cream;
-            Text(title,drawX+8,drawY,drawW-16,drawH,size,enabled?(bright?Ink:Cream):Hex("87958B"),true,TextAnchor.MiddleCenter);
+            Text(title,drawX+8,drawY,drawW-16,drawH,size,enabled?(bright?Ink:Cream):Hex("CFD5DF"),true,TextAnchor.MiddleCenter);
             if(over && uiClick && Event.current.type==EventType.Repaint) { uiClick=false; return true; } return false;
         }
         void Panel(float x,float y,float w,float h)
@@ -383,6 +384,7 @@ namespace ZHold
         }
         void Shop(float progress)
         {
+            drawingShop=true;
             progress=Mathf.Clamp01(progress);
             Rect(0,0,1600,900,new Color(.01f,.035f,.055f,.76f*progress));
             var previousMatrix=GUI.matrix;
@@ -402,6 +404,7 @@ namespace ZHold
             Text("Reservas: "+Run.reserve+"  ·  Pente: "+Mathf.FloorToInt(Run.ammo)+" / "+Run.Capacity,149,759,720,22,13,Hex("A9C7B8"));
             Text(Run.Tutorial?"COMPRE MUNIÇÃO PARA CONCLUIR":"ENTER para continuar",1040,758,402,22,13,Hex("A9C7B8"),false,TextAnchor.MiddleCenter);
             GUI.matrix=previousMatrix;
+            drawingShop=false;
         }
         void WaveStartingWarning()
         {
