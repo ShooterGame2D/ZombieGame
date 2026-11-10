@@ -20,8 +20,6 @@ namespace ZHold
             var uv=BackgroundUV(index);
             if(rear && rearEnvironments==null) { uv.x+=uv.width; uv.width=-uv.width; }
             GUI.color=Color.white; GUI.DrawTextureWithTexCoords(new Rect(0,0,1600,900),atlas,uv);
-            if(!menu)
-            { Rect(0,0,1600,120,new Color(.02f,.05f,.07f,.25f)); Rect(0,790,1600,110,new Color(.02f,.05f,.07f,.35f)); }
             for(int i=0;i<18;i++)
             {
                 float x=(i*117+time*(3+i%3))%1600, y=210+(i*71%430)+Mathf.Sin(time*.6f+i)*10;

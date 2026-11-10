@@ -262,11 +262,11 @@ namespace ZHold
             var boss=Run.MainBoss;
             if(boss!=null)
             {
-                Panel(390,178,820,96);
-                GUI.color=Color.white;GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(410,184,68,80),Resources.Load<Texture2D>("Art/Pixel/Zombies"),boss.data.artUV);
-                Text((boss.primaryBoss?"CHEFÃO: ":"ELITE: ")+boss.BossName.ToUpperInvariant()+" · "+RunManager.SideName(boss.side),500,188,680,31,23,Gold,true);
-                Rect(500,233,570,19,Hex("552D37"));Rect(500,233,570*Mathf.Clamp01(boss.health/boss.maxHealth),19,Hex("ED6A4D"));
-                Text(Mathf.CeilToInt(boss.health)+" / "+Mathf.CeilToInt(boss.maxHealth),1080,226,110,32,17,Cream,true,TextAnchor.MiddleRight);
+                Panel(390,118,820,96);
+                GUI.color=Color.white;GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(410,124,68,80),Resources.Load<Texture2D>("Art/Pixel/Zombies"),boss.data.artUV);
+                Text((boss.primaryBoss?"CHEFÃO: ":"ELITE: ")+boss.BossName.ToUpperInvariant()+" · "+RunManager.SideName(boss.side),500,128,680,31,23,Gold,true);
+                Rect(500,173,570,19,Hex("552D37"));Rect(500,173,570*Mathf.Clamp01(boss.health/boss.maxHealth),19,Hex("ED6A4D"));
+                Text(Mathf.CeilToInt(boss.health)+" / "+Mathf.CeilToInt(boss.maxHealth),1080,166,110,32,17,Cream,true,TextAnchor.MiddleRight);
             }
             string warning=null;
             if(Run.damageFlash>0)warning=Run.lastAttackSide!=Run.viewSide?"ATAQUE "+(Run.lastAttackSide==ViewSide.Back?"PELAS COSTAS":"PELA FRENTE")+"!  TROQUE A CÂMERA!":"VOCÊ ESTÁ SENDO ATACADO!";
@@ -275,7 +275,11 @@ namespace ZHold
             else if(Run.ThreatsOnSide(Run.OtherSide)>0)warning="PERIGO NA OUTRA CÂMERA: "+RunManager.SideName(Run.OtherSide);
             if(warning!=null)
             {
-                Panel(345,290,910,57);Rect(350,295,900,47,Hex("AA372D"));Text(warning,367,302,866,35,27,Cream,true,TextAnchor.MiddleCenter);
+                bool bossAlert=warning.StartsWith("CHEFÃO NA ÁREA");
+                bool bright=!bossAlert||Mathf.Sin(time*7)>0;
+                Color warningBack=bossAlert?(bright?Hex("D54835"):Hex("76261F")):Hex("AA372D");
+                Color warningText=bossAlert?(bright?Color.white:Hex("E7C7AE")):Cream;
+                Panel(345,290,910,57);Rect(350,295,900,47,warningBack);Text(warning,367,302,866,35,27,warningText,true,TextAnchor.MiddleCenter);
             }
             if(Run.state==RunState.Wave&&!Run.Reloading&&Run.ammo<=Mathf.Max(2,Run.Capacity*.25f))
             {

@@ -7,12 +7,11 @@ namespace ZHold
         public static bool ShowCornerCrates=true;
         public static Vector2 BrowserAim(Vector2 position)
         {
-            // Keep native coordinates over interface panels; shape movement only in the playfield.
-            if(position.y<=175||position.y>=790||position.x>1300&&position.y<405)return position;
-            float nx=Mathf.Clamp((position.x-800)/800,-1,1),ny=Mathf.Clamp((position.y-482.5f)/307.5f,-1,1);
+            // Apply sensitivity across the entire screen instead of restricting aim to the old playfield band.
+            float nx=Mathf.Clamp((position.x-800)/800,-1,1),ny=Mathf.Clamp((position.y-450)/450,-1,1);
             float sensitivity=Mathf.Clamp(Sensitivity,.25f,3);
             return new Vector2(800+nx*sensitivity/(1+(sensitivity-1)*Mathf.Abs(nx))*800,
-                482.5f+ny*sensitivity/(1+(sensitivity-1)*Mathf.Abs(ny))*307.5f);
+                450+ny*sensitivity/(1+(sensitivity-1)*Mathf.Abs(ny))*450);
         }
         public static void Load()
         {

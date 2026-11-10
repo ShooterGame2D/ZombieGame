@@ -32,7 +32,7 @@ namespace ZHold
         {
             scale=Mathf.Max(.01f,Mathf.Min(Screen.width/1600f,Screen.height/900f)); offsetX=(Screen.width-1600*scale)*.5f; offsetY=(Screen.height-900*scale)*.5f;
         }
-        bool CombatPoint(Vector2 p) => p.x>=0 && p.x<1600 && p.y>175 && p.y<790 && !(p.x>1300 && p.y<405);
+        bool CombatPoint(Vector2 p) => p.x>=0 && p.x<1600 && p.y>=0 && p.y<900;
         void Update()
         {
             if(Run==null||!introComplete)return;Layout();sound.ListenerSide=Run.viewSide;
@@ -76,7 +76,7 @@ namespace ZHold
                     uiClick|=Mouse.current.leftButton.wasReleasedThisFrame;
 #else
                     Vector2 delta=Mouse.current.delta.ReadValue()*GameSettings.Sensitivity/scale;
-                    pointer+=new Vector2(delta.x,-delta.y);pointer.x=Mathf.Clamp(pointer.x,8,1592);pointer.y=Mathf.Clamp(pointer.y,180,786);
+                    pointer+=new Vector2(delta.x,-delta.y);pointer.x=Mathf.Clamp(pointer.x,0,1600);pointer.y=Mathf.Clamp(pointer.y,0,900);
 #endif
                         if(!suppressFireUntilRelease&&Mouse.current.leftButton.isPressed&&CombatPoint(pointer))Run.Shoot(pointer);
                     }
@@ -314,18 +314,16 @@ namespace ZHold
             Text(Run.character.title.ToUpperInvariant(),120,34,220,24,14,Run.character.accent,true);
             Text(Mathf.CeilToInt(Run.health)+" / "+Run.character.health,319,34,115,25,17,Cream,true,TextAnchor.UpperRight);
             Round(120,72,312,13,6,Hex("354A49")); Round(120,72,312*Mathf.Clamp01(Run.health/Run.character.health),13,6,Run.health<30?Hex("F08C6D"):Mint);
-            Panel(555,22,490,84); Text("ONDA "+Run.wave.ToString("00"),578,33,270,37,29,Cream,true);
-            Text(Run.character.mapTitle.ToUpperInvariant(),581,78,340,19,10,Hex("ABC7BD"));
-            Text(Run.Remaining.ToString("00"),931,32,85,36,29,Gold,true,TextAnchor.UpperRight); Text("RESTANTES",901,77,115,19,10,Cream,false,TextAnchor.UpperRight);
-            Panel(1170,22,236,84); Text("$ "+Run.wallet.ToString("000"),1191,35,200,37,30,Gold,true); Text("MOEDAS DA PARTIDA",1195,79,191,17,10,Cream);
-            if(Button("II",1421,22,65,84,Ink,true,27)) Run.paused=true;
-            if(Button("CFG",1500,22,75,84,Ink,true,17)) {settings=true;Run.paused=true;}
+            if(Button("II",470,22,65,84,Ink,true,27)) Run.paused=true;
+            Panel(560,22,300,84); Text("ONDA "+Run.wave.ToString("00"),580,33,150,37,27,Cream,true);
+            Text(Run.character.mapTitle.ToUpperInvariant(),581,78,155,19,9,Hex("ABC7BD"));
+            Text(Run.Remaining.ToString("00"),780,32,56,36,27,Gold,true,TextAnchor.UpperRight); Text("REST.",770,77,66,19,9,Cream,false,TextAnchor.UpperRight);
+            Panel(875,22,220,84); Text("$ "+Run.wallet.ToString("000"),895,35,180,37,28,Gold,true); Text("MOEDAS DA PARTIDA",898,79,170,17,9,Cream);
             if(Run.state==RunState.WaveEnd)
             {
                 Panel(570,118,460,50);
                 Text("ONDA "+Run.wave+" CONCLUÍDA  ·  LOJA EM "+Mathf.CeilToInt(Run.waveEndTimer)+"s",584,129,432,28,18,Gold,true,TextAnchor.MiddleCenter);
             }
-            else if(Run.state!=RunState.WaveStarting&&Button(RunManager.SideName(Run.viewSide)+"   >   [Q / E / SCROLL]",570,122,460,42,Run.viewSide==ViewSide.Front?Hex("31564E"):Hex("594344"),true,17)) Run.SwitchSide();
             Minimap();
             Panel(25,807,493,75); Text(Run.weapon.title.ToUpperInvariant(),43,818,326,22,15,Cream,true);
             Text(Mathf.FloorToInt(Run.ammo)+" / "+Run.Capacity,367,816,130,28,25,Gold,true,TextAnchor.UpperRight);
@@ -352,12 +350,12 @@ namespace ZHold
         }
         void Minimap()
         {
-            Panel(1320,126,255,264); Text("RADAR / DOIS LADOS",1334,137,225,24,13,Cream,true,TextAnchor.MiddleCenter);
-            float cx=1447,cy=265;
-            Rect(1336,172,223,180,Hex("213839"));
-            Rect(1336,Run.viewSide==ViewSide.Front?172:265,223,87,new Color(.45f,.75f,.62f,.13f));
-            Line(new Vector2(cx,175),new Vector2(cx,352),1,Hex("57716B")); Line(new Vector2(1336,cy),new Vector2(1559,cy),2,Hex("6C7C70"));
-            Text("FRENTE",1344,174,100,18,10,Mint,true); Text("COSTAS",1344,332,100,18,10,Gold,true);
+            Panel(1320,22,255,264); Text("RADAR / DOIS LADOS",1334,33,225,24,13,Cream,true,TextAnchor.MiddleCenter);
+            float cx=1447,cy=161;
+            Rect(1336,68,223,180,Hex("213839"));
+            Rect(1336,Run.viewSide==ViewSide.Front?68:161,223,87,new Color(.45f,.75f,.62f,.13f));
+            Line(new Vector2(cx,71),new Vector2(cx,248),1,Hex("57716B")); Line(new Vector2(1336,cy),new Vector2(1559,cy),2,Hex("6C7C70"));
+            Text("FRENTE",1344,70,100,18,10,Mint,true); Text("COSTAS",1344,228,100,18,10,Gold,true);
             foreach(var z in Run.zombies)
             {
                 float x=cx+z.lateral*93,y=cy+(z.side==ViewSide.Front?-1:1)*(15+z.distance*67); bool other=z.side!=Run.viewSide;
@@ -368,7 +366,7 @@ namespace ZHold
             foreach(var coin in Run.coins) if(coin.side!=Run.viewSide)
             { float x=cx+Mathf.Clamp((coin.position.x-800)/660,-1,1)*93; Ellipse(x-2,cy+(coin.side==ViewSide.Front?-37:37),4,4,Gold); }
             Ellipse(cx-6,cy-6,12,12,Cream); Triangle(new Vector2(cx-5,cy+(Run.viewSide==ViewSide.Front?-9:9)),new Vector2(cx+5,cy+(Run.viewSide==ViewSide.Front?-9:9)),new Vector2(cx,cy+(Run.viewSide==ViewSide.Front?-17:17)),Cream);
-            Text("OUTRA CÂMERA: "+Run.CountOnSide(Run.OtherSide),1332,362,231,20,12,Gold,true,TextAnchor.MiddleCenter);
+            Text("OUTRA CÂMERA: "+Run.CountOnSide(Run.OtherSide),1332,258,231,20,12,Gold,true,TextAnchor.MiddleCenter);
         }
         void Crosshair()
         {
