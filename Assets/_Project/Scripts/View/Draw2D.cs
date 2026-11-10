@@ -26,7 +26,7 @@ namespace ZHold
         public static void Round(float x,float y,float w,float h,float radius,Color c)
         {
             if(w<12 || h<12) { Rect(x,y,w,h,c); return; }
-            Rect(x+Pixel,y,w-2*Pixel,h,c); Rect(x,y+Pixel,w,h-2*Pixel,c);
+            Rect(x+Pixel,y,w-2*Pixel,Pixel,c); Rect(x,y+Pixel,w,h-2*Pixel,c); Rect(x+Pixel,y+h-Pixel,w-2*Pixel,Pixel,c);
         }
         public static void Line(Vector2 a,Vector2 b,float width,Color c)
         {

@@ -26,6 +26,11 @@ namespace ZHold
             Run=new RunManager(catalog,SaveSystem.Load()); sound=gameObject.AddComponent<PrototypeAudio>();
             Run.OnSound+=sound.Play; Run.OnSpatialSound+=sound.PlaySpatial; Run.OnWaveStarted+=_=>waveNotice=3.5f;
             if(Camera.main==null) { var obj=new GameObject("Camera"); var cam=obj.AddComponent<Camera>(); cam.orthographic=true; cam.clearFlags=CameraClearFlags.SolidColor; cam.backgroundColor=Ink; obj.tag="MainCamera"; obj.AddComponent<AudioListener>(); }
+            PlayIntro();
+        }
+        void PlayIntro()
+        {
+            introComplete=false;
             new GameObject("ZHold Intro").AddComponent<IntroCutscene>().Begin(()=>introComplete=true);
         }
         void Layout()

@@ -1,6 +1,6 @@
 # Z-Hold
 
-![capa jogo](img\capa_z_hold.jpeg)
+![capa jogo](img/capa_z_hold.jpeg)
 
 Z-Hold é um jogo de defesa por ondas em pixel art. Proteja seu posto contra zumbis que atacam pela frente e por trás: alterne a câmera, colete moedas e melhore armas e defesas.
 

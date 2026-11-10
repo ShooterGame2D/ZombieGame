@@ -244,6 +244,7 @@ namespace ZHold
             WoodPostButton("home_play","JOGAR",120,390,430,62,()=>BeginMenuTransition(false),true);
             WoodPostButton("home_tutorial","TUTORIAL",120,490,430,62,()=>Run.StartTutorial(),true);
             WoodPostButton("home_settings","CONFIGURAÇÕES",120,590,430,62,()=>settings=true,false);
+            if(Button("VER INTRODUÇÃO",120,690,430,52,Gold))PlayIntro();
             GameArt.Portrait(Run.profile.selected,990,214,440,475);
             ThemedHudPanel(1035,695,435,50);
             Text("RECORDE: "+Run.profile.bestWave+" ONDAS",1090,695,360,50,14,Cream,true,TextAnchor.MiddleCenter);
