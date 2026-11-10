@@ -310,36 +310,36 @@ namespace ZHold
         }
         void HUD()
         {
-            Panel(25,22,430,84); GameArt.Portrait(Run.profile.selected,30,24,79,79);
+            ThemedHudPanel(25,22,430,84); GameArt.Portrait(Run.profile.selected,30,24,79,79);
             Text(Run.character.title.ToUpperInvariant(),120,34,220,24,14,Run.character.accent,true);
-            Text(Mathf.CeilToInt(Run.health)+" / "+Run.character.health,319,34,115,25,17,Cream,true,TextAnchor.UpperRight);
-            Round(120,72,312,13,6,Hex("354A49")); Round(120,72,312*Mathf.Clamp01(Run.health/Run.character.health),13,6,Run.health<30?Hex("F08C6D"):Mint);
-            if(Button("II",470,22,65,84,Ink,true,27)) Run.paused=true;
-            Panel(560,22,300,84); Text("ONDA "+Run.wave.ToString("00"),580,33,150,37,27,Cream,true);
-            Text(Run.character.mapTitle.ToUpperInvariant(),581,78,155,19,9,Hex("ABC7BD"));
-            Text(Run.Remaining.ToString("00"),780,32,56,36,27,Gold,true,TextAnchor.UpperRight); Text("REST.",770,77,66,19,9,Cream,false,TextAnchor.UpperRight);
-            Panel(875,22,220,84); Text("$ "+Run.wallet.ToString("000"),895,35,180,37,28,Gold,true); Text("MOEDAS DA PARTIDA",898,79,170,17,9,Cream);
+            Text(Mathf.CeilToInt(Run.health)+" / "+Run.character.health,304,34,115,25,17,Cream,true,TextAnchor.UpperRight);
+            Round(120,72,300,13,6,Hex("354A49")); Round(120,72,300*Mathf.Clamp01(Run.health/Run.character.health),13,6,Run.health<30?Hex("F08C6D"):Mint);
+            MetalPlateButton("hud_pause","Ⅱ",470,22,65,84,()=>Run.paused=true,false);
+            ThemedHudPanel(560,22,300,84); Text("ONDA "+Run.wave.ToString("00"),610,36,135,34,26,Cream,true);
+            Text(Run.character.mapTitle.ToUpperInvariant(),610,76,135,17,9,Hex("ABC7BD"));
+            Text(Run.Remaining.ToString("00"),765,36,55,34,26,Gold,true,TextAnchor.UpperRight); Text("REST.",755,76,65,17,9,Cream,false,TextAnchor.UpperRight);
+            ThemedHudPanel(875,22,220,84); Text("$ "+Run.wallet.ToString("000"),925,36,130,34,26,Gold,true); Text("MOEDAS DA PARTIDA",925,76,130,17,9,Cream);
             if(Run.state==RunState.WaveEnd)
             {
-                Panel(570,118,460,50);
+                ThemedHudPanel(570,118,460,50);
                 Text("ONDA "+Run.wave+" CONCLUÍDA  ·  LOJA EM "+Mathf.CeilToInt(Run.waveEndTimer)+"s",584,129,432,28,18,Gold,true,TextAnchor.MiddleCenter);
             }
             Minimap();
-            Panel(25,807,493,75); Text(Run.weapon.title.ToUpperInvariant(),43,818,326,22,15,Cream,true);
-            Text(Mathf.FloorToInt(Run.ammo)+" / "+Run.Capacity,367,816,130,28,25,Gold,true,TextAnchor.UpperRight);
+            ThemedHudPanel(25,807,493,75); Text(Run.weapon.title.ToUpperInvariant(),95,821,260,20,15,Cream,true);
+            Text(Mathf.FloorToInt(Run.ammo)+" / "+Run.Capacity,365,819,110,25,23,Gold,true,TextAnchor.UpperRight);
             if(Run.Reloading)
             {
-                Round(44,852,300,10,5,Hex("3F5550")); Round(44,852,300*Run.ReloadProgress,10,5,Gold); Text("RECARREGANDO "+Run.reloadTimer.ToString("0.0")+"s",45,868,301,13,9,Cream);
+                Round(95,851,260,10,5,Hex("3F5550")); Round(95,851,260*Run.ReloadProgress,10,5,Gold); Text("RECARREGANDO "+Run.reloadTimer.ToString("0.0")+"s",95,866,260,13,9,Cream);
             }
             else
             {
-                int segments=Run.Capacity; float w=(300-(segments-1)*2)/segments;
-                for(int i=0;i<segments;i++) Round(44+i*(w+2),852,w,10,2,Run.ammo>=i+1?Gold:Hex("3F5550"));
-                Text(Run.reserve==0?"SEM RESERVA · COMPRE NA LOJA":"R: RECARREGAR",44,867,310,14,9,Run.reserve==0?Hex("EF9B7D"):Hex("9AB8AD"));
+                int segments=Run.Capacity; float w=(260-(segments-1)*2)/segments;
+                for(int i=0;i<segments;i++) Round(95+i*(w+2),851,w,10,2,Run.ammo>=i+1?Gold:Hex("3F5550"));
+                Text(Run.reserve==0?"SEM RESERVA · COMPRE NA LOJA":"R: RECARREGAR",95,866,260,14,9,Run.reserve==0?Hex("EF9B7D"):Hex("9AB8AD"));
             }
-            Text("RESERVA "+Run.reserve,357,850,142,24,13,Mint,true,TextAnchor.UpperRight);
-            Panel(1095,807,480,75); Text(Run.character.abilityTitle.ToUpperInvariant(),1113,821,322,25,17,Cream,true);
-            Text(Run.character.ability==AbilityKind.Cleave?(Run.choosingTreeLane?(Run.selectedTreeLane<0?"CLIQUE EM UMA COLUNA":"ESPAÇO: CONFIRMAR · ESC: CANCELAR"):"ESPAÇO: ESCOLHER COLUNA"):"ESPAÇO: ESPECIAL  ·  ESC: PAUSA",1115,855,305,21,10,Hex("9AB8AD"));
+            Text("RESERVA "+Run.reserve,365,849,110,22,13,Mint,true,TextAnchor.UpperRight);
+            ThemedHudPanel(1095,807,480,75); Text(Run.character.abilityTitle.ToUpperInvariant(),1160,821,270,22,17,Cream,true);
+            Text(Run.character.ability==AbilityKind.Cleave?(Run.choosingTreeLane?(Run.selectedTreeLane<0?"CLIQUE EM UMA COLUNA":"ESPAÇO: CONFIRMAR · ESC: CANCELAR"):"ESPAÇO: ESCOLHER COLUNA"):"ESPAÇO: ESPECIAL  ·  ESC: PAUSA",1160,853,260,19,10,Hex("9AB8AD"));
             Tag(Run.abilityCooldown>0?Mathf.CeilToInt(Run.abilityCooldown)+" s":Run.choosingTreeLane?"MIRANDO":"PRONTA",1454,832,104,Run.abilityCooldown>0?Hex("B1BBB0"):Mint);
             if(Run.focusTimer>0) Text("OLHO DE ÁGUIA  ·  DANO 2,5×",500,750,600,31,18,Gold,true,TextAnchor.MiddleCenter);
             if(Run.demo)
@@ -350,12 +350,12 @@ namespace ZHold
         }
         void Minimap()
         {
-            Panel(1320,22,255,264); Text("RADAR / DOIS LADOS",1334,33,225,24,13,Cream,true,TextAnchor.MiddleCenter);
-            float cx=1447,cy=161;
-            Rect(1336,68,223,180,Hex("213839"));
-            Rect(1336,Run.viewSide==ViewSide.Front?68:161,223,87,new Color(.45f,.75f,.62f,.13f));
-            Line(new Vector2(cx,71),new Vector2(cx,248),1,Hex("57716B")); Line(new Vector2(1336,cy),new Vector2(1559,cy),2,Hex("6C7C70"));
-            Text("FRENTE",1344,70,100,18,10,Mint,true); Text("COSTAS",1344,228,100,18,10,Gold,true);
+            ThemedHudPanel(1320,22,255,264); Text("RADAR",1338,32,221,22,13,Cream,true,TextAnchor.MiddleCenter);
+            float cx=1448,cy=157;
+            Rect(1338,57,221,205,Hex("213839"));
+            Rect(1338,Run.viewSide==ViewSide.Front?57:157,221,100,new Color(.45f,.75f,.62f,.13f));
+            Line(new Vector2(cx,60),new Vector2(cx,259),1,Hex("57716B")); Line(new Vector2(1338,cy),new Vector2(1559,cy),2,Hex("6C7C70"));
+            Text("FRENTE",1345,60,92,18,10,Mint,true); Text("COSTAS",1345,240,92,18,10,Gold,true);
             foreach(var z in Run.zombies)
             {
                 float x=cx+z.lateral*93,y=cy+(z.side==ViewSide.Front?-1:1)*(15+z.distance*67); bool other=z.side!=Run.viewSide;
@@ -366,7 +366,6 @@ namespace ZHold
             foreach(var coin in Run.coins) if(coin.side!=Run.viewSide)
             { float x=cx+Mathf.Clamp((coin.position.x-800)/660,-1,1)*93; Ellipse(x-2,cy+(coin.side==ViewSide.Front?-37:37),4,4,Gold); }
             Ellipse(cx-6,cy-6,12,12,Cream); Triangle(new Vector2(cx-5,cy+(Run.viewSide==ViewSide.Front?-9:9)),new Vector2(cx+5,cy+(Run.viewSide==ViewSide.Front?-9:9)),new Vector2(cx,cy+(Run.viewSide==ViewSide.Front?-17:17)),Cream);
-            Text("OUTRA CÂMERA: "+Run.CountOnSide(Run.OtherSide),1332,258,231,20,12,Gold,true,TextAnchor.MiddleCenter);
         }
         void Crosshair()
         {
@@ -436,24 +435,23 @@ namespace ZHold
         }
         void Pause()
         {
-            Shade(); Panel(540,190,520,540); Tag("PODE RESPIRAR",660,260,280,Mint);
-            Text("DEFESA EM PAUSA",565,319,470,62,36,Cream,true,TextAnchor.MiddleCenter);
-            if(Button("CONTINUAR",590,412,420,56,Gold)) Run.paused=false;
-            if(Button("RECOMEÇAR PARTIDA",590,487,420,48,Hex("345451"),true,17)) { if(Run.Tutorial)Run.StartTutorial();else Run.Start(Run.demo); }
-            if(Button("CONFIGURAÇÕES",590,554,420,48,Hex("345451"),true,17))settings=true;
-            if(Button("VOLTAR AO MENU",590,620,420,48,Hex("345451"),true,17)) { Run.state=RunState.Menu; Run.paused=false;Run.tutorialStep=-1;showHome=true; }
-            Text("ESC para continuar",590,687,420,25,14,Hex("ABC3AD"),false,TextAnchor.MiddleCenter);
+            Shade();PauseBackdrop(520,175,560,565);
+            Text("DEFESA EM PAUSA",565,235,470,62,36,Cream,true,TextAnchor.MiddleCenter);
+            MetalPlateButton("pause_continue","CONTINUAR",590,330,420,48,()=>Run.paused=false,false);
+            MetalPlateButton("pause_restart","RECOMEÇAR PARTIDA",590,410,420,48,()=>{if(Run.Tutorial)Run.StartTutorial();else Run.Start(Run.demo);},false);
+            MetalPlateButton("pause_settings","CONFIGURAÇÕES",590,490,420,48,()=>settings=true,false);
+            MetalPlateButton("pause_menu","VOLTAR AO MENU",590,570,420,48,()=>{Run.state=RunState.Menu;Run.paused=false;Run.tutorialStep=-1;showHome=true;},false);
         }
         void GameOver()
         {
-            Shade(); Panel(410,181,780,544); Tag(Run.newRecord?"NOVO RECORDE!":"A HORDA PASSOU",650,213,300,Gold);
-            Text("A defesa caiu.",460,271,680,75,55,Cream,true,TextAnchor.MiddleCenter);
-            Text("A próxima tentativa começa com uma nova estratégia.",460,352,680,38,20,Hex("B5CAB2"),false,TextAnchor.MiddleCenter);
+            Shade();ThemedHudPanel(410,181,780,544);MetalPlate(650,213,300,44,Run.newRecord?"NOVO RECORDE!":"A HORDA PASSOU",Hex("3E504B"));
+            Text("A defesa caiu.",500,271,600,75,55,Cream,true,TextAnchor.MiddleCenter);
+            Text("A próxima tentativa começa com uma nova estratégia.",500,352,600,38,20,Hex("B5CAB2"),false,TextAnchor.MiddleCenter);
             string[] labels={"ONDAS VENCIDAS","ZUMBIS ELIMINADOS","GEMAS GANHAS"}; int[] values={Run.completed,Run.kills,Run.demo?0:Run.earnedGems};
-            for(int i=0;i<3;i++) { float x=453+i*234; Round(x,419,220,115,12,Hex("294744")); Text(values[i].ToString(),x,431,220,60,43,i==2?Gold:Mint,true,TextAnchor.MiddleCenter); Text(labels[i],x,503,220,21,11,Cream,true,TextAnchor.MiddleCenter); }
-            if(Button("DEFENDER DE NOVO",453,570,454,58,Gold)) Run.Start();
-            if(Button("MENU",930,570,220,58,Hex("345451"))) Run.state=RunState.Menu;
-            Text(Run.demo?"Demonstrações não alteram seu progresso.":"Recorde e gemas salvos. Equipamentos reiniciam por partida.",453,657,697,28,15,Hex("B5CAB2"),false,TextAnchor.MiddleCenter);
+            for(int i=0;i<3;i++) { float x=500+i*205;StatCard(x,419,190,115);Text(values[i].ToString(),x,431,190,60,43,i==2?Gold:Mint,true,TextAnchor.MiddleCenter);Text(labels[i],x+10,503,170,21,11,Cream,true,TextAnchor.MiddleCenter); }
+            WoodPostButton("gameover_retry","DEFENDER DE NOVO",500,570,390,58,()=>Run.Start(),false);
+            WoodPostButton("gameover_menu","MENU",910,570,190,58,()=>Run.state=RunState.Menu,false);
+            Text(Run.demo?"Demonstrações não alteram seu progresso.":"Recorde e gemas salvos. Equipamentos reiniciam por partida.",500,657,600,28,15,Hex("B5CAB2"),false,TextAnchor.MiddleCenter);
         }
     }
 }

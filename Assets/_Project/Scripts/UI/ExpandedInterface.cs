@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static ZHold.Draw2D;
 namespace ZHold
 {
@@ -63,7 +64,11 @@ namespace ZHold
         {
             if(texture==null)return;
             GUI.color=tint;
-            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,w,h),texture,new UnityEngine.Rect(damaged?.5f:0,0,.5f,1),true);
+            // Crop the large transparent generation margins and baked drop shadow around each plate state.
+            var uv=texture==metalPlateStates
+                ?(damaged?new UnityEngine.Rect(.49f,.24f,.45f,.59f):new UnityEngine.Rect(.04f,.33f,.40f,.49f))
+                :new UnityEngine.Rect(damaged?.5f:0,0,.5f,1);
+            GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(x,y,w,h),texture,uv,true);
             GUI.color=Color.white;
         }
 
@@ -96,14 +101,52 @@ namespace ZHold
         {
             LoadExtractedUI();
             ExtractedSprite(metalPlateStates,x-8,y-11,w+16,h+22,damaged,dim?new Color(.48f,.48f,.48f,.9f):Color.white);
-            Text(title,x+24,y,w-48,h,Mathf.RoundToInt(Mathf.Min(22,h*.38f)),dim?Hex("777A75"):Cream,true,TextAnchor.MiddleCenter);
+            float pad=Mathf.Min(24,w*.18f);
+            Text(title,x+pad,y,w-pad*2,h,Mathf.RoundToInt(Mathf.Min(22,h*.38f)),dim?Hex("777A75"):Cream,true,TextAnchor.MiddleCenter);
+        }
+
+        void ThemedHudPanel(float x,float y,float w,float h)
+        {
+            LoadExtractedUI();
+            ExtractedSprite(metalPlateStates,x-8,y-11,w+16,h+22,false,Color.white);
+        }
+
+        void PauseBackdrop(float x,float y,float w,float h)
+        {
+            Rect(x,y,w,h,Hex("202827"));
+            Rect(x+10,y+10,w-20,h-20,Hex("4A5037"));
+            Rect(x+34,y+30,w-68,h-60,Hex("1B2525"));
+            Rect(x+12,y+12,22,h-24,Hex("D99A1F"));Rect(x+w-34,y+12,22,h-24,Hex("D99A1F"));
+            for(int i=0;i<8;i++)
+            {
+                float yy=y+22+i*64;
+                Line(new Vector2(x+12,yy+20),new Vector2(x+34,yy),8,Ink);
+                Line(new Vector2(x+w-34,yy+20),new Vector2(x+w-12,yy),8,Ink);
+            }
+            Color bolt=Hex("D57A25");
+            Ellipse(x+18,y+18,20,20,Ink);Ellipse(x+23,y+23,10,10,bolt);
+            Ellipse(x+w-38,y+18,20,20,Ink);Ellipse(x+w-33,y+23,10,10,bolt);
+            Ellipse(x+18,y+h-38,20,20,Ink);Ellipse(x+23,y+h-33,10,10,bolt);
+            Ellipse(x+w-38,y+h-38,20,20,Ink);Ellipse(x+w-33,y+h-33,10,10,bolt);
+        }
+
+        void StatCard(float x,float y,float w,float h)
+        {
+            Rect(x,y,w,h,Hex("1D2928"));Rect(x+4,y+4,w-8,h-8,Hex("3F503E"));
+            Line(new Vector2(x+10,y+10),new Vector2(x+w-10,y+10),3,Hex("D1842C"));
+            Line(new Vector2(x+10,y+h-10),new Vector2(x+w-10,y+h-10),3,Hex("24312E"));
+            Ellipse(x+7,y+7,8,8,Hex("D1842C"));Ellipse(x+w-15,y+7,8,8,Hex("D1842C"));
+            Ellipse(x+7,y+h-15,8,8,Hex("D1842C"));Ellipse(x+w-15,y+h-15,8,8,Hex("D1842C"));
         }
 
         void MetalPlateButton(string id,string title,float x,float y,float w,float h,System.Action action,bool shoot=true)
         {
             bool over=allowButtons&&new Rect(x,y,w,h).Contains(pointer);HoverCue(id,over);
             bool damaged=transitionDamageId==id&&transitionDamage>0;
-            MetalPlate(x,y,w,h,title,Hex("3E504B"),false,damaged);
+            bool held=over&&Mouse.current!=null&&Mouse.current.leftButton.isPressed;
+            float pressY=held?2:0;
+            MetalPlate(x,y+pressY,w,h,title,Hex("3E504B"),false,damaged);
+            if(over)Rect(x+18,y+12+pressY,w-36,h-24,held?new Color(.12f,.08f,.03f,.24f):new Color(1f,.88f,.48f,.14f));
             if(over)PixelSight(pointer.x,pointer.y,Hex("E84835"));
             if(over&&uiClick&&Event.current.type==EventType.Repaint)
             {uiClick=false;if(shoot)QueueShot(id,action);else{sound.Play("wood");action();}}
@@ -262,11 +305,11 @@ namespace ZHold
             var boss=Run.MainBoss;
             if(boss!=null)
             {
-                Panel(390,118,820,96);
-                GUI.color=Color.white;GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(410,124,68,80),Resources.Load<Texture2D>("Art/Pixel/Zombies"),boss.data.artUV);
-                Text((boss.primaryBoss?"CHEFÃO: ":"ELITE: ")+boss.BossName.ToUpperInvariant()+" · "+RunManager.SideName(boss.side),500,128,680,31,23,Gold,true);
-                Rect(500,173,570,19,Hex("552D37"));Rect(500,173,570*Mathf.Clamp01(boss.health/boss.maxHealth),19,Hex("ED6A4D"));
-                Text(Mathf.CeilToInt(boss.health)+" / "+Mathf.CeilToInt(boss.maxHealth),1080,166,110,32,17,Cream,true,TextAnchor.MiddleRight);
+                ThemedHudPanel(390,118,820,96);
+                GUI.color=Color.white;GUI.DrawTextureWithTexCoords(new UnityEngine.Rect(435,127,58,70),Resources.Load<Texture2D>("Art/Pixel/Zombies"),boss.data.artUV);
+                Text((boss.primaryBoss?"CHEFÃO: ":"ELITE: ")+boss.BossName.ToUpperInvariant()+" · "+RunManager.SideName(boss.side),515,130,610,29,21,Gold,true);
+                Rect(515,173,535,19,Hex("552D37"));Rect(515,173,535*Mathf.Clamp01(boss.health/boss.maxHealth),19,Hex("ED6A4D"));
+                Text(Mathf.CeilToInt(boss.health)+" / "+Mathf.CeilToInt(boss.maxHealth),1060,166,105,32,17,Cream,true,TextAnchor.MiddleRight);
             }
             string warning=null;
             if(Run.damageFlash>0)warning=Run.lastAttackSide!=Run.viewSide?"ATAQUE "+(Run.lastAttackSide==ViewSide.Back?"PELAS COSTAS":"PELA FRENTE")+"!  TROQUE A CÂMERA!":"VOCÊ ESTÁ SENDO ATACADO!";
