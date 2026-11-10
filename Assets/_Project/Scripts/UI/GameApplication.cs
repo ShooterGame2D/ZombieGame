@@ -186,9 +186,10 @@ namespace ZHold
             var c=Run.PreviewedCharacter;
             bool previewOwned=Run.OwnsCharacter(Run.PreviewCharacterIndex);
             MetalPlateButton("select_back","VOLTAR",38,28,205,54,()=>BeginMenuTransition(true));
-            MetalPlate(1300,28,260,54,Run.profile.gems+"  GEMAS",Hex("536257"));
+            MetalPlate(1300,28,260,54,"",Hex("536257"));
+            Text(Run.profile.gems+"  GEMAS",1324,33,212,54,18,Cream,true,TextAnchor.MiddleCenter);
             // Keep the title clear of the top HUD and visually tied to the selection scene.
-            LoadExtractedUI();ScenarioSprite(recruitBanner,405,-16,790,112);Text("ESCOLHA SEU DEFENSOR",450,27,700,42,29,Hex("332A20"),true,TextAnchor.MiddleCenter);
+            LoadExtractedUI();ScenarioSprite(recruitBanner,405,-16,790,112);Text("ESCOLHA SEU DEFENSOR",450,27,700,42,23,Hex("332A20"),true,TextAnchor.MiddleCenter);
 
             // The dossier, roster and target are physical set dressing in the outpost, not flat panels.
             ScenarioSprite(fieldDossier,20,100,600,500);

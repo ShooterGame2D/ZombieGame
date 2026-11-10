@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace ZHold
 {
-    // Readable Google Fonts face, rendered once without shadow, outline or synthetic bold.
+    // Original pixel UI face used consistently by labels, banners and buttons.
     public static class PixelFont
     {
         static Font font;
         static GUIStyle style;
         static readonly Dictionary<string,int> sizes=new Dictionary<string,int>();
-        public static Font Face => font!=null?font:(font=Resources.Load<Font>("Fonts/AtkinsonHyperlegible-Regular"));
+        public static Font Face => font!=null?font:(font=Resources.Load<Font>("Fonts/PressStart2P-Regular"));
         static GUIStyle Style
         {
             get
@@ -49,7 +49,7 @@ namespace ZHold
             var origin=matrix.MultiplyPoint3x4(new Vector3(x,y,0));
             float scale=Mathf.Max(.01f,Mathf.Abs(matrix.m00));
             var rect=new Rect(Mathf.Round(origin.x),Mathf.Round(origin.y),Mathf.Round(w*scale),Mathf.Round(h*Mathf.Abs(matrix.m11)));
-            int preferred=Mathf.Max(10,Mathf.RoundToInt(size*scale*1.18f));
+            int preferred=Mathf.Max(8,Mathf.RoundToInt(size*scale));
             string key=rect.width+":"+rect.height+":"+preferred+":"+text;
             if(!sizes.TryGetValue(key,out int fitted))
             {

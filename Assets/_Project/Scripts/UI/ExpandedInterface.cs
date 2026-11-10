@@ -97,12 +97,13 @@ namespace ZHold
 
         float ShotSlide(string id) => transitionDamageId==id&&transitionDamage>0?-10*Mathf.Clamp01(transitionDamage/.34f):0;
 
-        void MetalPlate(float x,float y,float w,float h,string title,Color color,bool dim=false,bool damaged=false)
+        void MetalPlate(float x,float y,float w,float h,string title,Color color,bool dim=false,bool damaged=false,int fontSize=0)
         {
             LoadExtractedUI();
             ExtractedSprite(metalPlateStates,x-8,y-11,w+16,h+22,damaged,dim?new Color(.48f,.48f,.48f,.9f):Color.white);
             float pad=Mathf.Min(24,w*.18f);
-            Text(title,x+pad,y,w-pad*2,h,Mathf.RoundToInt(Mathf.Min(22,h*.38f)),dim?Hex("777A75"):Cream,true,TextAnchor.MiddleCenter);
+            int resolvedSize=fontSize>0?fontSize:Mathf.RoundToInt(Mathf.Min(22,h*.38f));
+            Text(title,x+pad,y,w-pad*2,h,resolvedSize,dim?Hex("777A75"):Cream,true,TextAnchor.MiddleCenter);
         }
 
         void ThemedHudPanel(float x,float y,float w,float h)
@@ -173,7 +174,9 @@ namespace ZHold
             LoadExtractedUI();bool damaged=transitionDamageId==id&&transitionDamage>0;
             x+=ShotSlide(id);
             WoodSprite(x-12,y-31,w+24,h+62,damaged);
-            Text(title,x+30,y,w-60,h,24,Cream,true,TextAnchor.MiddleCenter);
+            int signFont=title=="CONFIGURAÇÕES"?18:24;
+            float signInset=title=="CONFIGURAÇÕES"?52:30;
+            Text(title,x+signInset,y,w-signInset*2,h,signFont,Cream,true,TextAnchor.MiddleCenter);
             if(over&&shoot)PixelSight(pointer.x,pointer.y,Hex("E84835"));
             if(over&&uiClick&&Event.current.type==EventType.Repaint)
             {uiClick=false;if(shoot)QueueShot(id,action);else{sound.Play("wood");action();}}
@@ -242,7 +245,8 @@ namespace ZHold
             WoodPostButton("home_tutorial","TUTORIAL",120,490,430,62,()=>Run.StartTutorial(),true);
             WoodPostButton("home_settings","CONFIGURAÇÕES",120,590,430,62,()=>settings=true,false);
             GameArt.Portrait(Run.profile.selected,990,214,440,475);
-            MetalPlate(1035,695,435,50,"RECORDE: "+Run.profile.bestWave+" ONDAS",Hex("3E504B"));
+            ThemedHudPanel(1035,695,435,50);
+            Text("RECORDE: "+Run.profile.bestWave+" ONDAS",1090,695,360,50,14,Cream,true,TextAnchor.MiddleCenter);
         }
         float Setting(string label,float value,float min,float max,float y,string suffix="%")
         {
